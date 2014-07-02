@@ -1,64 +1,117 @@
-# [HTML5 Boilerplate](http://html5boilerplate.com)
+git-commands.txt
 
-HTML5 Boilerplate is a professional front-end template for building fast,
-robust, and adaptable web apps or sites.
+What you need to do for now:
 
-This project is the product of many years of iterative development and combined
-community knowledge. It does not impose a specific development philosophy or
-framework, so you're free to architect your code in the way that you want.
+http://gitreal.codeschool.com/levels/1
 
-* Source: [https://github.com/h5bp/html5-boilerplate](https://github.com/h5bp/html5-boilerplate)
-* Homepage: [http://html5boilerplate.com](http://html5boilerplate.com)
-* Twitter: [@h5bp](http://twitter.com/h5bp)
+http://try.github.com/levels/1/challenges/1
 
+https://help.github.com/categories/54/articles  
 
-## Quick start
+  YouTube: Git Tutorial: http://www.youtube.com/watch?v=vaNGbk6HN9Y&list=UU3pzbTVgo01qT-maRchkbIg&index=8&feature=plcp  
 
-Choose one of the following options:
-
-1. Download the latest stable release from
-   [html5boilerplate.com](http://html5boilerplate.com/) or a custom build from
-   [Initializr](http://www.initializr.com).
-2. Clone the git repo — `git clone
-   https://github.com/h5bp/html5-boilerplate.git` - and checkout the [tagged
-   release](https://github.com/h5bp/html5-boilerplate/releases) you'd like to
-   use.
+Work through github bootcamp to setup git! link here:  
+https://help.github.com/categories/54/articles  
 
 
-## Features
-
-* HTML5 ready. Use the new elements with confidence.
-* Cross-browser compatible (Chrome, Firefox, IE8+, Opera, Safari).
-* Designed with progressive enhancement in mind.
-* Includes [Normalize.css](http://necolas.github.com/normalize.css/) for CSS
-  normalizations and common bug fixes.
-* The latest [jQuery](http://jquery.com/) via CDN, with a local fallback.
-* The latest [Modernizr](http://modernizr.com/) build for feature detection.
-* Placeholder CSS Media Queries.
-* Useful CSS helpers.
-* Default print CSS, performance optimized.
-* Protection against any stray `console.log` causing JavaScript errors in
-  older browsers.
-* An optimized Google Analytics snippet.
-* Apache server caching, compression, and other configuration defaults for
-  Grade-A performance.
-* Cross-domain Ajax and Flash.
-* "Delete-key friendly." Easy to strip out parts you don't need.
-* Extensive inline and accompanying documentation.
-
-[HTML5 Boilerplate v4 provides legacy browser
-support](https://github.com/h5bp/html5-boilerplate/tree/v4) (IE 6+, Firefox
-3.6+, Safari 4+), but is no longer actively developed.
-
-## Documentation
-
-Take a look at the [documentation table of contents](doc/TOC.md). This
-documentation is bundled with the project, which makes it readily available for
-offline reading and provides a useful starting point for any documentation you
-want to write about your project.
+Below is just the summary of some useful git command  
 
 
-## Contributing
+// clone the repository onto your computer  
+$ cd [directory]  
+$ mkdir canefaitrien  
+$ cd canefaitrien  
+$ git clone https://github.com/lamson6592/canefaitrien.git  
 
-Anyone and everyone is welcome to [contribute](CONTRIBUTING.md). Hundreds of
-developers have helped make the HTML5 Boilerplate what it is today.
+OR  
+
+get on GitHub, click "Clone to my Mac" (for Mac), or download the zip file
+
+// create a remote named 'origin' pointing at the repo on GitHub  
+$ git remote add origin https://github.com/lamson6592/canefaitrien.git
+
+
+
+DAILY TASKS:  
+
+After you modified files  
+// to check what's changed since last commit
+$ git status  
+
+// add each modified file
+$ git add [file-name]  
+
+// add all new or modified files  
+$ git add --all  
+
+// when happy with your job and added all modified files  
+$ git commit -m "message goes here"  
+
+NOTE: commit often is good!  
+
+
+// create new branch & switch to that branch  
+$ git checkout -b [newbranch]  
+
+// show list of branches  
+$ git branch  -a
+
+// switch to branch  
+$ git checkout [newbranch]
+
+
+// when ready to merge branch, switch to master branch  
+$ git checkout master  
+
+// pull latest version  
+$ git pull  
+
+// merge branch to master in local repository  
+$ git merge [newbranch]  
+
+// delete a branch  
+$ git branch -d [branch]
+
+// push to master  
+$ git push origin master  
+
+   OR
+
+$ git push  
+
+// change back to how a file was at the last commit  
+$ git checkout -- [target]
+
+
+-------
+git log  
+git reflog  
+git show  
+gitk  
+
+git checkout [filename]		return the previously committed file  
+
+git commit -am "message"		add + commit together, save time  
+
+--- reset  
+git reflog 					then pick a commit with the [commit] id  
+git reset --hard [commit]		move that commit HEAD to top  
+git push --force				force update  
+
+git reset HEAD [filename] 		unstage  
+
+git mergetool				UI window pops up, edit, save  
+vim [filename]				merge manually  
+
+
+  BRANCHING  
+git branch -a
+git checkout -b [newfeature branch]		create & switch to new branch  
+
+git push origin [newfeature branch]		create branch on github then push  
+
+git checkout master					switch back to master branch  
+git merge [newfeature branch]			merge [newfeature branch] to master  
+
+git branch -d [newfeature branch]			delete branch on local  
+git push origin :[newfeature branch]		delete branch on github  
