@@ -12,6 +12,9 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.8.0.min.js"></script>
+
+        <link rel="stylesheet" href="css/foundation.css" />
+        <link rel="stylesheet" href="css/foundation-icons.css" />
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -19,12 +22,42 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
+        <div class="row">
+            <div class="large-6 columns">
+                <div class="signup-panel">
+                    <p class="welcome">Welcome to Georgia Tech Tutor System!</p>
+                    <form>
+                        <div class="row collapse">
+                            <div class="small-2  columns">
+                                <span class="prefix"><i class="fi-torso-female"></i></span>
+                            </div>
+                            <div class="small-10  columns">
+                                <input type="text" placeholder="GT-ID">
+                            </div>
+                        </div>
+                        <div class="row collapse">
+                            <div class="small-2 columns ">
+                                <span class="prefix"><i class="fi-lock"></i></span>
+                            </div>
+                            <div class="small-10 columns ">
+                                <input type="text" placeholder="Password">
+                            </div>
+                        </div>
+                    </form>
+                    <a href="#" class="button ">Login</a>
+                    <!--<p>Already have an account? <a href="#">Login here &raquo</a></p>-->
+                </div>
+            </div>
+        </div>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/foundation.min.js"></script>
+        <script>
+            $(document).foundation();
+        </script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
