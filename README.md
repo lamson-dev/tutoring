@@ -19,16 +19,16 @@ Below is just the summary of some useful git command
 
 // clone the repository onto your computer  
 $ cd [directory]  
-$ mkdir canefaitrien  
-$ cd canefaitrien  
-$ git clone https://github.com/lamson6592/canefaitrien.git  
+$ mkdir tutoring  
+$ cd tutoring  
+$ git clone https://github.com/lamson/tutoring.git  
 
 OR  
 
 get on GitHub, click "Clone to my Mac" (for Mac), or download the zip file
 
 // create a remote named 'origin' pointing at the repo on GitHub  
-$ git remote add origin https://github.com/lamson6592/canefaitrien.git
+$ git remote add origin https://github.com/lamson/tutoring.git
 
 
 
