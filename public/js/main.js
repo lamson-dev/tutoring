@@ -1,8 +1,5 @@
 var DEBUG = true;
 
-//var apiUrl = "http://m.gatech.edu/d/snguyen44/w/datavis/c/api/";
-var apiUrl = "http://m3.cip.gatech.edu/d/snguyen44/api/datavis/";
-
 $(document).ready(function () {
 
     $("#btn_login").click(login);
