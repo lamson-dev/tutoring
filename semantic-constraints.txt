@@ -1,0 +1,5 @@
+1. An undergrad student can rate a tutor if he hired that tutor for the same course
+2. Tutors cannot e hired without being recommended by a professor.
+3. Tutors can only tick GTA if they are graduate students
+4. Undergraduate students can hire Tutors for a course if the tutor is tutoring for that course.
+5. Tutor can only see his own schedule.
