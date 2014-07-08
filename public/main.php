@@ -29,9 +29,9 @@ function login($json)
 {
     $data = json_decode($json);
 
-    $dbQuery = sprintf("SELECT gtid, password
-                        FROM tb_user
-                        WHERE gtid='%s' AND password='%s'",
+    $dbQuery = sprintf("SELECT GTID, Password
+                        FROM tb_User
+                        WHERE GTID='%s' AND Password='%s'",
         mysql_real_escape_string($data->gtid),
         mysql_real_escape_string($data->password));
 
