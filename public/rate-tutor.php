@@ -5,11 +5,11 @@ include "templates/header.php"
     <div class="row">
         <div class="large-2 columns">
             <label>
-                <select>
+                <select id="schoolList">
                     <option disabled>Department</option>
-                    <option value="CS">CS</option>
-                    <option value="ISyE">ISyE</option>
-                    <option value="ECE">ECE</option>
+<!--                    <option value="CS">CS</option>-->
+<!--                    <option value="ISyE">ISyE</option>-->
+<!--                    <option value="ECE">ECE</option>-->
                 </select>
             </label>
 
@@ -33,8 +33,11 @@ include "templates/header.php"
     <div class="row">
         <div class="large-4 columns">
             <label>Tutor Name
-                <input type="text" placeholder="John Smith"/>
+
+                <input class="" type="text" placeholder="John Smith"/>
             </label>
+            <!-- TODO: add class error to input tag to  validate-->
+            <!-- <small class="error">Invalid entry</small>-->
         </div>
     </div>
 

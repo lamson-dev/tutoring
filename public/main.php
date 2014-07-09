@@ -18,22 +18,26 @@ if (array_key_exists("action", $_POST)) {
 
 function call($action, $json)
 {
+
+    $data = json_decode($json);
     switch ($action) {
         case "login":
-            login($json);
-            showId();
+            login($data);
             break;
-        case "showId":
-            showId();
+        case "rateTutor":
+            rateTutor($data);
             break;
-        case 2:
+        case "fetchSchoolList":
+            fetchSchoolList();
+            break;
+        case "fetchCourseNumberList":
+            fetchCourseNumberList($data->school);
             break;
     }
 }
 
-function login($json)
+function login($data)
 {
-    $data = json_decode($json);
 
     $dbQuery = sprintf("SELECT GTID, Password
                         FROM tb_User
@@ -51,13 +55,61 @@ function login($json)
     }
 }
 
-function showId() {
+function rateTutor($data)
+{
+    // record a student evaluation in database
+
+    $dbQuery = sprintf("INSERT INTO tb_Rates
+                        VALUES('%s', '%s', '%s', '%s', '%s', '%d', '%s')",
+        mysql_real_escape_string(getCurrentUserGTID),
+        mysql_real_escape_string($data->tutorId),
+        mysql_real_escape_string($data->courseSchool),
+        mysql_real_escape_string($data->courseNumber),
+        mysql_real_escape_string($data->descriptiveEval),
+        mysql_real_escape_string($data->numericEval),
+        mysql_real_escape_string(getCurrentSemester()));
+
+    $result = getDBResultAffected($dbQuery);
+
+    echo json_encode($result);
+}
+
+function fetchSchoolList()
+{
+    $dbQuery = sprintf("SELECT DISTINCT School
+                        FROM tb_Course
+                        ORDER BY School;");
+
+    $result = getDBResultsArray($dbQuery);
+    echo json_encode($result);
+}
+
+function fetchCourseNumberList($school)
+{
+    $dbQuery = sprintf("SELECT Number
+                        FROM tb_Course
+                        WHERE School = '%s'
+                        ORDER BY Number;",
+        mysql_real_escape_string($school));
+
+    $result = getDBResultsArray($dbQuery);
+    echo json_encode($result);
+}
+
+function getCurrentUserId()
+{
     if (isset($_SESSION['gtid'])) {
-        echo $_SESSION['gtid'];
+        return $_SESSION['gtid'];
     } else {
         throw new Exception("NO ID");
     }
 
+}
+
+function getCurrentSemester()
+{
+    return "Summer";
+//    TODO: maybe returning semester based on the month
 }
 
 ?>
