@@ -3,37 +3,9 @@ include "templates/header.php"
 ?>
 
     <div class="row">
-        <div class="large-2 columns">
-            <label>
-                <select>
-                    <option disabled>Department</option>
-                    <option value="CS">CS</option>
-                    <option value="ISyE">ISyE</option>
-                    <option value="ECE">ECE</option>
-                </select>
-            </label>
-
-        </div>
-
-        <div class="large-2 columns end">
-            <label>
-                <select>
-                    <option disabled>Course Number</option>
-                    <option value="4400">4400</option>
-                    <option value="2110">2110</option>
-                    <option value="1331">1331</option>
-                </select>
-            </label>
-
-        </div>
-
-    </div>
-
-
-    <div class="row">
         <div class="large-4 columns">
-            <label>Tutor Name
-                <input type="text" placeholder="John Smith"/>
+            <label>Tutor GT-ID
+                <input type="text" placeholder="902910000"/>
             </label>
         </div>
     </div>
@@ -59,7 +31,7 @@ include "templates/header.php"
     </div>
 
     <div class="row">
-        <a href="main-menu.php" id="btn_submit_student_eval" class="button small radius">Submit Evaluation</a>
+        <a href="main-menu.php" id="btn_submit_prof_eval" class="button small radius">Submit Evaluation</a>
     </div>
 
 

@@ -77,8 +77,8 @@ include "templates/header.php"
     </div>
 
     <div class="row">
-        <a href="main-menu.php" id="btn_schedule_selected_tutor" class="button">Schedule Selected Tutor</a>
-        <a href="search-tutor.php" id="btn_cancel" class="button">Cancel</a>
+        <a href="main-menu.php" id="btn_schedule_selected_tutor" class="button small radius">Schedule Selected Tutor</a>
+        <a href="search-tutor.php" id="btn_cancel" class="button small radius">Cancel</a>
     </div>
 <?php
 include "templates/footer.php"

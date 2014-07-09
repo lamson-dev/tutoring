@@ -30,7 +30,7 @@ include "templates/header.php";
                 </div>
             </form>
 
-            <a href="#" id="btn_login" class="button">Login</a>
+            <a href="#" id="btn_login" class="button radius">Login</a>
 
         </div>
     </div>

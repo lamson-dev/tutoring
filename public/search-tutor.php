@@ -98,12 +98,12 @@ include "templates/header.php"
     </div>
 
     <div class="row">
-        <a href="#" id="btn_show_avai_tutor" class="button">Show Available Tutors</a>
+        <a href="#" id="btn_show_avai_tutor" class="button small radius">Show Available Tutors</a>
     </div>
 
     <div class="row">
-        <a href="schedule-tutor.php" id="btn_schedule_tutor" class="button">Schedule Tutor</a>
-        <a href="main-menu.php" id="btn_cancel" class="button">Cancel</a>
+        <a href="schedule-tutor.php" id="btn_schedule_tutor" class="button small radius">Schedule Tutor</a>
+        <a href="main-menu.php" id="btn_cancel" class="button small radius">Cancel</a>
     </div>
 
 

@@ -178,7 +178,7 @@ include "templates/header.php"
     </fieldset>
 
     <div class="row">
-        <a href="main-menu.php" id="btn_submit_app" class="button">Submit Application</a>
+        <a href="main-menu.php" id="btn_submit_app" class="button small radius">Submit Application</a>
     </div>
 
 
