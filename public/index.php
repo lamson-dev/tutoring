@@ -17,7 +17,7 @@ include "templates/header.php";
                         <span class="prefix"><i class="fi-torso-female"></i></span>
                     </div>
                     <div class="small-10  columns">
-                        <input id="gtid" type="text" placeholder="GT-ID">
+                        <input id="gtid" type="text" placeholder="GT-ID" value="902910000">
                     </div>
                 </div>
                 <div class="row collapse">
