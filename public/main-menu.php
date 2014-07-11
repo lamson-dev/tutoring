@@ -11,7 +11,7 @@ include "templates/header.php"
 
     <fieldset class="row">
         <legend>Tutor</legend>
-        <a href="tutor-apply.php" id="btn_apply" class="button small radius">Apply</a>
+        <a href="tutor-apply.php" id="btn_tutor_apply" class="button small radius">Apply</a>
         <a href="tutor-schedule.php" id="btn_find_schedule" class="button small radius">Find My Schedule</a>
 
     </fieldset>

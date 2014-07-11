@@ -24,14 +24,26 @@ function call($action, $json)
         case "login":
             login($data);
             break;
+        case "showAvaiTutor":
+            showAvaiTutor($data);
+            break;
         case "rateTutor":
             rateTutor($data);
+            break;
+        case "submitTutorApp":
+            submitTutorApp($data);
+            break;
+        case "showTutorSchedule":
+            showTutorSchedule();
             break;
         case "fetchSchoolList":
             fetchSchoolList();
             break;
         case "fetchCourseNumberList":
             fetchCourseNumberList($data->school);
+            break;
+        case "getCurrentUserId":
+            getCurrentUserId();
             break;
     }
 }
@@ -53,6 +65,31 @@ function login($data)
     } else {
         $_SESSION['gtid'] = $data->gtid;
     }
+}
+
+function showAvaiTutor($data)
+{
+    // TODO: work on this
+}
+
+function submitTutorApp($data)
+{
+    // TODO: work on this
+}
+
+function showTutorSchedule() {
+    $gtid = getCurrentUserId();
+
+    // TODO: fix this query
+    $dbQuery = sprintf("SELECT Number
+                        FROM tb_Course
+                        WHERE School = '%s'
+                        ORDER BY Number;",
+        mysql_real_escape_string($school));
+
+    $result = getDBResultsArray($dbQuery);
+    echo json_encode($result);
+
 }
 
 function rateTutor($data)
