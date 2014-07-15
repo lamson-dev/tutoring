@@ -43,6 +43,9 @@ function call($action, $json)
         case "fetchCourseNumberList":
             fetchCourseNumberList($data->school);
             break;
+        case "fetchTutorNameListByCourse":
+            fetchTutorNameListByCourse($data);
+            break;
         case "getCurrentUserId":
             getCurrentUserId();
             break;
@@ -58,7 +61,7 @@ function login($data)
         mysql_real_escape_string($data->gtid),
         mysql_real_escape_string($data->password));
 
-    $result = getDBResultsArray($dbQuery);
+    $result = getDBResultRecord($dbQuery);
 
     if (is_null($result)) {
 //        echo "FAILED to login";
@@ -120,13 +123,13 @@ function rateTutor($data)
         return;
     }
 
-    $tutorGTID = getTutorGTIDByName($data->tutorName);
+//    $tutorGTID = getTutorGTIDByName($data->tutorName);
 
     // record a student evaluation in database
     $dbQuery = sprintf("INSERT INTO tb_Rates
                         VALUES('%s', '%s', '%s', '%s', '%s', '%d', '%s')",
         mysql_real_escape_string(getCurrentUserId()),
-        mysql_real_escape_string($tutorGTID),
+        mysql_real_escape_string($data-$tutorId),
         mysql_real_escape_string($data->courseSchool),
         mysql_real_escape_string($data->courseNumber),
         mysql_real_escape_string($data->descEval),
@@ -152,6 +155,23 @@ function getTutorGTIDByName($name)
     $result = getDBResultRecord($dbQuery);
 
     return $result['GTID'];
+
+}
+
+function fetchTutorNameListByCourse($data)
+{
+
+    $dbQuery = sprintf("SELECT GTID, Fname, Lname
+	                    FROM tb_User
+	                    JOIN tb_Teaches ON tb_User.GTID = tb_Teaches.TeachTutGTID
+	                    WHERE tb_Teaches.TeachSchool = '%s'
+                        AND tb_Teaches.TeachNumber = '%s';",
+        mysql_real_escape_string($data->school),
+        mysql_real_escape_string($data->number));
+
+    $result = getDBResultsArray($dbQuery);
+
+    echo json_encode($result);
 
 }
 

@@ -6,10 +6,7 @@ include "templates/header.php"
         <div class="large-2 columns">
             <label>
                 <select id="rate_school_list">
-                    <option disabled>Department</option>
-                    <!--                    <option value="CS">CS</option>-->
-                    <!--                    <option value="ISyE">ISyE</option>-->
-                    <!--                    <option value="ECE">ECE</option>-->
+                    <option selected disabled hidden>- Department -</option>
                 </select>
             </label>
 
@@ -18,7 +15,7 @@ include "templates/header.php"
         <div class="large-2 columns end">
             <label>
                 <select id="rate_number_list">
-                    <option disabled>Course Number</option>
+                    <option selected disabled hidden>- Number -</option>
                 </select>
             </label>
 
@@ -30,9 +27,12 @@ include "templates/header.php"
     <div class="row">
         <div class="large-4 columns">
             <label>Tutor Name
+                <!--                <input id="in_tutor_name" class="" type="text" placeholder="John Smith"/>-->
+                <!--                <small id="in_tutor_name_error" class="error" style="display: none;">Invalid entry</small>-->
+                <select id="rate_tutor_name_list">
+                    <option selected disabled hidden>- Select Tutor Name -</option>
 
-                <input id="in_tutor_name" class="" type="text" placeholder="John Smith"/>
-                <small id="in_tutor_name_error" class="error" style="display: none;">Invalid entry</small>
+                </select>
             </label>
 
         </div>

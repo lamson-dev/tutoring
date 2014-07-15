@@ -10,12 +10,11 @@ var imgTag = $("<img>");
 var optionTag = $("<option>");
 
 var courseSchoolSelected = "CS";
+var courseNumberSelected = "4400";
 
 $(document).ready(function () {
 
     fetchSchoolList();
-    fetchCourseNumberList(courseSchoolSelected);
-
 
     $("#search_school_list").change(function () {
         courseSchoolSelected = $("#search_school_list").val();
@@ -23,6 +22,7 @@ $(document).ready(function () {
         $('#search_number_list').find('option').remove().end();
 
         fetchCourseNumberList(courseSchoolSelected);
+
     });
 
     $("#rate_school_list").change(function () {
@@ -31,6 +31,13 @@ $(document).ready(function () {
         $('#rate_number_list').find('option').remove().end();
 
         fetchCourseNumberList(courseSchoolSelected);
+    });
+
+    $("#rate_number_list").change(function () {
+        courseNumberSelected = $("#rate_number_list").val();
+
+
+        fetchTutorNameListByCourse(courseSchoolSelected, courseNumberSelected);
     });
 
 
@@ -103,6 +110,35 @@ function submitProfEval() {
 
 }
 
+function fetchTutorNameListByCourse(school, number) {
+
+    var data = {};
+    data.school = school;
+    data.number = number;
+
+    makeCall("fetchTutorNameListByCourse", data)
+        .success(function (response, error) {
+
+            var json = JSON.parse(response);
+
+            var nameList = $("#rate_tutor_name_list");
+
+            for (var key in json) {
+
+                var tutorName = json[key].Fname + " " + json[key].Lname;
+                var tutorId = json[key].GTID;
+
+                var option = optionTag.clone();
+                option.attr("value", tutorId);
+                option.html(tutorName);
+                nameList.append(option);
+
+            }
+
+            nameList.append("<option selected disabled hidden>- Select Tutor Name -</option>");
+        });
+}
+
 function fetchSchoolList() {
     makeCall("fetchSchoolList")
         .success(function (response, error) {
@@ -124,6 +160,8 @@ function fetchSchoolList() {
 
                 rateSchoolList.append(option.clone());
             }
+
+            rateSchoolList.append("<option selected disabled hidden>- Department -</option>");
         });
 }
 
@@ -150,6 +188,8 @@ function fetchCourseNumberList(school) {
 
                 rateNumberList.append(option.clone());
             }
+
+            rateNumberList.append("<option selected disabled hidden>- Number -</option>");
         });
 }
 
@@ -221,18 +261,18 @@ function rateTutor() {
 
     var courseShool = $("#rate_school_list").val();
     var courseNumber = $("#rate_number_list").val();
-    var tutorName = $("#in_tutor_name").val();
+    var tutorId = $("#in_tutor_name").val();
     var descEval = $("#in_desc_eval").val();
-    var numEval = 4;
+    var numEval = $('input[name="rating"]:checked').val();
 
     // TODO: need to validate input here, check if empty
     if (courseShool == null || courseNumber == null) {
 
     }
 
-    if (tutorName == null) {
-        tutorName.attr("class", "error");
-        $("#in_tutor_name_error").show();
+    if (tutorId == null) {
+//        tutorName.attr("class", "error");
+//        $("#in_tutor_name_error").show();
 
     }
 
@@ -247,7 +287,7 @@ function rateTutor() {
     var data = {};
     data.courseSchool = courseShool;
     data.courseNumber = courseNumber;
-    data.tutorName = tutorName;
+    data.tutorId = tutorId;
     data.descEval = descEval;
     data.numEval = numEval;
 
@@ -257,10 +297,10 @@ function rateTutor() {
     makeCall("rateTutor", data)
         .success(function (response, error) {
 
-            $("#in_tutor_name").attr("class", "");
-            $("#in_tutor_name_error").hide();
+//            $("#in_tutor_name").attr("class", "");
+//            $("#in_tutor_name_error").hide();
 
-	    //TODO: notify user that rating was submitted before going back to the main menu
+            //TODO: notify user that rating was submitted before going back to the main menu
 
             console.log(response);
 //            window.location = "/main-menu.php";
