@@ -5,7 +5,7 @@ include "templates/header.php"
     <div class="row">
         <div class="large-4 columns">
             <label>Tutor GT-ID
-                <input type="text" placeholder="902910000"/>
+                <input id="tut_gtid" type="text" placeholder="902910000"/>
             </label>
         </div>
     </div>
@@ -13,7 +13,7 @@ include "templates/header.php"
     <div class="row">
         <div class="large-12 columns">
             <label>Descriptive Evaluation
-                <textarea placeholder="Good tutor?"></textarea>
+                <textarea id="desc_eval" placeholder="Good tutor?"></textarea>
             </label>
         </div>
     </div>

@@ -15,8 +15,8 @@ $(document).ready(function () {
 
 
     $("#btn_login").click(login);
-
     $("#btn_apply").click(showId);
+    $("#btn_submit_prof_eval").click(submitProfEval);
 
 });
 
@@ -30,6 +30,32 @@ function login() {
     data.password = password;
 
     makeCall("login", data)
+        .success(function (response, error) {
+            window.location = "/main-menu.php";
+        }).error(function (message) {
+            alert("Error: " + message);
+        });
+
+}
+
+function submitProfEval() {
+
+    var tut_gtid = $("#tut_gtid").val();
+    var desc_eval = $("#desc_eval").val();
+    var rate_high = $("#rate_high").val();
+    var rate_medium = $("#rate_medium").val();
+    var rate_low = $("#rate_low").val();
+    var rate_no = $("#rate_no").val();
+
+    var data = {};
+    data.tut_gtid = tut_gtid;
+    data.desc_eval = desc_eval;
+    data.rate_high = rate_high;
+    data.rate_medium = rate_medium;
+    data.rate_low = rate_low;
+    data.rate_no = rate_no;
+
+    makeCall("submitProfEval", data)
         .success(function (response, error) {
             window.location = "/main-menu.php";
         }).error(function (message) {
