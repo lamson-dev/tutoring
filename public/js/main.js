@@ -62,7 +62,7 @@ $(document).ready(function () {
 
     $("#btn_submit_app").click(submitTutorApp);
 
-    $("#btn_submit_student_eval").click(rateTutor);
+    $("#btn_submit_student_eval").click(submitStudentEval);
 
 });
 
@@ -84,31 +84,6 @@ function login() {
 
 }
 
-function submitProfEval() {
-
-    var tut_gtid = $("#tut_gtid").val();
-    var desc_eval = $("#desc_eval").val();
-    var rate_high = $("#rate_high").val();
-    var rate_medium = $("#rate_medium").val();
-    var rate_low = $("#rate_low").val();
-    var rate_no = $("#rate_no").val();
-
-    var data = {};
-    data.tut_gtid = tut_gtid;
-    data.desc_eval = desc_eval;
-    data.rate_high = rate_high;
-    data.rate_medium = rate_medium;
-    data.rate_low = rate_low;
-    data.rate_no = rate_no;
-
-    makeCall("submitProfEval", data)
-        .success(function (response, error) {
-            window.location = "/main-menu.php";
-        }).error(function (message) {
-            alert("Error: " + message);
-        });
-
-}
 
 function fetchTutorNameListByCourse(school, number) {
 
@@ -256,13 +231,13 @@ function submitTutorApp() {
 
 }
 
-function rateTutor() {
+function submitStudentEval() {
 
 
     var courseShool = $("#rate_school_list").val();
     var courseNumber = $("#rate_number_list").val();
-    var tutorId = $("#in_tutor_name").val();
-    var descEval = $("#in_desc_eval").val();
+    var tutorId = $("#rate_tutor_name_list").val();
+    var descEval = $("#rate_desc_eval").val();
     var numEval = $('input[name="rating"]:checked').val();
 
     // TODO: need to validate input here, check if empty
@@ -294,20 +269,47 @@ function rateTutor() {
 
     // check if this student had this tutor this semester
 
-    makeCall("rateTutor", data)
+    makeCall("submitStudentEval", data)
         .success(function (response, error) {
 
 //            $("#in_tutor_name").attr("class", "");
 //            $("#in_tutor_name_error").hide();
 
             //TODO: notify user that rating was submitted before going back to the main menu
-
+            alert("Rated this tutor");
             console.log(response);
-//            window.location = "/main-menu.php";
+            window.location = "/main-menu.php";
         }).error(function () {
 
             //TODO: do something here
 
+        });
+
+}
+
+function submitProfEval() {
+
+    var tutorId = $("#rec_tutor_gtid").val();
+    var descEval = $("#rec_desc_eval").val();
+    var numEval = $('input[name="rec_rating"]:checked').val();
+
+    var data = {};
+    data.tutorId = tutorId;
+    data.descEval = descEval;
+    data.numEval = numEval;
+
+    // TODO: need to validate tutorID
+    // TODO: check empty input
+
+    makeCall("submitProfEval", data)
+        .success(function (response, error) {
+
+            alert("Recommended this tutor");
+            console.log(response);
+
+            window.location = "/main-menu.php";
+        }).error(function (message) {
+            alert("Error: " + message);
         });
 
 }

@@ -28,8 +28,11 @@ function call($action, $json)
         case "showAvaiTutor":
             showAvaiTutor($data);
             break;
-        case "rateTutor":
-            rateTutor($data);
+        case "submitProfEval":
+            submitProfEval($data);
+            break;
+        case "submitStudentEval":
+            submitStudentEval($data);
             break;
         case "submitTutorApp":
             submitTutorApp($data);
@@ -113,7 +116,23 @@ function isTutoredThisSemBy($data)
     return true;
 }
 
-function rateTutor($data)
+function submitProfEval($data)
+{
+
+    // record a professor recommendation
+    $dbQuery = sprintf("INSERT INTO tb_Recommends (RecTutGTID, RecProfGTID, RecDesc, RecNum)
+	                    VALUES ('%s', '%s', '%s', '%d');",
+        mysql_real_escape_string($data->tutorId),
+        mysql_real_escape_string(getCurrentUserId()),
+        mysql_real_escape_string($data->descEval),
+        mysql_real_escape_string($data->numEval));
+
+
+    $result = getDBResultAffected($dbQuery);
+    echo json_encode($result);
+}
+
+function submitStudentEval($data)
 {
 
     // check if student is tutored by this tutor this semester
@@ -129,7 +148,7 @@ function rateTutor($data)
     $dbQuery = sprintf("INSERT INTO tb_Rates
                         VALUES('%s', '%s', '%s', '%s', '%s', '%d', '%s')",
         mysql_real_escape_string(getCurrentUserId()),
-        mysql_real_escape_string($data-$tutorId),
+        mysql_real_escape_string($data->tutorId),
         mysql_real_escape_string($data->courseSchool),
         mysql_real_escape_string($data->courseNumber),
         mysql_real_escape_string($data->descEval),

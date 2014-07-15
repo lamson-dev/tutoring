@@ -41,7 +41,7 @@ include "templates/header.php"
     <div class="row">
         <div class="large-12 columns">
             <label>Descriptive Evaluation
-                <textarea id="in_desc_eval" placeholder="Good tutor?"></textarea>
+                <textarea id="rate_desc_eval" placeholder="Good tutor?"></textarea>
             </label>
         </div>
     </div>

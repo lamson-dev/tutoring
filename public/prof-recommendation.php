@@ -5,7 +5,7 @@ include "templates/header.php"
     <div class="row">
         <div class="large-4 columns">
             <label>Tutor GT-ID
-                <input id="tut_gtid" type="text" placeholder="902910000"/>
+                <input id="rec_tutor_gtid" type="text" placeholder="902910000" maxlength="9"/>
             </label>
         </div>
     </div>
@@ -13,7 +13,7 @@ include "templates/header.php"
     <div class="row">
         <div class="large-12 columns">
             <label>Descriptive Evaluation
-                <textarea id="desc_eval" placeholder="Good tutor?"></textarea>
+                <textarea id="rec_desc_eval" placeholder="Good tutor?"></textarea>
             </label>
         </div>
     </div>
@@ -22,16 +22,16 @@ include "templates/header.php"
     <div class="row">
         <div class="large-12 columns">
             <label>Rating</label>
-            <input type="radio" name="rating" value="4" id="rate_high"><label for="rate_high">Highly Recommend</label>
-            <input type="radio" name="rating" value="3" id="rate_medium"><label for="rate_medium">Recommend</label>
-            <input type="radio" name="rating" value="2" id="rate_low"><label for="rate_low">Recommend with
+            <input type="radio" name="rec_rating" value="4" id="rec_high"><label for="rec_high">Highly Recommend</label>
+            <input type="radio" name="rec_rating" value="3" id="rec_medium"><label for="rec_medium">Recommend</label>
+            <input type="radio" name="rec_rating" value="2" id="rec_low"><label for="rec_low">Recommend with
                 reservations</label>
-            <input type="radio" name="rating" value="1" id="rate_no"><label for="rate_no">Do not recommend</label>
+            <input type="radio" name="rec_rating" value="1" id="rec_no"><label for="rec_no">Do not recommend</label>
         </div>
     </div>
 
     <div class="row">
-        <a href="main-menu.php" id="btn_submit_prof_eval" class="button small radius">Submit Evaluation</a>
+        <a href="#" id="btn_submit_prof_eval" class="button small radius">Submit Evaluation</a>
     </div>
 
 
