@@ -8,7 +8,7 @@ include "templates/header.php"
         <div class="row">
             <div class="large-4 columns end">
                 <label>GaTech ID
-                    <input type="text" placeholder="902910000"/>
+                    <input id="in_app_gtid" type="text" placeholder="902910000"/>
                 </label>
             </div>
         </div>
@@ -16,13 +16,13 @@ include "templates/header.php"
         <div class="row">
             <div class="large-4 columns">
                 <label>First Name
-                    <input type="text" placeholder="John"/>
+                    <input id="in_app_fname" type="text" placeholder="John"/>
                 </label>
             </div>
 
             <div class="large-4 columns end">
                 <label>Last Name
-                    <input type="text" placeholder="Smith"/>
+                    <input id="in_app_lname"  type="text" placeholder="Smith"/>
                 </label>
             </div>
         </div>
@@ -30,13 +30,13 @@ include "templates/header.php"
         <div class="row">
             <div class="large-4 columns">
                 <label>Email
-                    <input type="text" placeholder="john@gatech.edu"/>
+                    <input id="in_app_email"  type="text" placeholder="john@gatech.edu"/>
                 </label>
             </div>
 
             <div class="large-4 columns end">
                 <label>Phone Number
-                    <input type="text" placeholder="2065421523"/>
+                    <input id="in_app_phone"  type="text" placeholder="2065421523"/>
                 </label>
             </div>
         </div>
@@ -44,7 +44,7 @@ include "templates/header.php"
         <div class="row">
             <div class="large-2 columns">
                 <label>GPA
-                    <input type="text" placeholder="2.0"/>
+                    <input id="in_app_gpa"  type="text" placeholder="2.0"/>
                 </label>
             </div>
 

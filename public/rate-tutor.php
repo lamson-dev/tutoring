@@ -5,11 +5,11 @@ include "templates/header.php"
     <div class="row">
         <div class="large-2 columns">
             <label>
-                <select id="schoolList">
+                <select id="rate_school_list">
                     <option disabled>Department</option>
-<!--                    <option value="CS">CS</option>-->
-<!--                    <option value="ISyE">ISyE</option>-->
-<!--                    <option value="ECE">ECE</option>-->
+                    <!--                    <option value="CS">CS</option>-->
+                    <!--                    <option value="ISyE">ISyE</option>-->
+                    <!--                    <option value="ECE">ECE</option>-->
                 </select>
             </label>
 
@@ -17,11 +17,8 @@ include "templates/header.php"
 
         <div class="large-2 columns end">
             <label>
-                <select>
+                <select id="rate_number_list">
                     <option disabled>Course Number</option>
-                    <option value="4400">4400</option>
-                    <option value="2110">2110</option>
-                    <option value="1331">1331</option>
                 </select>
             </label>
 
@@ -34,17 +31,17 @@ include "templates/header.php"
         <div class="large-4 columns">
             <label>Tutor Name
 
-                <input class="" type="text" placeholder="John Smith"/>
+                <input id="in_tutor_name" class="" type="text" placeholder="John Smith"/>
+                <small id="in_tutor_name_error" class="error" style="display: none;">Invalid entry</small>
             </label>
-            <!-- TODO: add class error to input tag to  validate-->
-            <!-- <small class="error">Invalid entry</small>-->
+
         </div>
     </div>
 
     <div class="row">
         <div class="large-12 columns">
             <label>Descriptive Evaluation
-                <textarea placeholder="Good tutor?"></textarea>
+                <textarea id="in_desc_eval" placeholder="Good tutor?"></textarea>
             </label>
         </div>
     </div>
@@ -62,7 +59,7 @@ include "templates/header.php"
     </div>
 
     <div class="row">
-        <a href="main-menu.php" id="btn_submit_student_eval" class="button small radius">Submit Evaluation</a>
+        <a href="#" id="btn_submit_student_eval" class="button small radius">Submit Evaluation</a>
     </div>
 
 

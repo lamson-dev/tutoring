@@ -20,18 +20,31 @@ function call($action, $json)
 {
 
     $data = json_decode($json);
+
     switch ($action) {
         case "login":
             login($data);
             break;
+        case "showAvaiTutor":
+            showAvaiTutor($data);
+            break;
         case "rateTutor":
             rateTutor($data);
+            break;
+        case "submitTutorApp":
+            submitTutorApp($data);
+            break;
+        case "showTutorSchedule":
+            showTutorSchedule();
             break;
         case "fetchSchoolList":
             fetchSchoolList();
             break;
         case "fetchCourseNumberList":
             fetchCourseNumberList($data->school);
+            break;
+        case "getCurrentUserId":
+            getCurrentUserId();
             break;
     }
 }
@@ -55,23 +68,91 @@ function login($data)
     }
 }
 
+function showAvaiTutor($data)
+{
+    // TODO: work on this
+}
+
+function submitTutorApp($data)
+{
+    // TODO: work on this
+}
+
+function showTutorSchedule()
+{
+    $gtid = getCurrentUserId();
+
+    // TODO: fix this query
+    $dbQuery = sprintf("SELECT Number
+                        FROM tb_Course
+                        WHERE School = '%s'
+                        ORDER BY Number;",
+        mysql_real_escape_string($gtid));
+
+    $result = getDBResultsArray($dbQuery);
+    echo json_encode($result);
+
+}
+
+function isTutoredThisSemBy($data)
+{
+    // TODO: fix this query
+//    $dbQuery = sprintf("SELECT GTID, Password
+//                        FROM tb_User
+//                        WHERE GTID='%s' AND Password='%s'",
+//        mysql_real_escape_string($data->courseNumber),
+//        mysql_real_escape_string($data->tutorName),
+//        mysql_real_escape_string(getCurrentSemester()));
+//
+//    $result = getDBResultsArray($dbQuery);
+
+    // TODO: fix this, return true or false
+    return true;
+}
+
 function rateTutor($data)
 {
-    // record a student evaluation in database
 
+    // check if student is tutored by this tutor this semester
+    if (!isTutoredThisSemBy($data)) {
+        // TODO: throw some error
+        echo false;
+        return;
+    }
+
+    $tutorGTID = getTutorGTIDByName($data->tutorName);
+
+    // record a student evaluation in database
     $dbQuery = sprintf("INSERT INTO tb_Rates
                         VALUES('%s', '%s', '%s', '%s', '%s', '%d', '%s')",
-        mysql_real_escape_string(getCurrentUserGTID),
-        mysql_real_escape_string($data->tutorId),
+        mysql_real_escape_string(getCurrentUserId()),
+        mysql_real_escape_string($tutorGTID),
         mysql_real_escape_string($data->courseSchool),
         mysql_real_escape_string($data->courseNumber),
-        mysql_real_escape_string($data->descriptiveEval),
-        mysql_real_escape_string($data->numericEval),
+        mysql_real_escape_string($data->descEval),
+        mysql_real_escape_string($data->numEval),
         mysql_real_escape_string(getCurrentSemester()));
 
-    $result = getDBResultAffected($dbQuery);
 
+    $result = getDBResultAffected($dbQuery);
     echo json_encode($result);
+}
+
+function getTutorGTIDByName($name)
+{
+    list($firstName, $lastName) = explode(' ', $name);
+
+    $dbQuery = sprintf("SELECT GTID
+                        FROM tb_User
+                        JOIN tb_Tutor ON GTID = TutGTID
+                        WHERE Fname='%s' AND Lname='%s'",
+        mysql_real_escape_string($firstName),
+        mysql_real_escape_string($lastName));
+
+    $result = getDBResultRecord($dbQuery);
+
+    return $result['GTID'];
+
 }
 
 function fetchSchoolList()
@@ -98,6 +179,11 @@ function fetchCourseNumberList($school)
 
 function getCurrentUserId()
 {
+
+    if (DEBUG) {
+        return "902333333";
+    }
+
     if (isset($_SESSION['gtid'])) {
         return $_SESSION['gtid'];
     } else {
