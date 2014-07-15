@@ -19,8 +19,6 @@ include "templates/header.php"
             <label>
                 <select id="rate_number_list">
                     <option disabled>Course Number</option>
-                    <option value="4400">4400</option>
-                    <option value="2110">2110</option>
                 </select>
             </label>
 
@@ -61,7 +59,7 @@ include "templates/header.php"
     </div>
 
     <div class="row">
-        <a href="main-menu.php" id="btn_submit_student_eval" class="button small radius">Submit Evaluation</a>
+        <a href="#" id="btn_submit_student_eval" class="button small radius">Submit Evaluation</a>
     </div>
 
 

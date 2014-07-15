@@ -9,12 +9,32 @@ var spanTag = $("<span>");
 var imgTag = $("<img>");
 var optionTag = $("<option>");
 
+var courseSchoolSelected = "CS";
+
 $(document).ready(function () {
 
     fetchSchoolList();
+    fetchCourseNumberList(courseSchoolSelected);
+
+
+    $("#search_school_list").change(function () {
+        courseSchoolSelected = $("#search_school_list").val();
+
+        $('#search_number_list').find('option').remove().end();
+
+        fetchCourseNumberList(courseSchoolSelected);
+    });
+
+    $("#rate_school_list").change(function () {
+        courseSchoolSelected = $("#rate_school_list").val();
+
+        $('#rate_number_list').find('option').remove().end();
+
+        fetchCourseNumberList(courseSchoolSelected);
+    });
+
 
     $("#btn_login").click(login);
-
 
     $("#btn_show_avai_tutor").click(showAvaiTutor);
 
@@ -27,7 +47,7 @@ $(document).ready(function () {
     });
 
 
-    $("#btn_tutor_apply").click(function() {
+    $("#btn_tutor_apply").click(function () {
         $("#in_app_gtid").html(getCurrentUserId());
     });
 
@@ -59,41 +79,48 @@ function fetchSchoolList() {
     makeCall("fetchSchoolList")
         .success(function (response, error) {
 
-            var data = JSON.parse(response);
+            var json = JSON.parse(response);
 
-            var schoolList = $("#schoolList");
+            var schoolList = $("#search_school_list");
 
-            for (var obj in data) {
+            var rateSchoolList = $("#rate_school_list");
 
-                console.log(obj.School);
+            for (var key in json) {
+
+                var school = json[key].School;
 
                 var option = optionTag.clone();
-                option.attr("value", obj.School);
-                option.html(obj.School);
+                option.attr("value", school);
+                option.html(school);
                 schoolList.append(option);
+
+                rateSchoolList.append(option.clone());
             }
         });
 }
 
-var schoolSelected = null;
 
-function fetchCourseNumberList() {
+function fetchCourseNumberList(school) {
     var data = {};
-    data.school = schoolSelected;
-    makeCall("fetchCourseNumbrList", data)
+    data.school = school;
+    makeCall("fetchCourseNumberList", data)
         .success(function (response, error) {
-            var data = JSON.parse(response);
+            var json = JSON.parse(response);
 
-            var numberList = $("#numberList");
+            var numberList = $("#search_number_list");
 
-            for (var obj in data) {
+            var rateNumberList = $("#rate_number_list");
 
-                console.log(obj.Number);
+            for (var key in json) {
+
+                var number = json[key].Number;
 
                 var option = optionTag.clone();
-                option.attr("value", obj.Number);
-                option.html(obj.Number);
+                option.attr("value", number);
+                option.html(number);
                 numberList.append(option);
+
+                rateNumberList.append(option.clone());
             }
         });
 }
@@ -108,7 +135,7 @@ function showAvaiTutor() {
 
 
     //TODO: get student availabilities and add to data
-
+    data.studentAvai = [];
 
     makeCall("showAvaiTutor", data)
         .success(function (response, error) {
@@ -167,17 +194,16 @@ function rateTutor() {
     var courseShool = $("#rate_school_list").val();
     var courseNumber = $("#rate_number_list").val();
     var tutorName = $("#in_tutor_name").val();
-    var descEval = $("#in_des_eval");
-    var numEval = null;
+    var descEval = $("#in_desc_eval").val();
+    var numEval = 4;
 
-
-    // TODO: need to validate input here
+    // TODO: need to validate input here, check if empty
     if (courseShool == null || courseNumber == null) {
 
     }
 
     if (tutorName == null) {
-        $("#in_tutor_name").attr("class", "error");
+        tutorName.attr("class", "error");
         $("#in_tutor_name_error").show();
 
     }
@@ -197,6 +223,9 @@ function rateTutor() {
     data.descEval = descEval;
     data.numEval = numEval;
 
+
+    // check if this student had this tutor this semester
+
     makeCall("rateTutor", data)
         .success(function (response, error) {
 
@@ -204,9 +233,13 @@ function rateTutor() {
             $("#in_tutor_name_error").hide();
 
             //TODO: notify user that rating was submitted before going back to the main menu
-            window.location = "/main-menu.php";
+
+            console.log(response);
+//            window.location = "/main-menu.php";
         }).error(function () {
+
             //TODO: do something here
+
         });
 
 }
