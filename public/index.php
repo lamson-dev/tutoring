@@ -17,7 +17,7 @@ include "templates/header.php";
                         <span class="prefix"><i class="fi-torso-female"></i></span>
                     </div>
                     <div class="small-10  columns">
-                        <input id="gtid" type="text" placeholder="GT-ID" value="902910000">
+                        <input id="gtid" type="text" maxlength="9" placeholder="GT-ID" value="111111111">
                     </div>
                 </div>
                 <div class="row collapse">
@@ -25,7 +25,7 @@ include "templates/header.php";
                         <span class="prefix"><i class="fi-lock"></i></span>
                     </div>
                     <div class="small-10 columns ">
-                        <input id="password" type="password" placeholder="Password">
+                        <input id="password" type="password" placeholder="Password" value="1111">
                     </div>
                 </div>
             </form>

@@ -40,8 +40,8 @@ function call($action, $json)
         case "showTutorSchedule":
             showTutorSchedule();
             break;
-        case "fetchSchoolList":
-            fetchSchoolList();
+        case "fetchCourseSchoolList":
+            fetchCourseSchoolList();
             break;
         case "fetchCourseNumberList":
             fetchCourseNumberList($data->school);
@@ -194,7 +194,7 @@ function fetchTutorNameListByCourse($data)
 
 }
 
-function fetchSchoolList()
+function fetchCourseSchoolList()
 {
     $dbQuery = sprintf("SELECT DISTINCT School
                         FROM tb_Course
@@ -220,7 +220,7 @@ function getCurrentUserId()
 {
 
     if (DEBUG) {
-        return "902333333";
+        return "111111111";
     }
 
     if (isset($_SESSION['gtid'])) {

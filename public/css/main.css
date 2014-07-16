@@ -343,9 +343,20 @@ textarea {
     position: relative;
     margin-top: 18px;
     margin-bottom: -12px;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .calendar .event.blue {
     background: #3a87ad;
+}
+
+.calendar .event.gray {
+    background: lightgray;
 }
 .calendar .event.yellow {
     background: #f9c846;

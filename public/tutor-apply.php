@@ -22,7 +22,7 @@ include "templates/header.php"
 
             <div class="large-4 columns end">
                 <label>Last Name
-                    <input id="in_app_lname"  type="text" placeholder="Smith"/>
+                    <input id="in_app_lname" type="text" placeholder="Smith"/>
                 </label>
             </div>
         </div>
@@ -30,13 +30,13 @@ include "templates/header.php"
         <div class="row">
             <div class="large-4 columns">
                 <label>Email
-                    <input id="in_app_email"  type="text" placeholder="john@gatech.edu"/>
+                    <input id="in_app_email" type="text" placeholder="john@gatech.edu"/>
                 </label>
             </div>
 
             <div class="large-4 columns end">
                 <label>Phone Number
-                    <input id="in_app_phone"  type="text" placeholder="2065421523"/>
+                    <input id="in_app_phone" type="text" placeholder="2065421523"/>
                 </label>
             </div>
         </div>
@@ -44,7 +44,7 @@ include "templates/header.php"
         <div class="row">
             <div class="large-2 columns">
                 <label>GPA
-                    <input id="in_app_gpa"  type="text" placeholder="2.0"/>
+                    <input id="in_app_gpa" type="text" placeholder="2.0"/>
                 </label>
             </div>
 
@@ -63,116 +63,10 @@ include "templates/header.php"
 
     <fieldset class="row">
         <legend>Available Days and Time</legend>
-        <div class="row calendar">
-            <div class=" large-10 columns">
-
-                <table class="calendar">
-
-                    <thead>
-                    <tr>
-                        <th width="300">Mon</th>
-                        <th width="300">Tue</th>
-                        <th width="300">Wed</th>
-                        <th width="300">Thu</th>
-                        <th width="300">Fri</th>
-                        <th width="300">Sat</th>
-                        <th width="300">Sun</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr>
-                        <td class="active">
-                            <div>
-                                <span class="event blue">9am</span>
-                                <span class="event blue">10am</span>
-                                <span class="event green">11am</span>
-                                <span class="event green">12pm</span>
-                                <span class="event blue">1pm</span>
-                                <span class="event blue">2pm</span>
-                                <span class="event blue">3pm</span>
-                                <span class="event blue">4pm</span>
-                            </div>
-                        </td>
-                        <td class="active">
-                            <div>
-                                <span class="event green">9am</span>
-                                <span class="event green">10am</span>
-                                <span class="event blue">11am</span>
-                                <span class="event blue">12pm</span>
-                                <span class="event blue">1pm</span>
-                                <span class="event blue">2pm</span>
-                                <span class="event blue">3pm</span>
-                                <span class="event blue">4pm</span>
-                            </div>
-                        </td>
-                        <td class="active">
-                            <div>
-                                <span class="event blue">9am</span>
-                                <span class="event blue">10am</span>
-                                <span class="event blue">11am</span>
-                                <span class="event blue">12pm</span>
-                                <span class="event green">1pm</span>
-                                <span class="event green">2pm</span>
-                                <span class="event green">3pm</span>
-                                <span class="event green">4pm</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <span class="event blue">9am</span>
-                                <span class="event green">10am</span>
-                                <span class="event green">11am</span>
-                                <span class="event blue">12pm</span>
-                                <span class="event blue">1pm</span>
-                                <span class="event blue">2pm</span>
-                                <span class="event blue">3pm</span>
-                                <span class="event blue">4pm</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <span class="event blue">9am</span>
-                                <span class="event blue">10am</span>
-                                <span class="event blue">11am</span>
-                                <span class="event blue">12pm</span>
-                                <span class="event green">1pm</span>
-                                <span class="event green">2pm</span>
-                                <span class="event blue">3pm</span>
-                                <span class="event blue">4pm</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <span class="event green">9am</span>
-                                <span class="event green">10am</span>
-                                <span class="event blue">11am</span>
-                                <span class="event blue">12pm</span>
-                                <span class="event blue">1pm</span>
-                                <span class="event blue">2pm</span>
-                                <span class="event green">3pm</span>
-                                <span class="event green">4pm</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div>
-                                <span class="event blue">9am</span>
-                                <span class="event blue">10am</span>
-                                <span class="event green">11am</span>
-                                <span class="event green">12pm</span>
-                                <span class="event green">1pm</span>
-                                <span class="event blue">2pm</span>
-                                <span class="event blue">3pm</span>
-                                <span class="event blue">4pm</span>
-                            </div>
-                        </td>
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
+        <div id="tutor_calendar">
+            <?php
+            include "templates/calendar.html";
+            ?>
         </div>
 
     </fieldset>
@@ -180,7 +74,6 @@ include "templates/header.php"
     <div class="row">
         <a href="main-menu.php" id="btn_submit_app" class="button small radius">Submit Application</a>
     </div>
-
 
 
 <?php
