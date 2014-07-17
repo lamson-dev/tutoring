@@ -36,6 +36,11 @@ function error(message) {
     alert("Error: " + message);
 }
 
+// Should work for most cases
+function uniqueId() {
+    return Math.round(new Date().getTime() + (Math.random() * 100));
+}
+
 function getAvaiTimeDataFromCal(calendarId) {
 
     var avaiTime = [];

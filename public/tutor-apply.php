@@ -44,7 +44,7 @@ include "templates/header.php"
     <div class="row">
         <div class="large-2 columns">
             <label>GPA
-                <input id="in_app_gpa" type="text" placeholder="2.0"/>
+                <input id="in_app_gpa" type="text" placeholder="2.0" maxlength="4"/>
             </label>
         </div>
 

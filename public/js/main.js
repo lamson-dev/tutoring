@@ -13,7 +13,7 @@ $(document).ready(function () {
 
         $('#student_search_course .number_list').find('option').remove().end();
 
-        fetchCourseNumberList(courseSchoolSelected);
+        fetchCourseNumberList(courseSchoolSelected, "#student_search_course");
 
     });
 
@@ -23,7 +23,7 @@ $(document).ready(function () {
         $('#student_rate_course .number_list').find('option').remove().end();
         $('#rate_tutor_name_list').find('option').remove().end();
 
-        fetchCourseNumberList(courseSchoolSelected);
+        fetchCourseNumberList(courseSchoolSelected, "#student_rate_course");
     });
 
     $("#student_rate_course .number_list").change(function () {
@@ -39,7 +39,7 @@ $(document).ready(function () {
 
         $('#tutor_course .number_list').find('option').remove().end();
 
-        fetchCourseNumberList(courseSchoolSelected);
+        fetchCourseNumberList(courseSchoolSelected, "#tutor_course");
 
     });
 
@@ -73,14 +73,17 @@ function addMoreCourse() {
     var tutorCourse = $("#tutor_course");
 
     var div = divTag.clone();
+
+
     div.append(tutorCourse.html());
+
+    div.attr("id", uniqueId());
     div.attr("class", "row");
 
+    div.find(".number_list").find('option').remove().end();
     div.find(".school_list").change(function () {
 
-//        $('#tutor_course .number_list').find('option').remove().end();
-
-        fetchCourseNumberList($(this).val());
+        fetchCourseNumberList($(this).val(), "#" + div.attr("id"));
 
     });
 
@@ -149,14 +152,14 @@ function fetchCourseSchoolList(courseSelectorId) {
 }
 
 
-function fetchCourseNumberList(school) {
+function fetchCourseNumberList(school, courseSelectorId) {
     var data = {};
     data.school = school;
     makeCall("fetchCourseNumberList", data)
         .success(function (response, error) {
             var json = JSON.parse(response);
 
-            var numberList = $(".number_list");
+            var numberList = $(courseSelectorId + " .number_list");
 
             numberList.append("<option selected disabled hidden value=''>- Number -</option>");
 
@@ -194,7 +197,6 @@ function showAvaiTutor() {
             console.log(JSON.stringify(response));
 
 //            $("#avai_tutor").show();
-
         }).error(function () {
             //TODO: do something here
         });
@@ -220,6 +222,21 @@ function submitTutorApp() {
     }
 
 
+    var schools = $("#course_list .school_list");
+    var numbers = $("#course_list .number_list");
+
+    var i = 0;
+    schools.each(function() {
+        courses.push($(this).val());
+    });
+
+    numbers.each(function() {
+        courses[i] = courses[i] + " " + $(this).val();
+//        console.log(courses[i]);
+        ++i;
+    });
+
+
     var data = {};
     data.tutorId = tutorId;
     data.firstName = firstName;
@@ -231,16 +248,15 @@ function submitTutorApp() {
     data.courses = courses;
     data.avai = getAvaiTimeDataFromCal("#tutor_calendar");
 
-    //TODO: get courses want to teach
-
+    console.log(JSON.stringify(data));
 
     makeCall("submitTutorApp", data)
         .success(function (response, error) {
 
             alert("Tutor Application Submitted");
             window.location = "/main-menu.php";
-        }).error(function () {
-            //TODO: do something here
+        }).error(function (message) {
+            error(message);
         });
 
 }
