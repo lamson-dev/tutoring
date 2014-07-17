@@ -6,10 +6,10 @@ include "templates/header.php"
         <legend>Academic Year 2014</legend>
 
         <div class="row">
-            <div class="large-4 columns">
-                <input id="sem_fall" type="checkbox"><label for="sem_fall">Fall</label>
-                <input id="sem_spring" type="checkbox"><label for="sem_spring">Spring</label>
-                <input id="sem_summer" type="checkbox"><label for="sem_summer">Summer</label>
+            <div id="summary1_checkboxes" class="large-4 columns">
+                <input id="sem_fall" type="checkbox" value="Fall"><label for="sem_fall">Fall</label>
+                <input id="sem_spring" type="checkbox" value="Spring"><label for="sem_spring">Spring</label>
+                <input id="sem_summer" type="checkbox" value="Summer"><label for="sem_summer">Summer</label>
             </div>
 
             <a href="#" id="btn_show_summary1" class="button small radius">Show Summary</a>

@@ -183,20 +183,28 @@ function fetchCourseNumberList(school, courseSelectorId) {
 }
 
 function fetchAdminSummary1() {
-    var semFall = $("#sem_fall").is(":checked");
-    var semSpring = $("#sem_spring").is(":checked");
-    var semSummer = $("#sem_summer").is(":checked");
+
+    var selected = [];
+    $('#summary1_checkboxes input:checked').each(function() {
+        selected.push($(this).val());
+    });
+
+
+//    var semFall = $("#sem_fall").is(":checked");
+//    var semSpring = $("#sem_spring").is(":checked");
+//    var semSummer = $("#sem_summer").is(":checked");
 
     var data = {};
-    data.semFall = semFall;
-    data.semSpring = semSpring;
-    data.semSummer = semSummer;
+    data.semesters = selected;
+//    data.semFall = semFall;
+//    data.semSpring = semSpring;
+//    data.semSummer = semSummer;
 
     makeCall("fetchAdminSummary1", data)
         .success(function (response, error) {
 
             //TODO: populate summary table
-            console.log(JSON.stringify(response));
+            console.log(response);
 
 //   NEED TO CALCULATE TOTAL FOR TABLE FROM DATA RETURNED
 
@@ -218,7 +226,7 @@ function showAvaiTutor() {
         .success(function (response, error) {
 
             //TODO: populate available tutors to UI
-            console.log(JSON.stringify(response));
+            console.log(response);
 
 //            $("#avai_tutor").show();
         }).error(function () {

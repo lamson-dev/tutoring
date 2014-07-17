@@ -8,7 +8,7 @@ include "templates/header.php"
     <div class="row">
         <div class="large-4 columns end">
             <label>GaTech ID
-                <input id="in_app_gtid" type="text" placeholder="902910000"/>
+                <input id="in_app_gtid" type="text" placeholder="902910000" maxlength="9"/>
             </label>
         </div>
     </div>
@@ -16,13 +16,13 @@ include "templates/header.php"
     <div class="row">
         <div class="large-4 columns">
             <label>First Name
-                <input id="in_app_fname" type="text" placeholder="John"/>
+                <input id="in_app_fname" type="text" placeholder="John" maxlength="50"/>
             </label>
         </div>
 
         <div class="large-4 columns end">
             <label>Last Name
-                <input id="in_app_lname" type="text" placeholder="Smith"/>
+                <input id="in_app_lname" type="text" placeholder="Smith" maxlength="50"/>
             </label>
         </div>
     </div>
@@ -30,13 +30,13 @@ include "templates/header.php"
     <div class="row">
         <div class="large-4 columns">
             <label>Email
-                <input id="in_app_email" type="text" placeholder="john@gatech.edu"/>
+                <input id="in_app_email" type="text" placeholder="john@gatech.edu" maxlength="50"/>
             </label>
         </div>
 
         <div class="large-4 columns end">
             <label>Phone Number
-                <input id="in_app_phone" type="text" placeholder="2065421523"/>
+                <input id="in_app_phone" type="text" placeholder="2065421523" maxlength="10"/>
             </label>
         </div>
     </div>
@@ -60,13 +60,15 @@ include "templates/header.php"
     <legend>Courses for Tutoring</legend>
 
     <div id="course_list">
+
         <div id="tutor_course" class="row">
             <?php
             include "templates/course-selector.html";
             ?>
         </div>
     </div>
-
+    
+    <!--        dynamically add more course to course_list via js-->
     <button id="btn_add_course" class="button tiny radius">Add More Course</button>
 
 </fieldset>

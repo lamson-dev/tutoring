@@ -243,83 +243,20 @@ function getCurrentSemester()
 function fetchAdminSummary1($data)
 {
 
-	if( $data-> semFall == "true" && $data-> semSpring == "true" && $data-> semSummer == "true")
-	{
-		$dbQuery = sprintf("SELECT HireSemester, 
-			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
-			COUNT(DISTINCT HireTutGTID) as NumTutors, 
-			COUNT(DISTINCT HireStudGTID) as NumStudents
-                        FROM tb_Hires
-			WHERE HireSemester IN('Fall','Spring','Summer') 
+    $sems = $data->semesters;
+    for ($i = 0; $i < count($sems); ++$i) {
+        $sems[$i] = "'" . $sems[$i] . "'";
+    }
+
+    $semsString = implode(", ", $sems);
+
+    $dbQuery = sprintf("SELECT HireSemester, CONCAT(HireSchool,' ',HireNumber) as CourseName,
+                            COUNT(DISTINCT HireTutGTID) as NumTutors,
+                            COUNT(DISTINCT HireStudGTID) as NumStudents
+                            FROM tb_Hires
+                        WHERE HireSemester IN ($semsString)
                         GROUP BY HireSemester, CourseName
-                        ORDER BY HireSemester,CourseName;");
-	}
-	elseif( $data-> semFall == "true" && $data-> semSpring == "true" )
-	{
-		$dbQuery = sprintf("SELECT HireSemester, 
-			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
-			COUNT(DISTINCT HireTutGTID) as NumTutors, 
-			COUNT(DISTINCT HireStudGTID) as NumStudents
-                        FROM tb_Hires
-			WHERE HireSemester IN('Fall','Spring') 
-                        GROUP BY HireSemester, CourseName
-                        ORDER BY HireSemester,CourseName;");
-	}	
-	elseif( $data-> semFall == "true" & $data-> semSummer == "true" )
-	{
-		$dbQuery = sprintf("SELECT HireSemester, 
-			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
-			COUNT(DISTINCT HireTutGTID) as NumTutors, 
-			COUNT(DISTINCT HireStudGTID) as NumStudents
-                        FROM tb_Hires
-			WHERE HireSemester IN('Fall','Summer') 
-                        GROUP BY HireSemester, CourseName
-                        ORDER BY HireSemester,CourseName;");
-	}	
-	elseif( $data-> semSpring == "true" & $data-> semSummer == "true" )
-	{
-		$dbQuery = sprintf("SELECT HireSemester, 
-			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
-			COUNT(DISTINCT HireTutGTID) as NumTutors, 
-			COUNT(DISTINCT HireStudGTID) as NumStudents
-                        FROM tb_Hires
-			WHERE HireSemester IN('Spring','Summer') 
-                        GROUP BY HireSemester, CourseName
-                        ORDER BY HireSemester,CourseName;");
-	}	
-	elseif( $data-> semSpring == "true" )
-	{
-		$dbQuery = sprintf("SELECT HireSemester, 
-			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
-			COUNT(DISTINCT HireTutGTID) as NumTutors, 
-			COUNT(DISTINCT HireStudGTID) as NumStudents
-                        FROM tb_Hires
-			WHERE HireSemester IN('Spring') 
-                        GROUP BY HireSemester, CourseName
-                        ORDER BY HireSemester,CourseName;");
-	}	
-	elseif( $data-> semSummer == "true" )
-	{
-		$dbQuery = sprintf("SELECT HireSemester, 
-			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
-			COUNT(DISTINCT HireTutGTID) as NumTutors, 
-			COUNT(DISTINCT HireStudGTID) as NumStudents
-                        FROM tb_Hires
-			WHERE HireSemester IN('Summer') 
-                        GROUP BY HireSemester, CourseName
-                        ORDER BY HireSemester,CourseName;");
-	}	
-	elseif( $data-> semFall == "true" )
-	{
-		$dbQuery = sprintf("SELECT HireSemester, 
-			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
-			COUNT(DISTINCT HireTutGTID) as NumTutors, 
-			COUNT(DISTINCT HireStudGTID) as NumStudents
-                        FROM tb_Hires
-			WHERE HireSemester IN('Fall') 
-                        GROUP BY HireSemester, CourseName
-                        ORDER BY HireSemester,CourseName;");
-	}
+                        ORDER BY HireSemester, CourseName;");
 
     $result = getDBResultsArray($dbQuery);
     echo json_encode($result);
