@@ -19,11 +19,26 @@ function login() {
 
     makeCall("login", data)
         .success(function (response, error) {
+
+            alert("Logged In Successfully");
+
             window.location = "/main-menu.php";
         }).error(function (message) {
-            alert("Error: " + message);
+
+            error(message);
+
         });
 
+}
+
+function error(message) {
+    // TODO: make this better
+    alert("Error: " + message);
+}
+
+// Should work for most cases
+function uniqueId() {
+    return Math.round(new Date().getTime() + (Math.random() * 100));
 }
 
 function getAvaiTimeDataFromCal(calendarId) {

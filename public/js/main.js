@@ -8,32 +8,40 @@ $(document).ready(function () {
     // hacked, put this function in php files to run it on page loaded
     // fetchCourseSchoolList();
 
-    $("#search_school_list").change(function () {
-        courseSchoolSelected = $("#search_school_list").val();
+    $("#student_search_course .school_list").change(function () {
+        courseSchoolSelected = $(this).val();
 
-        $('#search_number_list').find('option').remove().end();
+        $('#student_search_course .number_list').find('option').remove().end();
 
-        fetchCourseNumberList(courseSchoolSelected);
+        fetchCourseNumberList(courseSchoolSelected, "#student_search_course");
 
     });
 
-    $("#rate_school_list").change(function () {
-        courseSchoolSelected = $("#rate_school_list").val();
+    $("#student_rate_course .school_list").change(function () {
+        courseSchoolSelected = $(this).val();
 
-        $('#rate_number_list').find('option').remove().end();
+        $('#student_rate_course .number_list').find('option').remove().end();
         $('#rate_tutor_name_list').find('option').remove().end();
 
-        fetchCourseNumberList(courseSchoolSelected);
+        fetchCourseNumberList(courseSchoolSelected, "#student_rate_course");
     });
 
-    $("#rate_number_list").change(function () {
-        courseNumberSelected = $("#rate_number_list").val();
+    $("#student_rate_course .number_list").change(function () {
+        courseNumberSelected = $(this).val();
 
         $('#rate_tutor_name_list').find('option').remove().end();
 
         fetchTutorNameListByCourse(courseSchoolSelected, courseNumberSelected);
     });
 
+    $("#tutor_course .school_list").change(function () {
+        courseSchoolSelected = $(this).val();
+
+        $('#tutor_course .number_list').find('option').remove().end();
+
+        fetchCourseNumberList(courseSchoolSelected, "#tutor_course");
+
+    });
 
     $("#btn_login").click(login);
     $("#btn_submit_student_eval").click(submitStudentEval);
@@ -56,9 +64,32 @@ $(document).ready(function () {
         $("#in_app_gtid").html(getCurrentUserId());
     });
 
+    $("#btn_add_course").click(addMoreCourse);
+
     $(".event").click(toggleTimeSlot);
 
 });
+
+function addMoreCourse() {
+    var tutorCourse = $("#tutor_course");
+
+    var div = divTag.clone();
+
+
+    div.append(tutorCourse.html());
+
+    div.attr("id", uniqueId());
+    div.attr("class", "row");
+
+    div.find(".number_list").find('option').remove().end();
+    div.find(".school_list").change(function () {
+
+        fetchCourseNumberList($(this).val(), "#" + div.attr("id"));
+
+    });
+
+    $("#course_list").append(div);
+}
 
 function fetchTutorNameListByCourse(school, number) {
 
@@ -93,17 +124,15 @@ function fetchTutorNameListByCourse(school, number) {
         });
 }
 
-function fetchCourseSchoolList() {
+function fetchCourseSchoolList(courseSelectorId) {
     makeCall("fetchCourseSchoolList")
         .success(function (response, error) {
 
             var json = JSON.parse(response);
 
-            var schoolList = $("#search_school_list");
-            var rateSchoolList = $("#rate_school_list");
+            var schoolList = $(courseSelectorId + " .school_list");
 
             schoolList.append("<option selected disabled hidden value=''>- Department -</option>");
-            rateSchoolList.append("<option selected disabled hidden value=''>- Department -</option>");
 
             for (var key in json) {
 
@@ -118,26 +147,22 @@ function fetchCourseSchoolList() {
                 option.html(school);
                 schoolList.append(option);
 
-                rateSchoolList.append(option.clone());
             }
-
 
         });
 }
 
 
-function fetchCourseNumberList(school) {
+function fetchCourseNumberList(school, courseSelectorId) {
     var data = {};
     data.school = school;
     makeCall("fetchCourseNumberList", data)
         .success(function (response, error) {
             var json = JSON.parse(response);
 
-            var numberList = $("#search_number_list");
+            var numberList = $(courseSelectorId + " .number_list");
 
-            var rateNumberList = $("#rate_number_list");
-
-            rateNumberList.append("<option selected disabled hidden value=''>- Number -</option>");
+            numberList.append("<option selected disabled hidden value=''>- Number -</option>");
 
             for (var key in json) {
 
@@ -152,10 +177,7 @@ function fetchCourseNumberList(school) {
                 option.html(number);
                 numberList.append(option);
 
-                rateNumberList.append(option.clone());
-
             }
-
 
         });
 }
@@ -199,7 +221,6 @@ function showAvaiTutor() {
             console.log(JSON.stringify(response));
 
 //            $("#avai_tutor").show();
-
         }).error(function () {
             //TODO: do something here
         });
@@ -213,9 +234,32 @@ function submitTutorApp() {
     var email = $("#in_app_email").val();
     var phone = $("#in_app_phone").val();
     var gpa = $("#in_app_gpa").val();
-    var isGraduate = null;
+    var studentType = $('input[name="student_type"]:checked').val();
+
     var courses = [];
-    var avai = [];
+
+    if (tutorId == '' || firstName == '' || lastName == ''
+        || email == '' || phone == '' || gpa == ''
+        || studentType == null) {
+        alert("Please fill in all the requirements.");
+        return;
+    }
+
+
+    var schools = $("#course_list .school_list");
+    var numbers = $("#course_list .number_list");
+
+    var i = 0;
+    schools.each(function() {
+        courses.push($(this).val());
+    });
+
+    numbers.each(function() {
+        courses[i] = courses[i] + " " + $(this).val();
+//        console.log(courses[i]);
+        ++i;
+    });
+
 
     var data = {};
     data.tutorId = tutorId;
@@ -224,22 +268,19 @@ function submitTutorApp() {
     data.email = email;
     data.phone = phone;
     data.gpa = gpa;
-    data.isGraduate = isGraduate;
+    data.isGraduate = (studentType == 'grad') ? true : false;
     data.courses = courses;
-    data.avai = avai;
+    data.avai = getAvaiTimeDataFromCal("#tutor_calendar");
 
-    //TODO: get courses want to teach
-
-    //TODO: get available times
-
+    console.log(JSON.stringify(data));
 
     makeCall("submitTutorApp", data)
         .success(function (response, error) {
 
-            //TODO: notify user that app was submitted before going back to the main menu
+            alert("Tutor Application Submitted");
             window.location = "/main-menu.php";
-        }).error(function () {
-            //TODO: do something here
+        }).error(function (message) {
+            error(message);
         });
 
 }
@@ -247,8 +288,8 @@ function submitTutorApp() {
 function submitStudentEval() {
 
 
-    var courseShool = $("#rate_school_list").val();
-    var courseNumber = $("#rate_number_list").val();
+    var courseShool = $("#rate_course_selector select").val();
+    var courseNumber = $("#rate_course_selector select").val();
     var tutorId = $("#rate_tutor_name_list").val();
     var descEval = $("#rate_desc_eval").val();
     var numEval = $('input[name="rating"]:checked').val();
