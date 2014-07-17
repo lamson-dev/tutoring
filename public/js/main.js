@@ -40,6 +40,7 @@ $(document).ready(function () {
     $("#btn_submit_prof_eval").click(submitProfEval);
     $("#btn_show_avai_tutor").click(showAvaiTutor);
     $("#btn_submit_app").click(submitTutorApp);
+    $("#btn_show_summary1").click(fetchAdminSummary1);
 
 
     $("#btn_schedule_tutor").click(function () {
@@ -156,6 +157,29 @@ function fetchCourseNumberList(school) {
             }
 
 
+        });
+}
+
+function fetchAdminSummary1() {
+    var semFall = $("#sem_fall").is(":checked");
+    var semSpring = $("#sem_spring").is(":checked");
+    var semSummer = $("#sem_summer").is(":checked");
+
+    var data = {};
+    data.semFall = semFall;
+    data.semSpring = semSpring;
+    data.semSummer = semSummer;
+
+    makeCall("fetchAdminSummary1", data)
+        .success(function (response, error) {
+
+            //TODO: populate summary table
+            console.log(JSON.stringify(response));
+
+//            $("#avai_tutor").show();
+
+        }).error(function () {
+            //TODO: do something here
         });
 }
 

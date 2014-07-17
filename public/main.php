@@ -49,6 +49,9 @@ function call($action, $json)
         case "fetchTutorNameListByCourse":
             fetchTutorNameListByCourse($data);
             break;
+        case "fetchAdminSummary1":
+            fetchAdminSummary1($data);
+            break;
         case "getCurrentUserId":
             getCurrentUserId();
             break;
@@ -235,6 +238,53 @@ function getCurrentSemester()
 {
     return "Summer";
 //    TODO: maybe returning semester based on the month
+}
+
+function fetchAdminSummary1($data)
+{
+	$value =  null;
+
+	if( $data-> semFall == "true" )
+	{
+	}
+	elseif( $data-> semSpring == "true" )
+	{
+	}	
+	elseif( $data-> semSummer == "true" )
+	{
+	}	
+	elseif( $data-> semFall == "true" && $data-> semSpring == "true" )
+	{
+	}	
+	elseif( $data-> semFall == "true" && $data-> semSummer == "true" )
+	{
+	}	
+	elseif( $data-> semSpring == "true" && $data-> semSummer == "true" )
+	{
+	}	
+	else
+	{
+		$value = "Fall,"." Spring, "."Summer";
+	}
+	$value = "Fall";
+	$value = $value . "Spring";
+	$value = $value . "Summer";
+
+//		$value = "Fall,"." Spring, "."Summer";
+    echo json_encode($value);
+
+	$dbQuery = sprintf("SELECT HireSemester, 
+			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
+			COUNT(DISTINCT HireTutGTID) as NumTutors, 
+			COUNT(DISTINCT HireStudGTID) as NumStudents
+                        FROM tb_Hires
+			WHERE HireSemester IN('%s') 
+                        GROUP BY HireSemester, CourseName
+                        ORDER BY HireSemester,CourseName;",
+        mysql_real_escape_string($value));
+
+    $result = getDBResultsArray($dbQuery);
+   // echo json_encode($result);
 }
 
 ?>
