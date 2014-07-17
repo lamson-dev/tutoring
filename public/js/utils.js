@@ -19,11 +19,21 @@ function login() {
 
     makeCall("login", data)
         .success(function (response, error) {
+
+            alert("Logged In Successfully");
+
             window.location = "/main-menu.php";
         }).error(function (message) {
-            alert("Error: " + message);
+
+            error(message);
+
         });
 
+}
+
+function error(message) {
+    // TODO: make this better
+    alert("Error: " + message);
 }
 
 function getAvaiTimeDataFromCal(calendarId) {

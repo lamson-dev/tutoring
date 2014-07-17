@@ -4,8 +4,8 @@ include "templates/header.php"
 
     <fieldset class="row">
         <legend>Student</legend>
-        <a href="search-tutor.php" id="btn_search_tutor" class="button small radius">Search/Schedule Tutor</a>
-        <a href="rate-tutor.php" id="btn_rate_tutor" class="button small radius">Rate a Tutor</a>
+        <a href="student-search-tutor.php" id="btn_search_tutor" class="button small radius">Search/Schedule Tutor</a>
+        <a href="student-rate-tutor.php" id="btn_rate_tutor" class="button small radius">Rate a Tutor</a>
 
     </fieldset>
 
@@ -27,7 +27,6 @@ include "templates/header.php"
         <a href="admin-summary1.php" id="btn_summary_one" class="button small radius">Summary #1</a>
         <a href="admin-summary2.php" id="btn_summary_two" class="button small radius">Summary #2</a>
     </fieldset>
-
 
 
 <?php

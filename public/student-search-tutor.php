@@ -1,25 +1,8 @@
 <?php
 include "templates/header.php"
 ?>
-<div class="row">
-    <div class="medium-2 columns">
-        <label>
-            <select id="search_school_list">
-                <option selected disabled hidden value="">- Department -</option>
-            </select>
-        </label>
-
-    </div>
-
-    <div class="medium-2 columns end">
-        <label>
-            <select id="search_number_list">
-                <option selected disabled hidden value="">- Number -</option>
-            </select>
-        </label>
-
-    </div>
-
+<div id="student_search_course" class="row">
+    <?php include "templates/course-selector.html"; ?>
 </div>
 
 <div id="student_calendar">
@@ -82,6 +65,6 @@ include "templates/footer.php"
 
 <script>
     $(document).ready(function () {
-        fetchCourseSchoolList();
+        fetchCourseSchoolList("#student_search_course");
     });
 </script>
