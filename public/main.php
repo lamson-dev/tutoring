@@ -242,49 +242,87 @@ function getCurrentSemester()
 
 function fetchAdminSummary1($data)
 {
-	$value =  null;
 
-	if( $data-> semFall == "true" )
+	if( $data-> semFall == "true" && $data-> semSpring == "true" && $data-> semSummer == "true")
 	{
-	}
-	elseif( $data-> semSpring == "true" )
-	{
-	}	
-	elseif( $data-> semSummer == "true" )
-	{
-	}	
-	elseif( $data-> semFall == "true" && $data-> semSpring == "true" )
-	{
-	}	
-	elseif( $data-> semFall == "true" && $data-> semSummer == "true" )
-	{
-	}	
-	elseif( $data-> semSpring == "true" && $data-> semSummer == "true" )
-	{
-	}	
-	else
-	{
-		$value = "Fall,"." Spring, "."Summer";
-	}
-	$value = "Fall";
-	$value = $value . "Spring";
-	$value = $value . "Summer";
-
-//		$value = "Fall,"." Spring, "."Summer";
-    echo json_encode($value);
-
-	$dbQuery = sprintf("SELECT HireSemester, 
+		$dbQuery = sprintf("SELECT HireSemester, 
 			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
 			COUNT(DISTINCT HireTutGTID) as NumTutors, 
 			COUNT(DISTINCT HireStudGTID) as NumStudents
                         FROM tb_Hires
-			WHERE HireSemester IN('%s') 
+			WHERE HireSemester IN('Fall','Spring','Summer') 
                         GROUP BY HireSemester, CourseName
-                        ORDER BY HireSemester,CourseName;",
-        mysql_real_escape_string($value));
+                        ORDER BY HireSemester,CourseName;");
+	}
+	elseif( $data-> semFall == "true" && $data-> semSpring == "true" )
+	{
+		$dbQuery = sprintf("SELECT HireSemester, 
+			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
+			COUNT(DISTINCT HireTutGTID) as NumTutors, 
+			COUNT(DISTINCT HireStudGTID) as NumStudents
+                        FROM tb_Hires
+			WHERE HireSemester IN('Fall','Spring') 
+                        GROUP BY HireSemester, CourseName
+                        ORDER BY HireSemester,CourseName;");
+	}	
+	elseif( $data-> semFall == "true" & $data-> semSummer == "true" )
+	{
+		$dbQuery = sprintf("SELECT HireSemester, 
+			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
+			COUNT(DISTINCT HireTutGTID) as NumTutors, 
+			COUNT(DISTINCT HireStudGTID) as NumStudents
+                        FROM tb_Hires
+			WHERE HireSemester IN('Fall','Summer') 
+                        GROUP BY HireSemester, CourseName
+                        ORDER BY HireSemester,CourseName;");
+	}	
+	elseif( $data-> semSpring == "true" & $data-> semSummer == "true" )
+	{
+		$dbQuery = sprintf("SELECT HireSemester, 
+			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
+			COUNT(DISTINCT HireTutGTID) as NumTutors, 
+			COUNT(DISTINCT HireStudGTID) as NumStudents
+                        FROM tb_Hires
+			WHERE HireSemester IN('Spring','Summer') 
+                        GROUP BY HireSemester, CourseName
+                        ORDER BY HireSemester,CourseName;");
+	}	
+	elseif( $data-> semSpring == "true" )
+	{
+		$dbQuery = sprintf("SELECT HireSemester, 
+			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
+			COUNT(DISTINCT HireTutGTID) as NumTutors, 
+			COUNT(DISTINCT HireStudGTID) as NumStudents
+                        FROM tb_Hires
+			WHERE HireSemester IN('Spring') 
+                        GROUP BY HireSemester, CourseName
+                        ORDER BY HireSemester,CourseName;");
+	}	
+	elseif( $data-> semSummer == "true" )
+	{
+		$dbQuery = sprintf("SELECT HireSemester, 
+			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
+			COUNT(DISTINCT HireTutGTID) as NumTutors, 
+			COUNT(DISTINCT HireStudGTID) as NumStudents
+                        FROM tb_Hires
+			WHERE HireSemester IN('Summer') 
+                        GROUP BY HireSemester, CourseName
+                        ORDER BY HireSemester,CourseName;");
+	}	
+	elseif( $data-> semFall == "true" )
+	{
+		$dbQuery = sprintf("SELECT HireSemester, 
+			CONCAT(HireSchool,' ',HireNumber) as CourseName, 
+			COUNT(DISTINCT HireTutGTID) as NumTutors, 
+			COUNT(DISTINCT HireStudGTID) as NumStudents
+                        FROM tb_Hires
+			WHERE HireSemester IN('Fall') 
+                        GROUP BY HireSemester, CourseName
+                        ORDER BY HireSemester,CourseName;");
+	}
 
     $result = getDBResultsArray($dbQuery);
-   // echo json_encode($result);
+    echo json_encode($result);
 }
 
 ?>

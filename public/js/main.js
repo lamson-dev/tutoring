@@ -176,7 +176,7 @@ function fetchAdminSummary1() {
             //TODO: populate summary table
             console.log(JSON.stringify(response));
 
-//            $("#avai_tutor").show();
+//   NEED TO CALCULATE TOTAL FOR TABLE FROM DATA RETURNED
 
         }).error(function () {
             //TODO: do something here
