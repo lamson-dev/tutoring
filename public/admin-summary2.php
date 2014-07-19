@@ -6,7 +6,7 @@ include "templates/header.php"
         <legend>Academic Year 2014</legend>
 
         <div class="row">
-            <div class="large-4 columns">
+            <div id="summary2_checkboxes" class="large-4 columns">
                 <input id="sem_fall2" type="checkbox"><label for="sem_fall2">Fall</label>
                 <input id="sem_spring2" type="checkbox"><label for="sem_spring2">Spring</label>
                 <input id="sem_summer2" type="checkbox"><label for="sem_summer2">Summer</label>

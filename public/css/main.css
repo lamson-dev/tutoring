@@ -365,6 +365,10 @@ textarea {
     background: #a7d85b;
 }
 
+.event label {
+    color: black;
+}
+
 /*  ======================================
 displaying for small
  ======================================*/
@@ -392,4 +396,8 @@ displaying for small
         width: 100%;
         display: block;
     }
+}
+
+#selected_course {
+    color: darkblue;
 }

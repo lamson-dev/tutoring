@@ -1,7 +1,7 @@
 var DEBUG = true;
 
-var courseSchoolSelected = "";
-var courseNumberSelected = "";
+var courseSchoolSelected = "CS";
+var courseNumberSelected = "2200";
 
 $(document).ready(function () {
 
@@ -43,53 +43,35 @@ $(document).ready(function () {
 
     });
 
+    // LOGIN
     $("#btn_login").click(login);
-    $("#btn_submit_student_eval").click(submitStudentEval);
-    $("#btn_submit_prof_eval").click(submitProfEval);
-    $("#btn_show_avai_tutor").click(showAvaiTutor);
-    $("#btn_submit_app").click(submitTutorApp);
-    $("#btn_show_summary1").click(fetchAdminSummary1);
 
-
-    $("#btn_schedule_tutor").click(function () {
-
-    });
-
+    // STUDENT
+    $("#btn_show_avai_tutor").click(fetchAvaiTutorWithRatingSummary());
+    $("#btn_schedule_tutor").click(showTutorScheduleToSelect);
+    $("#btn_schedule_selected_tutor").click(scheduleSelectedTutor);
     $("#btn_cancel").click(function () {
         $("#avai_tutor").hide();
     });
 
+    $("#btn_submit_student_eval").click(submitStudentEval);
 
-    $("#btn_tutor_apply").click(function () {
-        $("#in_app_gtid").html(getCurrentUserId());
-    });
-
+    // TUTOR
     $("#btn_add_course").click(addMoreCourse);
+    $("#btn_submit_app").click(submitTutorApp);
+    $("#btn_show_tutor_schedule").click(showTutorSchedule);
 
+    // PROFESSOR
+    $("#btn_submit_prof_eval").click(submitProfEval);
+
+    // ADMIN
+    $("#btn_show_summary1").click(fetchAdminSummary1);
+    $("#btn_show_summary2").click(fetchAdminSummary2);
+
+    // for the timeslot calendar picker
     $(".event").click(toggleTimeSlot);
 
 });
-
-function addMoreCourse() {
-    var tutorCourse = $("#tutor_course");
-
-    var div = divTag.clone();
-
-
-    div.append(tutorCourse.html());
-
-    div.attr("id", uniqueId());
-    div.attr("class", "row");
-
-    div.find(".number_list").find('option').remove().end();
-    div.find(".school_list").change(function () {
-
-        fetchCourseNumberList($(this).val(), "#" + div.attr("id"));
-
-    });
-
-    $("#course_list").append(div);
-}
 
 function fetchTutorNameListByCourse(school, number) {
 
@@ -185,52 +167,114 @@ function fetchCourseNumberList(school, courseSelectorId) {
 function fetchAdminSummary1() {
 
     var selected = [];
-    $('#summary1_checkboxes input:checked').each(function() {
+    $('#summary1_checkboxes input:checked').each(function () {
         selected.push($(this).val());
     });
 
-
-//    var semFall = $("#sem_fall").is(":checked");
-//    var semSpring = $("#sem_spring").is(":checked");
-//    var semSummer = $("#sem_summer").is(":checked");
+    if ($.isEmptyObject(selected)) {
+        alert("Please select a semester");
+        return;
+    }
 
     var data = {};
     data.semesters = selected;
-//    data.semFall = semFall;
-//    data.semSpring = semSpring;
-//    data.semSummer = semSummer;
 
     makeCall("fetchAdminSummary1", data)
         .success(function (response, error) {
 
-            //TODO: populate summary table
-            console.log(response);
+            //TODO: populate summary1 table
 
+            console.log(response);
 //   NEED TO CALCULATE TOTAL FOR TABLE FROM DATA RETURNED
 
-        }).error(function () {
-            //TODO: do something here
+
+        }).error(function (message) {
+            error(message);
         });
 }
 
-function showAvaiTutor() {
+function fetchAdminSummary2() {
+    var selected = [];
+    $('#summary2_checkboxes input:checked').each(function () {
+        selected.push($(this).val());
+    });
+
+    if ($.isEmptyObject(selected)) {
+        alert("Please select a semester");
+        return;
+    }
+
+    var data = {};
+    data.semesters = selected;
+
+    makeCall("fetchAdminSummary2", data)
+        .success(function (response, error) {
+
+            //TODO: populate summary2 table
+
+            console.log(response);
+
+
+        }).error(function (message) {
+            error(message);
+        });
+}
+
+function fetchAvaiTutorWithRatingSummary() {
     var courseShool = $("#search_school_list").val();
     var courseNumber = $("#search_number_list").val();
 
     var data = {};
     data.courseSchool = courseShool;
     data.courseNumber = courseNumber;
-    data.studentAvai = getAvaiTimeDataFromCal("#student_calendar");
+    data.studentAvai = getSelectedSlotsFromCal("#student_calendar");
 
-    makeCall("showAvaiTutor", data)
+    makeCall("fetchAvaiTutorWithRatingSummary", data)
         .success(function (response, error) {
 
-            //TODO: populate available tutors to UI
+            //TODO: populate available tutors with rating summary
             console.log(response);
 
 //            $("#avai_tutor").show();
-        }).error(function () {
-            //TODO: do something here
+        }).error(function (message) {
+            error(message)
+        });
+}
+
+function showTutorScheduleToSelect() {
+    // TODO: populate tutor schedule for student to select
+
+    var temp = [
+        {"tutorName": "Son Nguyen",
+            "tutorEmail": "son@gatech.edu",
+            "avai": [
+                {"weekday": "Mon",
+                    "times": ["8am", "9am"]
+                },
+                {"weekday": "Tue",
+                    "times": ["10am", "11am"]
+                }
+            ]
+        }
+    ];
+
+    temp.each(function() {
+
+    })
+}
+
+function scheduleSelectedTutor() {
+
+    var slot = getSelectedTutorSlot();
+    slot.school = courseSchoolSelected;
+    slot.number = courseNumberSelected;
+
+    makeCall("scheduleSelectedTutor", slot)
+        .success(function (response, error) {
+            alert("Tutor Scheduled!!!");
+            window.location = "/main-menu.php";
+        }).error(function (message) {
+            error(message);
         });
 }
 
@@ -253,21 +297,19 @@ function submitTutorApp() {
         return;
     }
 
-
     var schools = $("#course_list .school_list");
     var numbers = $("#course_list .number_list");
 
     var i = 0;
-    schools.each(function() {
+    schools.each(function () {
         courses.push($(this).val());
     });
 
-    numbers.each(function() {
+    numbers.each(function () {
         courses[i] = courses[i] + " " + $(this).val();
-//        console.log(courses[i]);
         ++i;
+        //        console.log(courses[i]);
     });
-
 
     var data = {};
     data.tutorId = tutorId;
@@ -278,19 +320,33 @@ function submitTutorApp() {
     data.gpa = gpa;
     data.isGraduate = (studentType == 'grad') ? true : false;
     data.courses = courses;
-    data.avai = getAvaiTimeDataFromCal("#tutor_calendar");
+    data.avai = getSelectedSlotsFromCal("#tutor_calendar");
 
-    console.log(JSON.stringify(data));
+//    console.log(JSON.stringify(data));
 
     makeCall("submitTutorApp", data)
         .success(function (response, error) {
-
+            console.log(response);
             alert("Tutor Application Submitted");
             window.location = "/main-menu.php";
         }).error(function (message) {
             error(message);
         });
 
+}
+
+function showTutorSchedule() {
+
+    var tutorId = $("#tutor_gtid").val();
+
+    makeCall("fetchTutorSchedule", tutorId)
+        .success(function (response, error) {
+            //TODO: populate current tutor schedule
+
+
+        }).error(function (message) {
+            error(message);
+        });
 }
 
 function submitStudentEval() {
@@ -302,23 +358,23 @@ function submitStudentEval() {
     var descEval = $("#rate_desc_eval").val();
     var numEval = $('input[name="rating"]:checked').val();
 
-    // TODO: need to validate input here, check if empty
     if (courseShool == null || courseNumber == null) {
-
+        alert("Please select a course!")
+        return;
     }
-
     if (tutorId == null) {
 //        tutorName.attr("class", "error");
 //        $("#in_tutor_name_error").show();
-
+        alert("Please select a tutor name!");
+        return;
     }
-
     if (descEval == null) {
-
+        alert("You don't have anything to say about the tutor?");
+        return;
     }
-
     if (numEval == null) {
-
+        alert("Please rate this tutor!");
+        return;
     }
 
     var data = {};
@@ -328,22 +384,17 @@ function submitStudentEval() {
     data.descEval = descEval;
     data.numEval = numEval;
 
-    // TODO: check duplicate entry
-
     makeCall("submitStudentEval", data)
         .success(function (response, error) {
 
 //            $("#in_tutor_name").attr("class", "");
 //            $("#in_tutor_name_error").hide();
 
-            //TODO: notify user that rating was submitted before going back to the main menu
             alert("Rated this tutor");
             console.log(response);
             window.location = "/main-menu.php";
-        }).error(function () {
-
-            //TODO: do something here
-
+        }).error(function (message) {
+            error(message);
         });
 
 }
@@ -364,10 +415,6 @@ function submitProfEval() {
         return;
     }
 
-
-    // TODO: need to validate tutorID
-    // TODO: check duplicate entry
-
     makeCall("submitProfEval", data)
         .success(function (response, error) {
 
@@ -376,7 +423,7 @@ function submitProfEval() {
 
             window.location = "/main-menu.php";
         }).error(function (message) {
-            alert("Error: " + message);
+            error(message);
         });
 
 }

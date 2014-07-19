@@ -19,20 +19,57 @@ function login() {
 
     makeCall("login", data)
         .success(function (response, error) {
-
             alert("Logged In Successfully");
 
             window.location = "/main-menu.php";
         }).error(function (message) {
-
             error(message);
+        });
 
+}
+
+function addMoreCourse() {
+    var tutorCourse = $("#tutor_course");
+
+    var div = divTag.clone();
+
+    div.append(tutorCourse.html());
+
+    div.attr("id", uniqueId());
+    div.attr("class", "row");
+
+    div.find(".number_list").find('option').remove().end();
+    div.find(".school_list").change(function () {
+
+        fetchCourseNumberList($(this).val(), "#" + div.attr("id"));
+    });
+
+    $("#course_list").append(div);
+}
+
+function showMenuBasedOnUserType() {
+
+    makeCall("getCurrentUserType", "")
+        .success(function (response, error) {
+
+            if (response == "test") {
+                $("#menu_student").show();
+                $("#menu_admin").show();
+                $("#menu_professor").show();
+                $("#menu_tutor").show();
+                return;
+            }
+
+            alert("User Type: " + response);
+            $("#menu_" + response).show();
+        }).error(function (message) {
+            error(message);
         });
 
 }
 
 function error(message) {
-    // TODO: make this better
+    // TODO: make this throw error function better
     alert("Error: " + message);
 }
 
@@ -41,9 +78,39 @@ function uniqueId() {
     return Math.round(new Date().getTime() + (Math.random() * 100));
 }
 
-function getAvaiTimeDataFromCal(calendarId) {
+function disableMultipleSlotsSelection(calendarId) {
 
-    var avaiTime = [];
+    $(calendarId + " .event").click(function () {
+
+        var events = $(calendarId).find(".event.green");
+        events.each(function () {
+            var slot = $(this);
+            slot.removeClass("green");
+            slot.addClass("gray");
+        });
+
+        $(this).removeClass("gray");
+        $(this).addClass("green");
+    });
+}
+
+function getSelectedTutorSlot() {
+
+    var selection = $("#tutor_avai_calendar .green");
+    var dayName = selection.closest("td").closest('table').find('th').eq(selection.closest("td").index()).text();
+
+    var data = {};
+    data.weekday = dayName;
+    data.time = moment(selection.find(".time").text(), "ha").format("HH:mm");
+    data.tutorName = selection.find(".name").text();
+    data.tutorEmail = selection.find(".email").text();
+
+    return data;
+}
+
+function getSelectedSlotsFromCal(calendarId) {
+
+    var selectedSlots = [];
 
     var days = $(calendarId + " td");
     days.each(function () {
@@ -65,12 +132,12 @@ function getAvaiTimeDataFromCal(calendarId) {
             obj.times.push(time);
         });
 
-        avaiTime.push(obj);
+        selectedSlots.push(obj);
     });
 
-//    console.log(JSON.stringify(avaiTime));
+//    console.log(JSON.stringify(selectedSlots));
 
-    return avaiTime;
+    return selectedSlots;
 }
 
 function toggleTimeSlot() {
@@ -87,6 +154,14 @@ function toggleTimeSlot() {
 
 function getCurrentUserId() {
     makeCall("getCurrentUserId", "")
+        .success(function (response, error) {
+            alert(response);
+            return response;
+        });
+}
+
+function getCurrentUserType() {
+    makeCall("getCurrentUserType", "")
         .success(function (response, error) {
             alert(response);
             return response;

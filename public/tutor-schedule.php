@@ -6,7 +6,7 @@ include "templates/header.php"
     <div class="row">
         <div class="large-4 columns">
             <label>Tutor GT-ID
-                <input type="text" placeholder="902910000"/>
+                <input id="tutor_gtid" type="text" placeholder="902910000" maxlength="9"/>
             </label>
         </div>
 
