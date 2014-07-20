@@ -52,6 +52,8 @@ function showMenuBasedOnUserType() {
     makeCall("getCurrentUserType", "")
         .success(function (response, error) {
 
+            alert("User type: " + response);
+
             if (response == "test") {
                 $("#menu_student").show();
                 $("#menu_admin").show();
@@ -60,7 +62,6 @@ function showMenuBasedOnUserType() {
                 return;
             }
 
-            alert("User Type: " + response);
             $("#menu_" + response).show();
         }).error(function (message) {
             error(message);

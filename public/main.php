@@ -353,7 +353,7 @@ function fetchCourseNumberList($school)
 function getCurrentUserId()
 {
     if (isset($_SESSION['gtid'])) {
-        return $_SESSION['gtid'];
+        echo $_SESSION['gtid'];
     } else {
         error("NO ID");
     }
@@ -362,7 +362,7 @@ function getCurrentUserId()
 function getCurrentUserType()
 {
     if (isset($_SESSION['user_type'])) {
-        return $_SESSION['user_type'];
+        echo $_SESSION['user_type'];
     } else {
         error("NO USE TYPE");
     }

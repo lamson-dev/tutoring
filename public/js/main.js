@@ -47,7 +47,7 @@ $(document).ready(function () {
     $("#btn_login").click(login);
 
     // STUDENT
-    $("#btn_show_avai_tutor").click(fetchAvaiTutorWithRatingSummary());
+    $("#btn_show_avai_tutor").click(fetchAvaiTutorWithRatingSummary);
     $("#btn_schedule_tutor").click(showTutorScheduleToSelect);
     $("#btn_schedule_selected_tutor").click(scheduleSelectedTutor);
     $("#btn_cancel").click(function () {
