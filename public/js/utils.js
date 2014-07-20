@@ -1,3 +1,6 @@
+
+var DEBUG = true;
+
 var aTag = $("<a>");
 var h3Tag = $("<h3>");
 var pTag = $("<p>");
@@ -49,20 +52,20 @@ function addMoreCourse() {
 
 function showMenuBasedOnUserType() {
 
+    if (DEBUG) {
+        $("#menu_student").show();
+        $("#menu_admin").show();
+        $("#menu_professor").show();
+        $("#menu_tutor").show();
+        return;
+    }
+
     makeCall("getCurrentUserType", "")
         .success(function (response, error) {
 
             alert("User type: " + response);
-
-            if (response == "test") {
-                $("#menu_student").show();
-                $("#menu_admin").show();
-                $("#menu_professor").show();
-                $("#menu_tutor").show();
-                return;
-            }
-
             $("#menu_" + response).show();
+
         }).error(function (message) {
             error(message);
         });

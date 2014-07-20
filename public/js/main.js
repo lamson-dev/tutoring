@@ -1,5 +1,3 @@
-var DEBUG = true;
-
 var courseSchoolSelected = "CS";
 var courseNumberSelected = "2200";
 
