@@ -164,7 +164,7 @@ function fetchTutorSchedule($tutorId)
                         FROM tb_Course
                         WHERE School = '%s'
                         ORDER BY Number;",
-        mysql_real_escape_string($gtid));
+        mysql_real_escape_string($tutorId));
 
     $result = getDBResultsArray($dbQuery);
     echo json_encode($result);
