@@ -32,11 +32,11 @@ include "templates/header.php"
 <div class="row">
     <div class="large-12 columns">
         <label>Rating</label>
-        <input type="radio" name="rating" value="4" id="rate_high"><label for="rate_high">Highly Recommend</label>
-        <input type="radio" name="rating" value="3" id="rate_medium"><label for="rate_medium">Recommend</label>
-        <input type="radio" name="rating" value="2" id="rate_low"><label for="rate_low">Recommend with
+        <input type="radio" name="rating" value="4" id="rate_high"><label for="rate_high">4 - Highly Recommend</label>
+        <input type="radio" name="rating" value="3" id="rate_medium"><label for="rate_medium">3 - Recommend</label>
+        <input type="radio" name="rating" value="2" id="rate_low"><label for="rate_low">2 - Recommend with
             reservations</label>
-        <input type="radio" name="rating" value="1" id="rate_no"><label for="rate_no">Do not recommend</label>
+        <input type="radio" name="rating" value="1" id="rate_no"><label for="rate_no">1 - Do not recommend</label>
     </div>
 </div>
 

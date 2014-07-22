@@ -22,11 +22,11 @@ include "templates/header.php"
     <div class="row">
         <div class="large-12 columns">
             <label>Rating</label>
-            <input type="radio" name="rec_rating" value="4" id="rec_high"><label for="rec_high">Highly Recommend</label>
-            <input type="radio" name="rec_rating" value="3" id="rec_medium"><label for="rec_medium">Recommend</label>
-            <input type="radio" name="rec_rating" value="2" id="rec_low"><label for="rec_low">Recommend with
+            <input type="radio" name="rec_rating" value="4" id="rec_high"><label for="rec_high">4 - Highly Recommend</label>
+            <input type="radio" name="rec_rating" value="3" id="rec_medium"><label for="rec_medium">3 - Recommend</label>
+            <input type="radio" name="rec_rating" value="2" id="rec_low"><label for="rec_low">2 - Recommend with
                 reservations</label>
-            <input type="radio" name="rec_rating" value="1" id="rec_no"><label for="rec_no">Do not recommend</label>
+            <input type="radio" name="rec_rating" value="1" id="rec_no"><label for="rec_no">1 - Do not recommend</label>
         </div>
     </div>
 

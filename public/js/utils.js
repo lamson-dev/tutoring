@@ -85,7 +85,11 @@ function showMenuBasedOnUserType() {
 
 function error(message) {
     // TODO: make this throw error function better
+    if (typeof message === 'object') {
+        message = JSON.strigify(message);
+    }
     alert("Error: " + message);
+    return;
 }
 
 // Should work for most cases

@@ -184,10 +184,10 @@ function fetchAdminSummary1() {
             //TODO: populate summary1 table
 
 //   NEED TO CALCULATE TOTAL FOR TABLE FROM DATA RETURNED
-            var summary1data = JSON.parse(response);
-            console.log(summary1data);
-            console.log(summary1data[1].CourseName);
-            console.log(summary1data[1]);
+            // var summary1data = JSON.parse(response);
+            // console.log(summary1data);
+            // console.log(summary1data[1].CourseName);
+            // console.log(summary1data[1]);
 
     /*
     for (var i=0; i<summary1data.length; i++)
@@ -330,6 +330,10 @@ function submitTutorApp() {
     data.isGraduate = (studentType == 'grad') ? true : false;
     data.courses = courses;
     data.avai = getSelectedSlotsFromCal("#tutor_calendar");
+
+    if (avai.length <= 5) {
+        error("You need to have at least 5 available time slots selected");
+    }
 
 //    console.log(JSON.stringify(data));
 
