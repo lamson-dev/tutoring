@@ -25,6 +25,9 @@ function call($action, $json)
         case "login":
             login($data);
             break;
+        case "logout":
+            logout();
+            break;
         case "fetchAvaiTutorWithRatingSummary":
             fetchAvaiTutorWithRatingSummary($data);
             break;
@@ -79,12 +82,24 @@ function login($data)
         error('FAILED to login');
     } else {
 
+        // $dbQuery = sprintf("SELECT GTID, Passi
+        //                     FROM tb_User
+        //                     WHERE GTID='%s' AND Password='%s'",
+        //     mysql_real_escape_string($data->gtid),
+        //     mysql_real_escape_string($data->password));
+
         // TODO: get user type from query
         $userType = "test";
 
         $_SESSION['gtid'] = $data->gtid;
         $_SESSION['user_type'] = $userType;
     }
+}
+
+function logout() {
+    unset($_SESSION['gtid']);
+    unset($_SESSION['user_type']);
+    // header("Location: index.php");
 }
 
 function fetchAvaiTutorWithRatingSummary($data)

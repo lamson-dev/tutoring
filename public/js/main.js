@@ -43,6 +43,7 @@ $(document).ready(function () {
 
     // LOGIN
     $("#btn_login").click(login);
+    $("#btn_logout").click(logout);
 
     // STUDENT
     $("#btn_show_avai_tutor").click(fetchAvaiTutorWithRatingSummary);

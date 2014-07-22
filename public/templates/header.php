@@ -31,14 +31,14 @@
     </ul>
     <section class="top-bar-section">
         <!-- Right Nav Section -->
-        <!--        <ul class="right">-->
-        <!--            <li class="active"><a href="#">Right Button Active</a></li>-->
-        <!--            <li class="has-dropdown"><a href="#">Right Button Dropdown</a>-->
-        <!--                <ul class="dropdown">-->
-        <!--                    <li><a href="#">First link in dropdown</a></li>-->
-        <!--                </ul>-->
-        <!--            </li>-->
-        <!--        </ul>-->
+               <ul class="right">
+                   <li class="active"><a href="#" id="btn_logout">Logout</a></li>
+                   <!-- <li class="has-dropdown"><a href="#">Right Button Dropdown</a>
+                       <ul class="dropdown">
+                           <li><a href="#">First link in dropdown</a></li>
+                       </ul>
+                   </li> -->
+               </ul>
         <!-- Left Nav Section -->
         <!--        <ul class="left">-->
         <!--            <li><a href="#">Left Nav Button</a></li>-->

@@ -31,6 +31,17 @@ function login() {
 
 }
 
+function logout() {
+    makeCall("logout", "")
+        .success(function (response, error) {
+            alert("Logged Out Successfully");
+
+            window.location = "/index.php";
+        }).error(function (message) {
+            error(message);
+        });
+}
+
 function addMoreCourse() {
     var tutorCourse = $("#tutor_course");
 
