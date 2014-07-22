@@ -39,3 +39,9 @@ include "templates/header.php";
 <?php
 include "templates/footer.php";
 ?>
+
+<script>
+    $(document).ready(function() {
+        $("#btn_logout").hide();
+    });
+</script>
