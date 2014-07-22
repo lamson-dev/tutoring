@@ -182,9 +182,19 @@ function fetchAdminSummary1() {
 
             //TODO: populate summary1 table
 
-            console.log(response);
 //   NEED TO CALCULATE TOTAL FOR TABLE FROM DATA RETURNED
+            var summary1data = JSON.parse(response);
+            console.log(summary1data);
+            console.log(summary1data[1].CourseName);
+            console.log(summary1data[1]);
 
+    /*
+    for (var i=0; i<summary1data.length; i++)
+    {
+        console.log(response[i][name]);
+        console.log(response[i][name]);
+    }
+*/
 
         }).error(function (message) {
             error(message);
@@ -350,8 +360,8 @@ function showTutorSchedule() {
 function submitStudentEval() {
 
 
-    var courseShool = $("#rate_course_selector select").val();
-    var courseNumber = $("#rate_course_selector select").val();
+    var courseShool = $("#student_rate_course .school_list").val();
+    var courseNumber = $("#student_rate_course .number_list").val();
     var tutorId = $("#rate_tutor_name_list").val();
     var descEval = $("#rate_desc_eval").val();
     var numEval = $('input[name="rating"]:checked').val();
@@ -425,5 +435,3 @@ function submitProfEval() {
         });
 
 }
-
-
