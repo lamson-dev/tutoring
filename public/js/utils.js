@@ -12,6 +12,8 @@ var optionTag = $("<option>");
 var trTag = $("<tr>");
 var tdTag = $("<td>");
 
+var labelTag = $("<label>");
+
 
 function login() {
 

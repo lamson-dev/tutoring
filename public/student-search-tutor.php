@@ -95,27 +95,15 @@ include "templates/header.php"
                     </td>
                     <td class="active">
                         <div id='Wed' >
-
-                                <span class="event gray">
+                                <!-- <span class="event gray">
                                     <label class="time">2pm</label>
                                     <label class="name">Celine Irvene</label>
                                     <label class="email">[celine@gatech.edu]</label>
-                                </span>
+                                </span> -->
                         </div>
                     </td>
                     <td>
                         <div id='Thu' >
-
-                            <span class="event gray">
-                                <label class="time">2pm</label>
-                                <label class="name">Son Nguyen</label>
-                                <label class="email">[son@gatech.edu]</label>
-                            </span>
-                            <span class="event gray">
-                                <label class="time">10am</label>
-                                <label class="name">Tue Tran</label>
-                                <label class="email">[tue@gatech.edu]</label>
-                            </span>
 
                         </div>
                     </td>

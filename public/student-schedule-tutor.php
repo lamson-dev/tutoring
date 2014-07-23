@@ -86,7 +86,6 @@ include "templates/footer.php"
 
 <script>
     $(document).ready(function () {
-        $("#selected_course").text(courseSchoolSelected + " " + courseNumberSelected);
-        disableMultipleSlotsSelection("#tutor_avai_calendar");
+        
     });
 </script>
