@@ -405,7 +405,7 @@ function submitTutorApp() {
         ++i;
     });
 
-    if (schoolCount < 1) {
+    if (numCount < 1 || $("#course_list .number_list").val() == null) {
         alert("You must select a course to teach.");
         return;
     }
