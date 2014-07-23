@@ -230,13 +230,25 @@ function fetchAdminSummary2() {
 }
 
 function fetchAvaiTutorWithRatingSummary() {
-    var courseShool = $("#search_school_list").val();
-    var courseNumber = $("#search_number_list").val();
+    var courseSchool = $("#student_search_course .school_list").val();
+    var courseNumber = $("#student_search_course .number_list").val();
+
+// TODO: remove this when done;
+courseSchool = "CS";
+courseNumber = "2200";
+
 
     var data = {};
-    data.courseSchool = courseShool;
+    data.courseSchool = courseSchool;
     data.courseNumber = courseNumber;
     data.studentAvai = getSelectedSlotsFromCal("#student_calendar");
+
+    if (courseSchool == null || courseNumber == null) {
+        alert("Please select a course");
+        return;
+    }
+
+    // TODO: check if student selected avai times
 
     makeCall("fetchAvaiTutorWithRatingSummary", data)
         .success(function (response, error) {

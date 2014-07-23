@@ -70,7 +70,7 @@ function call($action, $json)
 function login($data)
 {
 
-    $dbQuery = sprintf("SELECT GTID, Password
+    $dbQuery = sprintf("SELECT GTID, Password, Type
                         FROM tb_User
                         WHERE GTID='%s' AND Password='%s'",
         mysql_real_escape_string($data->gtid),
@@ -81,18 +81,8 @@ function login($data)
     if (is_null($result)) {
         error('FAILED to login');
     } else {
-
-        // $dbQuery = sprintf("SELECT GTID, Passi
-        //                     FROM tb_User
-        //                     WHERE GTID='%s' AND Password='%s'",
-        //     mysql_real_escape_string($data->gtid),
-        //     mysql_real_escape_string($data->password));
-
-        // TODO: get user type from query
-        $userType = "test";
-
         $_SESSION['gtid'] = $data->gtid;
-        $_SESSION['user_type'] = $userType;
+        $_SESSION['user_type'] = $result[0]["Type"];
     }
 }
 
@@ -104,7 +94,44 @@ function logout() {
 
 function fetchAvaiTutorWithRatingSummary($data)
 {
+
+
     // TODO: fetchAvaiTutorWithRatingSummary
+
+    $avai = $data->studentAvai;
+    $day = $avai[0]->weekday;
+    $times = str_replace ("[", "", json_encode($avai[0]->times));
+    $times = str_replace("]","", $times);
+    $times = str_replace('"',"'", $times);
+
+    // TODO: fix this query
+    $dbQuery = sprintf("SELECT SlotTutGTID, Fname, Lname, Email
+FROM tb_Slot JOIN tb_User ON SlotTutGTID = GTID
+JOIN tb_Teaches ON SlotTutGTID = TeachTutGTID
+WHERE Time IN ($times)
+AND Weekday = '$day'
+AND Semester = '%s'
+AND TeachSchool = '%s'
+AND TeachNumber = '%s'
+AND SlotTutGTID NOT IN (
+SELECT HireTutGTID
+FROM tb_Hires
+WHERE HireTime IN ($times)
+AND HireWeekday = '$day'
+AND HireSemester = '%s'
+)
+",
+        mysql_real_escape_string(getCurrentSemester()),
+        mysql_real_escape_string($data->courseSchool),
+        mysql_real_escape_string($data->courseNumber),
+        mysql_real_escape_string(getCurrentSemester()),
+        mysql_real_escape_string(getCurrentSemester()));
+
+    // echo $dbQuery;
+    // return;
+
+    $result = getDBResultsArray($dbQuery);
+    echo json_encode($result);
 }
 
 function scheduleSelectedTutor($data) {
@@ -399,13 +426,13 @@ function fetchAdminSummary1($data)
 
     $semsString = implode(", ", $sems);
 
-    $dbQuery = sprintf("SELECT HireSemester, CONCAT(HireSchool,' ',HireNumber) as CourseName,
+    $dbQuery = sprintf("SELECT CONCAT(HireSchool,' ',HireNumber) as CourseName, HireSemester
                             COUNT(DISTINCT HireTutGTID) as NumTutors,
                             COUNT(DISTINCT HireStudGTID) as NumStudents
                             FROM tb_Hires
                         WHERE HireSemester IN ($semsString)
                         GROUP BY HireSemester, CourseName
-                        ORDER BY HireSemester, CourseName;");
+                        ORDER BY CourseName, HireSemester;");
 
     $result = getDBResultsArray($dbQuery);
     echo json_encode($result);
@@ -422,13 +449,13 @@ function fetchAdminSummary2($data)
     $semsString = implode(", ", $sems);
 
     // TODO: fix this query!
-    $dbQuery = sprintf("SELECT HireSemester, CONCAT(HireSchool,' ',HireNumber) as CourseName,
+    $dbQuery = sprintf("SELECT CONCAT(HireSchool,' ',HireNumber) as CourseName, HireSemester
                             COUNT(DISTINCT HireTutGTID) as NumTutors,
                             COUNT(DISTINCT HireStudGTID) as NumStudents
                             FROM tb_Hires
                         WHERE HireSemester IN ($semsString)
                         GROUP BY HireSemester, CourseName
-                        ORDER BY HireSemester, CourseName;");
+                        ORDER BY CourseName, HireSemester;");
 
     $result = getDBResultsArray($dbQuery);
     echo json_encode($result);

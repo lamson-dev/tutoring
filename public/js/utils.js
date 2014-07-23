@@ -1,5 +1,5 @@
 
-var DEBUG = true;
+var DEBUG = false;
 
 var aTag = $("<a>");
 var h3Tag = $("<h3>");
@@ -74,7 +74,7 @@ function showMenuBasedOnUserType() {
     makeCall("getCurrentUserType", "")
         .success(function (response, error) {
 
-            alert("User type: " + response);
+            // alert("User type: " + response);
             $("#menu_" + response).show();
 
         }).error(function (message) {
