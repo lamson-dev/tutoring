@@ -301,6 +301,10 @@ courseNumber = "2200";
 
             // ======
             // populate tutor schedule to select
+
+            $("#Mon").empty(); $("#Tue").empty(); $("#Wed").empty();
+            $("#Thu").empty(); $("#Fri").empty();
+
             for (var i = 0; i < tutors.length; ++i) {
                 var tutor = tutors[i];
 
@@ -315,7 +319,7 @@ courseNumber = "2200";
                 name.attr("class", "name");
                 email.attr("class", "email");
 
-                time.html(tutor.time);
+                time.html(moment(tutor.time, "HH:mm:ss").format("ha"));
                 name.html(tutor.fname + " " + tutor.lname);
                 email.html("[" + tutor.email + "]");
 
@@ -347,9 +351,9 @@ function scheduleSelectedTutor() {
     makeCall("scheduleSelectedTutor", slot)
         .success(function (response, error) {
             alert("Tutor Scheduled!!!");
-            window.location = "/main-menu.php";
+            // window.location = "/main-menu.php";
         }).error(function (message) {
-            error(message);
+            error("You already have a tutor scheduled for this time!");
         });
 }
 

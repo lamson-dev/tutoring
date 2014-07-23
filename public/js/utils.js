@@ -1,5 +1,5 @@
 
-var DEBUG = true;
+var DEBUG = false;
 
 var aTag = $("<a>");
 var h3Tag = $("<h3>");
@@ -36,13 +36,13 @@ function login() {
 }
 
 function logout() {
+
     makeCall("logout", "")
         .success(function (response, error) {
             alert("Logged Out Successfully");
-
             window.location = "/index.php";
         }).error(function (message) {
-            error(message);
+            error("Error logging out");
         });
 }
 

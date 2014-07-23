@@ -71,11 +71,11 @@ include "templates/header.php"
 
                 <thead>
                 <tr>
-                    <th width="300">Mon</th>
-                    <th width="300">Tue</th>
-                    <th width="300">Wed</th>
-                    <th width="300">Thu</th>
-                    <th width="300">Fri</th>
+                    <th width="350">Mon</th>
+                    <th width="350">Tue</th>
+                    <th width="350">Wed</th>
+                    <th width="350">Thu</th>
+                    <th width="350">Fri</th>
                 </tr>
                 </thead>
 
@@ -95,11 +95,11 @@ include "templates/header.php"
                     </td>
                     <td class="active">
                         <div id='Wed' >
-                                <!-- <span class="event gray">
-                                    <label class="time">2pm</label>
+                                <span class="event gray">
+                                    <!-- <label class="time">2pm</label>
                                     <label class="name">Celine Irvene</label>
-                                    <label class="email">[celine@gatech.edu]</label>
-                                </span> -->
+                                    <label class="email">[celine@gatech.edu]</label> -->
+                                </span>
                         </div>
                     </td>
                     <td>
