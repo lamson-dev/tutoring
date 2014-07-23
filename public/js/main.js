@@ -431,6 +431,7 @@ function submitTutorApp() {
     }
     if (avaiCount < 5) {
         alert("You need to have at least 5 available time slots selected");
+        return;
     }
 
     makeCall("submitTutorApp", data)

@@ -8,7 +8,7 @@ include "templates/header.php"
     <div class="row">
         <div class="large-4 columns end">
             <label>GaTech ID
-                <input id="in_app_gtid" type="text" placeholder="902910000" maxlength="9"/>
+                <input id="in_app_gtid" type="text" placeholder="902333001" maxlength="9"/>
             </label>
         </div>
     </div>
@@ -87,7 +87,7 @@ include "templates/header.php"
 </fieldset>
 
 <div class="row">
-    <a href="#" id="btn_submit_app" class="button small radius">Submit Application</a>
+    <a href="" id="btn_submit_app" class="button small radius">Submit Application</a>
 </div>
 
 

@@ -152,6 +152,7 @@ function fetchAvaiTutorWithRatingSummary($data)
                                 AND Semester = '%s'
                                 AND Weekday = '%s'
                                 AND Time IN ($timesString)
+                                AND TeachTutGTID IN (SELECT RecTutGTID FROM tb_Recommends)
                                 AND (TeachTutGTID, Time, Semester, Weekday)
                                 NOT IN (SELECT SlotTutGTID, Time, Semester, Weekday
                                         FROM tb_Hires
@@ -242,37 +243,6 @@ function fetchAvaiTutorWithRatingSummary($data)
     echo json_encode($tutors);
 }
 
-// function fetchAvaiTutorWithTime($data) {
-//
-//     // array of tutors with all information, to be return as json
-//     $tutors = array();
-//
-//     $tutorIdsString = str_replace ("[", "", json_encode($data));
-//     $tutorIdsString = str_replace("]","", $tutorIdsString);
-//     $tutorIdsString = str_replace('"',"'", $tutorIdsString);
-//
-//     $dbQuery = sprintf("SELECT Fname, Lname, Email, Weekday, Time
-//                         FROM (tb_User JOIN tb_Teaches ON GTID = TeachTutGTID)
-//                             JOIN tb_Slot ON GTID = SlotTutGTID
-//                         WHERE GTID IN ($tutorIdsString)
-//                             AND (TeachTutGTID, Time, Semester, Weekday) NOT IN
-//                                 (SELECT SlotTutGTID, HireTime, HireSemester, HireWeekday
-//                                 FROM tb_Hires JOIN tb_Slot ON (SlotTutGTID = HireTutGTID
-//                                     AND Time = HireTime AND Semester = HireSemester
-//                                     AND Weekday = HireWeekday))
-//                         ORDER BY Lname, Weekday, Time;",
-//                 mysql_real_escape_string(getCurrentSemester()),
-//                 mysql_real_escape_string($data->courseSchool),
-//                 mysql_real_escape_string($data->courseNumber),
-//                 mysql_real_escape_string(getCurrentSemester()),
-//                 mysql_real_escape_string(getCurrentSemester()));
-//
-//
-//     $result = getDBResultsArray($dbQuery);
-//     echo json_encode($result);
-//
-// }
-
 function scheduleSelectedTutor($data) {
 
     $studentId = getCurrentUserId();
@@ -331,6 +301,33 @@ function submitTutorApp($data)
     $tutorId = getCurrentUserId();
     $semester = getCurrentSemester();
 
+
+    // update tutor basic information in tb_User
+    $dbQuery = sprintf("UPDATE tb_User
+                        SET Fname = '%s', Lname = '%s',
+                            Email = '%s', PhoneNumber = '%s'
+                        WHERE GTID = %s;",
+        mysql_real_escape_string($data->firstName),
+        mysql_real_escape_string($data->lastName),
+        mysql_real_escape_string($data->email),
+        mysql_real_escape_string($data->phone),
+        mysql_real_escape_string($tutorId));
+
+    $result = getDBResultAffected($dbQuery);
+
+    // update tutor information in tb_Tutor
+    $dbQuery = sprintf("UPDATE tb_Tutor
+                        SET IsGraduate = %s,
+                            GPA = %s
+                        WHERE TutGTID = %s",
+        mysql_real_escape_string($data->isGraduate),
+        mysql_real_escape_string($data->gpa),
+        mysql_real_escape_string($tutorId));
+
+    $result = getDBResultAffected($dbQuery);
+
+
+    // update tutor courses that he teaches
     $courses = $data->courses;
     $values = '';
     foreach ($courses as $course) {
@@ -338,6 +335,7 @@ function submitTutorApp($data)
 
         $values .= "('$tutorId','$school', '$number', $gta),";
     }
+    
 
     // insert tutor teaches courses
     $values = rtrim($values, ",");
