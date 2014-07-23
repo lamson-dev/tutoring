@@ -431,13 +431,14 @@ function submitTutorApp() {
     }
     if (avaiCount < 5) {
         alert("You need to have at least 5 available time slots selected");
+        return;
     }
 
     makeCall("submitTutorApp", data)
         .success(function (response, error) {
             console.log(response);
-            // alert("Tutor Application Submitted");
-            // window.location = "/main-menu.php";
+            alert("Tutor Application Submitted");
+            window.location = "/main-menu.php";
         }).error(function (message) {
             error(message);
         });
