@@ -405,7 +405,7 @@ function submitTutorApp() {
         ++i;
     });
 
-    if (courses.length <= 0 || schoolCount != numCount) {
+    if (courses.length <= 0 || schoolCount != numCount || (schoolCount == 0 && numCount == 0)) {
         alert("You need to select a course to teach.");
         return;
     }
@@ -436,8 +436,8 @@ function submitTutorApp() {
     makeCall("submitTutorApp", data)
         .success(function (response, error) {
             console.log(response);
-            // alert("Tutor Application Submitted");
-            // window.location = "/main-menu.php";
+            alert("Tutor Application Submitted");
+            window.location = "/main-menu.php";
         }).error(function (message) {
             error(message);
         });
