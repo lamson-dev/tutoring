@@ -58,7 +58,7 @@ $(document).ready(function () {
     // TUTOR
     $("#btn_add_course").click(addMoreCourse);
     $("#btn_submit_app").click(submitTutorApp);
-    // $("#btn_show_tutor_schedule").click(showTutorSchedule);
+    $("#btn_show_tutor_schedule").click(showTutorSchedule);
 
     // PROFESSOR
     $("#btn_submit_prof_eval").click(submitProfEval);
@@ -421,6 +421,7 @@ function showTutorSchedule() {
         .success(function (response, error) {
             //TODO: populate current tutor schedule
 
+            console.log(response);
 
         }).error(function (message) {
             error(message);

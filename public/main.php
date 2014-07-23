@@ -366,10 +366,10 @@ function fetchTutorSchedule($tutorId)
     $dbQuery = sprintf("SELECT HireWeekday, HireTime, Fname, Lname, Email, HireSchool, HireNumber
                         FROM tb_User
 	                       JOIN tb_Hires ON HireStudGTID = GTID
-                               AND HireTutGTID = '%s'
+                               AND HireTutGTID = $tutorId
                                AND HireSemester = '%s'
 	                    ORDER BY HireWeekday, HireTime;",
-                mysql_real_escape_string($tutorId),
+                // mysql_real_escape_string($tutorId),
                 mysql_real_escape_string(getCurrentSemester()));
 
     $result = getDBResultsArray($dbQuery);
