@@ -71,11 +71,11 @@ include "templates/header.php"
 
                 <thead>
                 <tr>
-                    <th width="300">Mon</th>
-                    <th width="300">Tue</th>
-                    <th width="300">Wed</th>
-                    <th width="300">Thu</th>
-                    <th width="300">Fri</th>
+                    <th width="350">Mon</th>
+                    <th width="350">Tue</th>
+                    <th width="350">Wed</th>
+                    <th width="350">Thu</th>
+                    <th width="350">Fri</th>
                 </tr>
                 </thead>
 
@@ -95,27 +95,15 @@ include "templates/header.php"
                     </td>
                     <td class="active">
                         <div id='Wed' >
-
                                 <span class="event gray">
-                                    <label class="time">2pm</label>
+                                    <!-- <label class="time">2pm</label>
                                     <label class="name">Celine Irvene</label>
-                                    <label class="email">[celine@gatech.edu]</label>
+                                    <label class="email">[celine@gatech.edu]</label> -->
                                 </span>
                         </div>
                     </td>
                     <td>
                         <div id='Thu' >
-
-                            <span class="event gray">
-                                <label class="time">2pm</label>
-                                <label class="name">Son Nguyen</label>
-                                <label class="email">[son@gatech.edu]</label>
-                            </span>
-                            <span class="event gray">
-                                <label class="time">10am</label>
-                                <label class="name">Tue Tran</label>
-                                <label class="email">[tue@gatech.edu]</label>
-                            </span>
 
                         </div>
                     </td>

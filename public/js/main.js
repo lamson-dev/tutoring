@@ -47,7 +47,7 @@ $(document).ready(function () {
 
     // STUDENT
     $("#btn_show_avai_tutor").click(fetchAvaiTutorWithRatingSummary);
-    $("#btn_schedule_tutor").click(showTutorScheduleToSelect);
+    // $("#btn_schedule_tutor").click(showTutorScheduleToSelect);
     $("#btn_schedule_selected_tutor").click(scheduleSelectedTutor);
     $("#btn_cancel").click(function () {
         $("#avai_tutor").hide();
@@ -299,38 +299,14 @@ courseNumber = "2200";
 
             $('#avai_tutor_modal').foundation('reveal', 'open');
 
-            console.log(JSON.stringify(avaiTutorIds));
-
-
             // ======
             // populate tutor schedule to select
 
+            $("#Mon").empty(); $("#Tue").empty(); $("#Wed").empty();
+            $("#Thu").empty(); $("#Fri").empty();
 
-
-
-        }).error(function (message) {
-            error(message)
-        });
-}
-
-function showTutorScheduleToSelect() {
-    // TODO: populate tutor schedule for student to select
-
-    makeCall("fetchAvaiTutorWithTime", avaiTutorIds)
-        .success(function (response, error) {
-
-            console.log(response);
-
-            var data = JSON.parse(response);
-
-            for (var i=0; i < data.length; ++i) {
-                // <span class="event gray">
-                //     <label class="time">2pm</label>
-                //     <label class="name">Celine Irvene</label>
-                //     <label class="email">[celine@gatech.edu]</label>
-                // </span>
-
-                var slot = data[i];
+            for (var i = 0; i < tutors.length; ++i) {
+                var tutor = tutors[i];
 
                 var span = spanTag.clone();
                 span.attr("class", "event gray");
@@ -343,15 +319,28 @@ function showTutorScheduleToSelect() {
                 name.attr("class", "name");
                 email.attr("class", "email");
 
-                time.html(slot.Fname + " " + slot.Lname);
+                time.html(moment(tutor.time, "HH:mm:ss").format("ha"));
+                name.html(tutor.fname + " " + tutor.lname);
+                email.html("[" + tutor.email + "]");
 
+                span.append(time);
+                span.append(name);
+                span.append(email);
 
+                var dayDiv = $("#" + tutor.weekday);
+                dayDiv.append(span);
+
+                span.click(toggleTimeSlot);
             }
+
+            $("#selected_course").text(courseSchoolSelected + " " + courseNumberSelected);
+            disableMultipleSlotsSelection("#tutor_avai_calendar");
 
         }).error(function (message) {
             error(message)
         });
 }
+
 
 function scheduleSelectedTutor() {
 
@@ -362,9 +351,9 @@ function scheduleSelectedTutor() {
     makeCall("scheduleSelectedTutor", slot)
         .success(function (response, error) {
             alert("Tutor Scheduled!!!");
-            window.location = "/main-menu.php";
+            // window.location = "/main-menu.php";
         }).error(function (message) {
-            error(message);
+            error("You already have a tutor scheduled for this time!");
         });
 }
 

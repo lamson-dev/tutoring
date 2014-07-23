@@ -90,8 +90,13 @@ function login($data)
 }
 
 function logout() {
-    unset($_SESSION['gtid']);
-    unset($_SESSION['user_type']);
+
+    if (isset($_SESSION['gtid'])) {
+        unset($_SESSION['gtid']);
+    }
+    if (isset($_SESSION['user_type'])) {
+        unset($_SESSION['user_type']);
+    }
     // header("Location: index.php");
 }
 
@@ -266,23 +271,45 @@ function scheduleSelectedTutor($data) {
 
     $studentId = getCurrentUserId();
     $tutorId = getTutorGTIDByName($data->tutorName);
-    $courseSchool = $data->courseSchool;
-    $courseNumber = $data->courseNumber;
+    $courseSchool = $data->school;
+    $courseNumber = $data->number;
     $weekday = $data->weekday;
     $time = $data->time;
     $semester = getCurrentSemester();
 
-    // TODO: fix this query
-    $dbQuery = sprintf("INSERT INTO tb_Recommends (RecTutGTID, RecProfGTID, RecDesc, RecNum)
-	                    VALUES ('%s', '%s', '%s', '%s');",
+
+    // check to see if the student already have scheduled a tutor this time
+    $dbQuery = sprintf("SELECT EXISTS (SELECT *
+                    FROM tb_Hires
+                    WHERE HireStudGTID = '%s'
+                        AND HireWeekday = '%s'
+                        AND HireTime = '%s'
+                        AND HireSemester = '%s');",
+
         mysql_real_escape_string($studentId),
-        mysql_real_escape_string($tutorId),
-        mysql_real_escape_string($courseSchool),
-        mysql_real_escape_string($courseNumber),
         mysql_real_escape_string($weekday),
         mysql_real_escape_string($time),
         mysql_real_escape_string($semester));
 
+    $result = mysql_query($dbQuery);
+
+    if ($result) {
+        error("You already have scheduled a tutor in this time slot.");
+    }
+
+    // ============================================================
+    // ============================================================
+
+    $dbQuery = sprintf("INSERT INTO tb_Hires
+                        VALUES ('%s','%s','%s','%s','%s','%s','%s');",
+
+        mysql_real_escape_string($tutorId),
+        mysql_real_escape_string($studentId),
+        mysql_real_escape_string($courseSchool),
+        mysql_real_escape_string($courseNumber),
+        mysql_real_escape_string($time),
+        mysql_real_escape_string($semester),
+        mysql_real_escape_string($weekday));
 
     $result = getDBResultAffected($dbQuery);
     echo json_encode($result);
@@ -541,6 +568,7 @@ function getCurrentUserId()
 {
     if (isset($_SESSION['gtid'])) {
         echo $_SESSION['gtid'];
+        return $_SESSION['gtid'];
     } else {
         error("NO ID");
     }
@@ -550,6 +578,7 @@ function getCurrentUserType()
 {
     if (isset($_SESSION['user_type'])) {
         echo $_SESSION['user_type'];
+        return $_SESSION['user_type'];
     } else {
         error("NO USER TYPE");
     }
