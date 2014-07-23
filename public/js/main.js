@@ -364,12 +364,12 @@ function submitTutorApp() {
 
     var courses = [];
 
-    if (tutorId == '' || firstName == '' || lastName == ''
-        || email == '' || phone == '' || gpa == ''
-        || studentType == null) {
-        alert("Please fill in all the requirements.");
-        return;
-    }
+    // if (tutorId == '' || firstName == '' || lastName == ''
+    //     || email == '' || phone == '' || gpa == ''
+    //     || studentType == null) {
+    //     alert("Please fill in all the requirements.");
+    //     return;
+    // }
 
     var schools = $("#course_list .school_list");
     var numbers = $("#course_list .number_list");
@@ -396,17 +396,17 @@ function submitTutorApp() {
     data.courses = courses;
     data.avai = getSelectedSlotsFromCal("#tutor_calendar");
 
-    if (avai.length <= 5) {
-        error("You need to have at least 5 available time slots selected");
-    }
-
+//     if (avai.length <= 5) {
+//         error("You need to have at least 5 available time slots selected");
+//     }
+//
 //    console.log(JSON.stringify(data));
 
     makeCall("submitTutorApp", data)
         .success(function (response, error) {
             console.log(response);
-            alert("Tutor Application Submitted");
-            window.location = "/main-menu.php";
+            // alert("Tutor Application Submitted");
+            // window.location = "/main-menu.php";
         }).error(function (message) {
             error(message);
         });

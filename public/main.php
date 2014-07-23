@@ -324,32 +324,49 @@ function scheduleSelectedTutor($data) {
 function submitTutorApp($data)
 {
     // TODO: submitTutorApp
-    if (!$data->tutorId == getCurrentUserId()) {
-        error("Isn't your GTID is " . getCurrentUserId());
-    }
+    // if (!$data->tutorId == getCurrentUserId()) {
+    //     error("Isn't your GTID is " . getCurrentUserId());
+    // }
+    
+    $tutorId = getCurrentUserId();
+    $semester = getCurrentSemester();
 
     $courses = $data->courses;
+    $values = '';
     foreach ($courses as $course) {
         list($school, $number) = explode(' ', $course);
+
+        $values .= "('$tutorId','$school', '$number'),";
     }
 
+    $values = rtrim($values, ",");
+    $dbQuery = "INSERT INTO tb_Teaches (TeachTutGTID, TeachSchool, TeachNumber)
+                       VALUES " . $values . ";";
+
+    $result = getDBResultAffected($dbQuery);
+    // echo json_encode($result);
+
+
+
+    $values = '';
     $avai = $data->avai;
     foreach ($avai as $day) {
+
         $weekday = $day->weekday;
         $times = $day->times;
+
+        if ($times == null) {
+            continue;
+        }
+
+        foreach ($times as $time) {
+                $values .= "('$time','$semester','$weekday','$tutorId'),";
+        }
     }
+    $values = rtrim($values, ",");
 
-    // TODO: fix this query
-    $dbQuery = sprintf("INSERT INTO tb_Recommends (RecTutGTID, RecProfGTID, RecDesc, RecNum)
-	                    VALUES ('%s', '%s', '%s', '%s');",
-        mysql_real_escape_string($data->tutorId),
-        mysql_real_escape_string($data->firstName),
-        mysql_real_escape_string($data->lastName),
-        mysql_real_escape_string($data->email),
-        mysql_real_escape_string($data->phone),
-        mysql_real_escape_string($data->gpa),
-        mysql_real_escape_string($data->isGraduate));
-
+    $dbQuery = "INSERT INTO tb_Slot (Time, Semester, Weekday, SlotTutGTID)
+	               VALUES " . $values . ";";
 
     $result = getDBResultAffected($dbQuery);
     echo json_encode($result);
