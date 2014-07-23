@@ -15,6 +15,8 @@ include "templates/header.php"
 <!-- Triggers the modals -->
 <div class="row">
     <a href="#" id="btn_show_avai_tutor" data-reveal-id="firstModal" class="button small radius">Show Available Tutors</a>
+    
+    <a href="main-menu.php" id="btn_cancel" class="button small radius">Cancel</a>
 </div>
 
 
@@ -51,7 +53,6 @@ include "templates/header.php"
 
         <div class="row">
             <a href="schedule-tutor.php" id="btn_schedule_tutor" class="button small radius">Schedule Tutor</a>
-            <a href="main-menu.php" id="btn_cancel" class="button small radius">Cancel</a>
         </div>
 
     </div>
