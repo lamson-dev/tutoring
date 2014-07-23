@@ -521,7 +521,9 @@ function submitProfEval() {
     data.descEval = descEval;
     data.numEval = numEval;
 
-    if (tutorId == null || descEval == null || numEval == null) {
+
+	
+    if (tutorId == null || descEval == '' || numEval == null) {
         alert("Please fill in all required input forms");
         return;
     }
@@ -534,7 +536,7 @@ function submitProfEval() {
 
             window.location = "/main-menu.php";
         }).error(function (message) {
-            error(message);
+            error("You must enter a valid tutor GTID");
         });
 
 }

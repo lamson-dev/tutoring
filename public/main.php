@@ -443,7 +443,7 @@ function isDuplicateEntry($tutorId, $school = null, $number = null)
 function submitProfEval($data)
 {
 
-    if (!isValidId($data->tutorId)) {
+    if (!isValidTutorId($data->tutorId)) {
         error('This GTID does not exist in database');
     }
 
@@ -453,11 +453,31 @@ function submitProfEval($data)
         error("You already recommended this student");
     }
 
-
     if ($data->tutorId == getCurrentUserId()) {
         error("You don't want to recommend yourself, do you?");
     }
+	
+	// check if professor recommendation already exists then overwrites
+	$dbQuery1 = sprintf("SELECT RecTutGTID FROM tb_Recommends WHERE RecTutGTID = '%s'
+						AND RecProfGTID = '%s';",
+						mysql_real_escape_string($data->tutorId),
+						mysql_real_escape_string(getCurrentUserId()));
 
+	$result1 = getDBResultsArray($dbQuery1);
+	echo json_encode($result1);
+	
+	if(json_encode($result1) != null)
+	{
+		$dbQuery2 = sprintf("DELETE FROM tb_Recommends
+							WHERE RecProfGTID = '%s'
+							AND RecTutGTID = '%s';",
+							mysql_real_escape_string(getCurrentUserId()),
+							mysql_real_escape_string($data->tutorId));
+	}
+	
+	$result2 = getDBResultAffected($dbQuery2);
+    echo json_encode($result2);
+	
     // record a professor recommendation
     $dbQuery = sprintf("INSERT INTO tb_Recommends (RecTutGTID, RecProfGTID, RecDesc, RecNum)
 	                    VALUES ('%s', '%s', '%s', '%d');",
@@ -500,11 +520,11 @@ function submitStudentEval($data)
     echo json_encode($result);
 }
 
-function isValidId($gtid)
+function isValidTutorId($gtid)
 {
-    $dbQuery = sprintf("SELECT GTID
-                        FROM tb_User
-                        WHERE GTID='%s';",
+    $dbQuery = sprintf("SELECT TutGTID
+                        FROM tb_Tutor
+                        WHERE TutGTID='%s';",
         mysql_real_escape_string($gtid));
 
     $result = getDBResultsArray($dbQuery);
@@ -575,7 +595,6 @@ function fetchCourseNumberList($school)
 function getCurrentUserId()
 {
     if (isset($_SESSION['gtid'])) {
-        // echo $_SESSION['gtid'];
         return $_SESSION['gtid'];
     } else {
         error("NO ID");
