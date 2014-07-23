@@ -21,7 +21,7 @@ include "templates/header.php"
     </div>
 
 
-    <div class="row calendar">
+    <div id="tutor_schedule_calendar" class="row calendar" style="display: none">
         <div class=" large-10 columns">
 
             <h5 id="hello_tutor"></h4>
@@ -40,28 +40,27 @@ include "templates/header.php"
 
                 <tbody>
                 <tr>
-                    <td class="inactive">
-                        <div>
-                        </div>
-                    </td>
-                    <td class="inactive">
-                        <div>
+                    <td class="active">
+                        <div id="tucal_Mon">
                         </div>
                     </td>
                     <td class="active">
-                        <div>
-                            <span class="event blue">2pm - ECE 2031 - Celine Irvene [celine@gatech.edu]</span>
+                        <div id="tucal_Tue">
+                        </div>
+                    </td>
+                    <td class="active">
+                        <div id="tucal_Wed">
+                            <!-- <span class="event blue">2pm - ECE 2031 - Celine Irvene [celine@gatech.edu]</span> -->
                         </div>
                     </td>
                     <td>
-                        <div>
-                            <span class="event yellow">8am - ISyE 3770 - Son Nguyen [son@gatech.edu]</span>
-                            <span class="event yellow">10am - CS 4400 - Tue Tran [tue@gatech.edu</span>
+                        <div id="tucal_Thu">
+                            <!-- <span class="event yellow">8am - ISyE 3770 - Son Nguyen [son@gatech.edu]</span> -->
 
                         </div>
                     </td>
                     <td>
-                        <div>
+                        <div id="tucal_Fri">
                         </div>
                     </td>
                 </tr>

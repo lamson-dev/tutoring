@@ -449,14 +449,41 @@ function showTutorSchedule() {
 
     var tutorId = $("#tutor_gtid").val();
 
+    if (tutorId == null || tutorId == '') {
+        alert("Please enter your GTID");
+        return;
+    }
+
     makeCall("fetchTutorSchedule", tutorId)
         .success(function (response, error) {
-            //TODO: populate current tutor schedule
 
-            console.log(response);
+            var data = JSON.parse(response);
+
+            if (data == null || data == '') {
+                alert("You don't have any students to tutor!");
+                return;
+            }
+
+            $("#tutor_schedule_calendar").show();
+
+            for (var i = 0; i < data.length; ++i) {
+                var slot = data[i];
+                // console.log(JSON.stringify(slot));
+
+                var time = moment(slot.HireTime, "HH:mm:ss").format("ha");
+                var name = slot.Fname + " " + slot.Lname;
+                var email = "[" + slot.Email + "]";
+                var course = slot.HireSchool + " " + slot.HireNumber;
+
+                var span = spanTag.clone();
+                span.attr("class", "event yellow");
+                span.html(time + " - " + course + " - " + name + " " + email);
+
+                $("#tucal_" + slot.HireWeekday).append(span);
+            }
 
         }).error(function (message) {
-            error(message);
+            error("Wrong GTID!");
         });
 }
 
@@ -522,7 +549,7 @@ function submitProfEval() {
     data.numEval = numEval;
 
 
-	
+
     if (tutorId == null || descEval == '' || numEval == null) {
         alert("Please fill in all required input forms");
         return;

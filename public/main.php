@@ -44,7 +44,7 @@ function call($action, $json)
             submitTutorApp($data);
             break;
         case "fetchTutorSchedule":
-            fetchTutorSchedule($json);
+            fetchTutorSchedule($data);
             break;
         case "fetchCourseSchoolList":
             fetchCourseSchoolList();
@@ -335,7 +335,7 @@ function submitTutorApp($data)
 
         $values .= "('$tutorId','$school', '$number', $gta),";
     }
-    
+
 
     // insert tutor teaches courses
     $values = rtrim($values, ",");
@@ -374,7 +374,9 @@ function submitTutorApp($data)
 function fetchTutorSchedule($tutorId)
 {
 
-    if (!$tutorId == getCurrentUserId()) {
+    // $tutorId = getCurrentUserId();
+
+    if (strcmp($tutorId, getCurrentUserId()) != 0) {
         error("Isn't your GTID is " . getCurrentUserId());
     }
 
@@ -382,10 +384,10 @@ function fetchTutorSchedule($tutorId)
     $dbQuery = sprintf("SELECT HireWeekday, HireTime, Fname, Lname, Email, HireSchool, HireNumber
                         FROM tb_User
 	                       JOIN tb_Hires ON HireStudGTID = GTID
-                               AND HireTutGTID = $tutorId
+                               AND HireTutGTID = '%s'
                                AND HireSemester = '%s'
 	                    ORDER BY HireWeekday, HireTime;",
-                // mysql_real_escape_string($tutorId),
+                mysql_real_escape_string($tutorId),
                 mysql_real_escape_string(getCurrentSemester()));
 
     $result = getDBResultsArray($dbQuery);
@@ -456,7 +458,7 @@ function submitProfEval($data)
     if ($data->tutorId == getCurrentUserId()) {
         error("You don't want to recommend yourself, do you?");
     }
-	
+
 	// check if professor recommendation already exists then overwrites
 	$dbQuery1 = sprintf("SELECT RecTutGTID FROM tb_Recommends WHERE RecTutGTID = '%s'
 						AND RecProfGTID = '%s';",
@@ -465,7 +467,7 @@ function submitProfEval($data)
 
 	$result1 = getDBResultsArray($dbQuery1);
 	echo json_encode($result1);
-	
+
 	if(json_encode($result1) != null)
 	{
 		$dbQuery2 = sprintf("DELETE FROM tb_Recommends
@@ -474,10 +476,10 @@ function submitProfEval($data)
 							mysql_real_escape_string(getCurrentUserId()),
 							mysql_real_escape_string($data->tutorId));
 	}
-	
+
 	$result2 = getDBResultAffected($dbQuery2);
     echo json_encode($result2);
-	
+
     // record a professor recommendation
     $dbQuery = sprintf("INSERT INTO tb_Recommends (RecTutGTID, RecProfGTID, RecDesc, RecNum)
 	                    VALUES ('%s', '%s', '%s', '%d');",
