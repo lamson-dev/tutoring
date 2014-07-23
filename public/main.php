@@ -95,43 +95,126 @@ function logout() {
 function fetchAvaiTutorWithRatingSummary($data)
 {
 
+    class Tutor {
+        public $fname = '';
+        public $lname = '';
+        public $email = '';
+        public $recAvg = '';
+        public $recCount = '';
+        public $rateAvg = '';
+        public $rateCount = '';
+    }
 
-    // TODO: fetchAvaiTutorWithRatingSummary
+    // array of tutors with all information, to be return as json
+    $tutors = array();
+
+    // array of tutorIds, to be used in query
+    $tutorIds = array();
+
 
     $avai = $data->studentAvai;
-    $day = $avai[0]->weekday;
-    $times = str_replace ("[", "", json_encode($avai[0]->times));
-    $times = str_replace("]","", $times);
-    $times = str_replace('"',"'", $times);
 
-    // TODO: fix this query
-    $dbQuery = sprintf("SELECT SlotTutGTID, Fname, Lname, Email
-FROM tb_Slot JOIN tb_User ON SlotTutGTID = GTID
-JOIN tb_Teaches ON SlotTutGTID = TeachTutGTID
-WHERE Time IN ($times)
-AND Weekday = '$day'
-AND Semester = '%s'
-AND TeachSchool = '%s'
-AND TeachNumber = '%s'
-AND SlotTutGTID NOT IN (
-SELECT HireTutGTID
-FROM tb_Hires
-WHERE HireTime IN ($times)
-AND HireWeekday = '$day'
-AND HireSemester = '%s'
-)
-",
-        mysql_real_escape_string(getCurrentSemester()),
-        mysql_real_escape_string($data->courseSchool),
-        mysql_real_escape_string($data->courseNumber),
-        mysql_real_escape_string(getCurrentSemester()),
-        mysql_real_escape_string(getCurrentSemester()));
 
-    // echo $dbQuery;
-    // return;
+    // loop through everyday in the week, search for avai tutorIds
+    // then store it in $tutorIds
+    foreach ($avai as $slot) {
+        $day = $slot->weekday;
+        $times = $slot->times;
 
-    $result = getDBResultsArray($dbQuery);
-    echo json_encode($result);
+        if ($times == null) {
+            continue;
+        }
+
+        $timesString = str_replace ("[", "", json_encode($times));
+        $timesString = str_replace("]","", $timesString);
+        $timesString = str_replace('"',"'", $timesString);
+
+        $dbQuery = sprintf("SELECT SlotTutGTID, Fname, Lname, Email
+                    FROM tb_Slot JOIN tb_User ON SlotTutGTID = GTID
+                    JOIN tb_Teaches ON SlotTutGTID = TeachTutGTID
+                    WHERE Time IN ($timesString)
+                    AND Weekday = '$day'
+                    AND Semester = '%s'
+                    AND TeachSchool = '%s'
+                    AND TeachNumber = '%s'
+                    AND SlotTutGTID NOT IN (
+                        SELECT HireTutGTID
+                        FROM tb_Hires
+                        WHERE HireTime IN ($timesString)
+                        AND HireWeekday = '$day'
+                        AND HireSemester = '%s'
+                        )
+                    ",
+                    mysql_real_escape_string(getCurrentSemester()),
+                    mysql_real_escape_string($data->courseSchool),
+                    mysql_real_escape_string($data->courseNumber),
+                    mysql_real_escape_string(getCurrentSemester()),
+                    mysql_real_escape_string(getCurrentSemester()));
+
+        $result = getDBResultsArray($dbQuery);
+
+        if ($result != null) {
+            foreach ($result as $row) {
+                array_push($tutorIds, $row["SlotTutGTID"]);
+
+                $t = new Tutor();
+                $t->fname = $row["Fname"];
+                $t->lname = $row["Lname"];
+                $t->email = $row["Email"];
+                array_push($tutors, $t);
+            }
+            // var_dump($tutors);
+        }
+
+    }
+
+    $tutorIdsString = str_replace ("[", "", json_encode($tutorIds));
+    $tutorIdsString = str_replace("]","", $tutorIdsString);
+    $tutorIdsString = str_replace('"',"'", $tutorIdsString);
+
+
+    // retrieve average recommendations for these tutors
+    $dbQuery = sprintf("SELECT AVG(RecNum), COUNT(RecNum)
+                        FROM tb_Recommends
+                        WHERE RecTutGTID IN ($tutorIdsString)
+                        GROUP BY RecTutGTID
+                ",
+                mysql_real_escape_string(getCurrentSemester()));
+
+    $avgRecResult = getDBResultsArray($dbQuery);
+
+    if ($avgRecResult != null) {
+        $i = 0;
+        foreach ($avgRecResult as $row) {
+            $tutors[$i]->recAvg = $row["AVG(RecNum)"];
+            $tutors[$i]->recCount = $row["COUNT(RecNum)"];
+            ++$i;
+        }
+        // var_dump($tutors);
+    }
+
+
+    // retrieve average ratings for these tutors
+    $dbQuery = sprintf("SELECT AVG(RateNum), COUNT(RateNum)
+                        FROM tb_Rates
+                        WHERE RateTutGTID IN ($tutorIdsString)
+                        GROUP BY RateTutGTID
+                ",
+                mysql_real_escape_string(getCurrentSemester()));
+
+    $avgRateResult = getDBResultsArray($dbQuery);
+
+    if ($avgRateResult != null) {
+        $i = 0;
+        foreach ($avgRateResult as $row) {
+            $tutors[$i]->rateAvg = $row["AVG(RateNum)"];
+            $tutors[$i]->rateCount = $row["COUNT(RateNum)"];
+            ++$i;
+        }
+    }
+
+    // var_dump($tutors);
+    echo json_encode($tutors);
 }
 
 function scheduleSelectedTutor($data) {

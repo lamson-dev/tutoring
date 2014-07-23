@@ -1,5 +1,5 @@
 
-var DEBUG = false;
+var DEBUG = true;
 
 var aTag = $("<a>");
 var h3Tag = $("<h3>");
@@ -9,6 +9,8 @@ var divTag = $("<div>");
 var spanTag = $("<span>");
 var imgTag = $("<img>");
 var optionTag = $("<option>");
+var trTag = $("<tr>");
+var tdTag = $("<td>");
 
 
 function login() {

@@ -254,9 +254,35 @@ courseNumber = "2200";
         .success(function (response, error) {
 
             //TODO: populate available tutors with rating summary
-            console.log(response);
+            console.log(JSON.stringify(response));
 
-//            $("#avai_tutor").show();
+            if (response == '' || response == null) {
+                alert("No tutor is available in your selected times.");
+                return;
+            }
+
+            $("#avai_tutor").show();
+
+            var tbody = $('#avai_tutor tbody:last');
+
+            var tutors = JSON.parse(response);
+
+            for (var i = 0; i < tutors.length; ++i) {
+                var tutor = tutors[i];
+
+                var tr = trTag.clone();
+                
+                tr.append(tdTag.clone().text(tutor.fname));
+                tr.append(tdTag.clone().text(tutor.lname));
+                tr.append(tdTag.clone().text(tutor.email));
+                tr.append(tdTag.clone().text(tutor.recAvg));
+                tr.append(tdTag.clone().text(tutor.recCount));
+                tr.append(tdTag.clone().text(tutor.rateAvg));
+                tr.append(tdTag.clone().text(tutor.rateCount));
+
+                tbody.append(tr);
+            }
+
         }).error(function (message) {
             error(message)
         });
