@@ -183,13 +183,26 @@ function fetchAdminSummary1() {
 
             //TODO: populate summary1 table
 
-//   NEED TO CALCULATE TOTAL FOR TABLE FROM DATA RETURNED
-            // var summary1data = JSON.parse(response);
-            // console.log(summary1data);
-            // console.log(summary1data[1].CourseName);
-            // console.log(summary1data[1]);
+         var summary1data = JSON.parse(response);
 
+    // if(summary1data.length > 0)
+    // {
+    //     var num_rows = result.noofteams;
+    //     var rows = "";
+    //
+    //     for(var i=0;i<num_rows;i++)
+    //     {
+    //         rows +='<tr><td>'+result.noofteams+'</td></tr>';
+    //     }
+    // $("#admin1container").append(rows);
+    // }
+
+//   NEED TO CALCULATE TOTAL FOR TABLE FROM DATA RETURNED
     /*
+             console.log(summary1data);
+             console.log(summary1data[1].CourseName);
+             console.log(summary1data[1]);
+
     for (var i=0; i<summary1data.length; i++)
     {
         console.log(response[i][name]);
@@ -245,8 +258,6 @@ courseNumber = "2200";
     data.courseNumber = courseNumber;
     data.studentAvai = getSelectedSlotsFromCal("#student_calendar");
 
-    scheduleTutorData = data;
-
     if (courseSchool == null || courseNumber == null) {
         alert("Please select a course");
         return;
@@ -262,9 +273,9 @@ courseNumber = "2200";
                 return;
             }
 
-            // $("#avai_tutor").show();
-
             var tbody = $('#avai_tutor tbody:last');
+
+            tbody.empty();
 
             var tutors = JSON.parse(response);
 
@@ -289,6 +300,13 @@ courseNumber = "2200";
             $('#avai_tutor_modal').foundation('reveal', 'open');
 
             console.log(JSON.stringify(avaiTutorIds));
+
+
+            // ======
+            // populate tutor schedule to select
+
+
+
 
         }).error(function (message) {
             error(message)

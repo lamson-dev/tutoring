@@ -16,7 +16,7 @@ include "templates/header.php"
         </div>
     </fieldset>
 
-    <div class="row">
+    <div id= "admin1container" class="row">
         <table>
             <thead>
             <tr>

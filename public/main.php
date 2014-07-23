@@ -154,6 +154,8 @@ function fetchAvaiTutorWithRatingSummary($data)
                     mysql_real_escape_string(getCurrentSemester()),
                     mysql_real_escape_string($day));
 
+        // echo $dbQuery;
+        // return;
 
         $result = getDBResultsArray($dbQuery);
 
@@ -166,12 +168,24 @@ function fetchAvaiTutorWithRatingSummary($data)
                 $t->fname = $row["Fname"];
                 $t->lname = $row["Lname"];
                 $t->email = $row["Email"];
+                $t->weekday = $row["Weekday"];
+                $t->time = $row["Time"];
                 array_push($tutors, $t);
             }
-            // var_dump($tutors);
         }
 
     }
+
+    echo json_encode($tutors);
+
+    return;
+    // var_dump($tutorIds);
+
+    // $tutorIds = array_unique($tutorIds, SORT_REGULAR);
+
+    // var_dump($tutorIds);
+
+    // return;
 
     $tutorIdsString = str_replace ("[", "", json_encode($tutorIds));
     $tutorIdsString = str_replace("]","", $tutorIdsString);
@@ -179,12 +193,10 @@ function fetchAvaiTutorWithRatingSummary($data)
 
 
     // retrieve average recommendations for these tutors
-    $dbQuery = sprintf("SELECT AVG(RecNum), COUNT(RecNum)
+    $dbQuery = sprintf("SELECT RecTutGTID, AVG(RecNum), COUNT(RecNum)
                         FROM tb_Recommends
                         WHERE RecTutGTID IN ($tutorIdsString)
-                        GROUP BY RecTutGTID
-                ",
-                mysql_real_escape_string(getCurrentSemester()));
+                        GROUP BY RecTutGTID");
 
     $avgRecResult = getDBResultsArray($dbQuery);
 
@@ -195,17 +207,14 @@ function fetchAvaiTutorWithRatingSummary($data)
             $tutors[$i]->recCount = $row["COUNT(RecNum)"];
             ++$i;
         }
-        // var_dump($tutors);
     }
 
 
     // retrieve average ratings for these tutors
-    $dbQuery = sprintf("SELECT AVG(RateNum), COUNT(RateNum)
+    $dbQuery = sprintf("SELECT RateTutGTID, AVG(RateNum), COUNT(RateNum)
                         FROM tb_Rates
                         WHERE RateTutGTID IN ($tutorIdsString)
-                        GROUP BY RateTutGTID
-                ",
-                mysql_real_escape_string(getCurrentSemester()));
+                        GROUP BY RateTutGTID;");
 
     $avgRateResult = getDBResultsArray($dbQuery);
 
@@ -525,7 +534,7 @@ function getCurrentUserType()
     if (isset($_SESSION['user_type'])) {
         echo $_SESSION['user_type'];
     } else {
-        error("NO USE TYPE");
+        error("NO USER TYPE");
     }
 }
 
@@ -545,7 +554,7 @@ function fetchAdminSummary1($data)
 
     $semsString = implode(", ", $sems);
 
-    $dbQuery = sprintf("SELECT CONCAT(HireSchool,' ',HireNumber) as CourseName, HireSemester
+    $dbQuery = sprintf("SELECT CONCAT(HireSchool,' ',HireNumber) as CourseName, HireSemester,
                             COUNT(DISTINCT HireTutGTID) as NumTutors,
                             COUNT(DISTINCT HireStudGTID) as NumStudents
                             FROM tb_Hires

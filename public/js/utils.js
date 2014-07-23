@@ -28,7 +28,7 @@ function login() {
 
             window.location = "/main-menu.php";
         }).error(function (message) {
-            error(message);
+            error("Wrong GTID or Password");
         });
 
 }
@@ -88,7 +88,7 @@ function showMenuBasedOnUserType() {
 function error(message) {
     // TODO: make this throw error function better
     if (typeof message === 'object') {
-        message = JSON.strigify(message);
+        message = JSON.stringify(message);
     }
     alert("Error: " + message);
     return;
