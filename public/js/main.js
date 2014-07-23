@@ -405,8 +405,8 @@ function submitTutorApp() {
         ++i;
     });
 
-    if (courses.length <= 0 || schoolCount != numCount) {
-        alert("You need to select a course to teach.");
+    if (schoolCount < 1) {
+        alert("You must select a course to teach.");
         return;
     }
 
