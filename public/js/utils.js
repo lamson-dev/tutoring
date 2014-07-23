@@ -12,6 +12,8 @@ var optionTag = $("<option>");
 var trTag = $("<tr>");
 var tdTag = $("<td>");
 
+var inputTag = $("<input>");
+
 var labelTag = $("<label>");
 
 
@@ -53,7 +55,8 @@ function addMoreCourse() {
 
     div.append(tutorCourse.html());
 
-    div.attr("id", uniqueId());
+    var genId = uniqueId();
+    div.attr("id", genId);
     div.attr("class", "row");
 
     div.find(".number_list").find('option').remove().end();
@@ -61,6 +64,19 @@ function addMoreCourse() {
 
         fetchCourseNumberList($(this).val(), "#" + div.attr("id"));
     });
+
+    var input = div.find("#cb_gta");
+    input.text("");
+    input.attr("id", genId + "_gta");
+    input.attr("type", "checkbox");
+
+    var label = div.find(".lb_gta");
+    label.attr("for", genId + "_gta");
+    label.text("GTA");
+    // <input id="cb_gta" type="checkbox"><label for="cb_gta">GTA</label>
+
+    div.append(input);
+    div.append(label);
 
     $("#course_list").append(div);
 }
