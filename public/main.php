@@ -61,8 +61,14 @@ function call($action, $json)
         case "getCurrentUserId":
             getCurrentUserId();
             break;
+        case "getCurrentUserIdString":
+            getCurrentUserIdString();
+            break;
         case "getCurrentUserType":
             getCurrentUserType();
+            break;
+        case "getUserNameById":
+            getUserNameById($id);
             break;
         case "scheduleSelectedTutor":
             scheduleSelectedTutor($data);
@@ -318,32 +324,49 @@ function scheduleSelectedTutor($data) {
 function submitTutorApp($data)
 {
     // TODO: submitTutorApp
-    if (!$data->tutorId == getCurrentUserId()) {
-        error("Isn't your GTID is " . getCurrentUserId());
-    }
+    // if (!$data->tutorId == getCurrentUserId()) {
+    //     error("Isn't your GTID is " . getCurrentUserId());
+    // }
+    
+    $tutorId = getCurrentUserId();
+    $semester = getCurrentSemester();
 
     $courses = $data->courses;
+    $values = '';
     foreach ($courses as $course) {
         list($school, $number) = explode(' ', $course);
+
+        $values .= "('$tutorId','$school', '$number'),";
     }
 
+    $values = rtrim($values, ",");
+    $dbQuery = "INSERT INTO tb_Teaches (TeachTutGTID, TeachSchool, TeachNumber)
+                       VALUES " . $values . ";";
+
+    $result = getDBResultAffected($dbQuery);
+    // echo json_encode($result);
+
+
+
+    $values = '';
     $avai = $data->avai;
     foreach ($avai as $day) {
+
         $weekday = $day->weekday;
         $times = $day->times;
+
+        if ($times == null) {
+            continue;
+        }
+
+        foreach ($times as $time) {
+                $values .= "('$time','$semester','$weekday','$tutorId'),";
+        }
     }
+    $values = rtrim($values, ",");
 
-    // TODO: fix this query
-    $dbQuery = sprintf("INSERT INTO tb_Recommends (RecTutGTID, RecProfGTID, RecDesc, RecNum)
-	                    VALUES ('%s', '%s', '%s', '%s');",
-        mysql_real_escape_string($data->tutorId),
-        mysql_real_escape_string($data->firstName),
-        mysql_real_escape_string($data->lastName),
-        mysql_real_escape_string($data->email),
-        mysql_real_escape_string($data->phone),
-        mysql_real_escape_string($data->gpa),
-        mysql_real_escape_string($data->isGraduate));
-
+    $dbQuery = "INSERT INTO tb_Slot (Time, Semester, Weekday, SlotTutGTID)
+	               VALUES " . $values . ";";
 
     $result = getDBResultAffected($dbQuery);
     echo json_encode($result);
@@ -356,12 +379,15 @@ function fetchTutorSchedule($tutorId)
         error("Isn't your GTID is " . getCurrentUserId());
     }
 
-    // TODO: fix this query
-    $dbQuery = sprintf("SELECT Number
-                        FROM tb_Course
-                        WHERE School = '%s'
-                        ORDER BY Number;",
-        mysql_real_escape_string($tutorId));
+
+    $dbQuery = sprintf("SELECT HireWeekday, HireTime, Fname, Lname, Email, HireSchool, HireNumber
+                        FROM tb_User
+	                       JOIN tb_Hires ON HireStudGTID = GTID
+                               AND HireTutGTID = $tutorId
+                               AND HireSemester = '%s'
+	                    ORDER BY HireWeekday, HireTime;",
+                // mysql_real_escape_string($tutorId),
+                mysql_real_escape_string(getCurrentSemester()));
 
     $result = getDBResultsArray($dbQuery);
     echo json_encode($result);
@@ -418,7 +444,7 @@ function isDuplicateEntry($tutorId, $school = null, $number = null)
 function submitProfEval($data)
 {
 
-    if (!isValidId($data->tutorId)) {
+    if (!isValidTutorId($data->tutorId)) {
         error('This GTID does not exist in database');
     }
 
@@ -432,7 +458,7 @@ function submitProfEval($data)
         error("You don't want to recommend yourself, do you?");
     }
 	
-		// check if professor recommendation already exists
+	// check if professor recommendation already exists then overwrites
 	$dbQuery1 = sprintf("SELECT RecTutGTID FROM tb_Recommends WHERE RecTutGTID = '%s'
 						AND RecProfGTID = '%s';",
 						mysql_real_escape_string($data->tutorId),
@@ -495,11 +521,11 @@ function submitStudentEval($data)
     echo json_encode($result);
 }
 
-function isValidId($gtid)
+function isValidTutorId($gtid)
 {
-    $dbQuery = sprintf("SELECT GTID
-                        FROM tb_User
-                        WHERE GTID='%s';",
+    $dbQuery = sprintf("SELECT TutGTID
+                        FROM tb_Tutor
+                        WHERE TutGTID='%s';",
         mysql_real_escape_string($gtid));
 
     $result = getDBResultsArray($dbQuery);
@@ -570,18 +596,42 @@ function fetchCourseNumberList($school)
 function getCurrentUserId()
 {
     if (isset($_SESSION['gtid'])) {
-       // echo $_SESSION['gtid'];
         return $_SESSION['gtid'];
     } else {
         error("NO ID");
     }
 }
 
+function getCurrentUserIdString()
+{
+    if (isset($_SESSION['gtid'])) {
+        echo $_SESSION['gtid'];
+    } else {
+        error("NO ID");
+    }
+}
+
+function getUserNameById($id) {
+
+    if ($id==null) {
+        $id = getCurrentUserId();
+    }
+
+    $dbQuery = sprintf("SELECT Fname, Lname
+                        FROM tb_User
+                        WHERE GTID = '%s';",
+                mysql_real_escape_string($id));
+
+    $result = getDBResultsArray($dbQuery);
+
+    echo $result[0]["Fname"] . " " . $result[0]["Lname"];
+    // echo json_encode($result);
+}
+
 function getCurrentUserType()
 {
     if (isset($_SESSION['user_type'])) {
         echo $_SESSION['user_type'];
-        return $_SESSION['user_type'];
     } else {
         error("NO USER TYPE");
     }

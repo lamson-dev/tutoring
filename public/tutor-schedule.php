@@ -5,6 +5,7 @@ include "templates/header.php"
 
     <div class="row">
         <div class="large-4 columns">
+
             <label>Tutor GT-ID
                 <input id="tutor_gtid" type="text" placeholder="902910000" maxlength="9"/>
             </label>
@@ -16,11 +17,14 @@ include "templates/header.php"
     </div>
 
     <div class="row">
+
     </div>
 
 
     <div class="row calendar">
         <div class=" large-10 columns">
+
+            <h5 id="hello_tutor"></h4>
 
             <table class="calendar">
 
@@ -31,8 +35,6 @@ include "templates/header.php"
                     <th width="300">Wed</th>
                     <th width="300">Thu</th>
                     <th width="300">Fri</th>
-                    <th width="300">Sat</th>
-                    <th width="300">Sun</th>
                 </tr>
                 </thead>
 
@@ -62,15 +64,6 @@ include "templates/header.php"
                         <div>
                         </div>
                     </td>
-                    <td>
-                        <div>
-                            <span class="event yellow">9am - CS 4400 - Kate Unsworth [kate@gatech.edu]</span>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                        </div>
-                    </td>
                 </tr>
 
                 </tbody>
@@ -84,3 +77,9 @@ include "templates/header.php"
 <?php
 include "templates/footer.php"
 ?>
+
+<script>
+    $(document).ready(function() {
+        updateTutorName();
+    });
+</script>

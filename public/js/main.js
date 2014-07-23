@@ -47,7 +47,7 @@ $(document).ready(function () {
 
     // STUDENT
     $("#btn_show_avai_tutor").click(fetchAvaiTutorWithRatingSummary);
-    // $("#btn_schedule_tutor").click(showTutorScheduleToSelect);
+    // $("#btn_schedule_tutor").click(ScheduleToSelect);
     $("#btn_schedule_selected_tutor").click(scheduleSelectedTutor);
     $("#btn_cancel").click(function () {
         $("#avai_tutor").hide();
@@ -248,11 +248,6 @@ function fetchAvaiTutorWithRatingSummary() {
     var courseSchool = $("#student_search_course .school_list").val();
     var courseNumber = $("#student_search_course .number_list").val();
 
-// TODO: remove this when done;
-courseSchool = "CS";
-courseNumber = "2200";
-
-
     var data = {};
     data.courseSchool = courseSchool;
     data.courseNumber = courseNumber;
@@ -369,12 +364,12 @@ function submitTutorApp() {
 
     var courses = [];
 
-    if (tutorId == '' || firstName == '' || lastName == ''
-        || email == '' || phone == '' || gpa == ''
-        || studentType == null) {
-        alert("Please fill in all the requirements.");
-        return;
-    }
+    // if (tutorId == '' || firstName == '' || lastName == ''
+    //     || email == '' || phone == '' || gpa == ''
+    //     || studentType == null) {
+    //     alert("Please fill in all the requirements.");
+    //     return;
+    // }
 
     var schools = $("#course_list .school_list");
     var numbers = $("#course_list .number_list");
@@ -401,17 +396,17 @@ function submitTutorApp() {
     data.courses = courses;
     data.avai = getSelectedSlotsFromCal("#tutor_calendar");
 
-    if (avai.length <= 5) {
-        error("You need to have at least 5 available time slots selected");
-    }
-
+//     if (avai.length <= 5) {
+//         error("You need to have at least 5 available time slots selected");
+//     }
+//
 //    console.log(JSON.stringify(data));
 
     makeCall("submitTutorApp", data)
         .success(function (response, error) {
             console.log(response);
-            alert("Tutor Application Submitted");
-            window.location = "/main-menu.php";
+            // alert("Tutor Application Submitted");
+            // window.location = "/main-menu.php";
         }).error(function (message) {
             error(message);
         });
@@ -426,6 +421,7 @@ function showTutorSchedule() {
         .success(function (response, error) {
             //TODO: populate current tutor schedule
 
+            console.log(response);
 
         }).error(function (message) {
             error(message);
