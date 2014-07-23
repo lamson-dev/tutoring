@@ -229,6 +229,8 @@ function fetchAdminSummary2() {
         });
 }
 
+var avaiTutorIds = [];
+
 function fetchAvaiTutorWithRatingSummary() {
     var courseSchool = $("#student_search_course .school_list").val();
     var courseNumber = $("#student_search_course .number_list").val();
@@ -243,6 +245,8 @@ courseNumber = "2200";
     data.courseNumber = courseNumber;
     data.studentAvai = getSelectedSlotsFromCal("#student_calendar");
 
+    scheduleTutorData = data;
+
     if (courseSchool == null || courseNumber == null) {
         alert("Please select a course");
         return;
@@ -253,15 +257,12 @@ courseNumber = "2200";
     makeCall("fetchAvaiTutorWithRatingSummary", data)
         .success(function (response, error) {
 
-            //TODO: populate available tutors with rating summary
-            console.log(JSON.stringify(response));
-
             if (response == '' || response == null) {
                 alert("No tutor is available in your selected times.");
                 return;
             }
 
-            $("#avai_tutor").show();
+            // $("#avai_tutor").show();
 
             var tbody = $('#avai_tutor tbody:last');
 
@@ -271,7 +272,7 @@ courseNumber = "2200";
                 var tutor = tutors[i];
 
                 var tr = trTag.clone();
-                
+
                 tr.append(tdTag.clone().text(tutor.fname));
                 tr.append(tdTag.clone().text(tutor.lname));
                 tr.append(tdTag.clone().text(tutor.email));
@@ -281,7 +282,13 @@ courseNumber = "2200";
                 tr.append(tdTag.clone().text(tutor.rateCount));
 
                 tbody.append(tr);
+
+                avaiTutorIds.push(tutor.gtid);
             }
+
+            $('#avai_tutor_modal').foundation('reveal', 'open');
+
+            console.log(JSON.stringify(avaiTutorIds));
 
         }).error(function (message) {
             error(message)
@@ -291,23 +298,41 @@ courseNumber = "2200";
 function showTutorScheduleToSelect() {
     // TODO: populate tutor schedule for student to select
 
-    var temp = [
-        {"tutorName": "Son Nguyen",
-            "tutorEmail": "son@gatech.edu",
-            "avai": [
-                {"weekday": "Mon",
-                    "times": ["8am", "9am"]
-                },
-                {"weekday": "Tue",
-                    "times": ["10am", "11am"]
-                }
-            ]
-        }
-    ];
+    makeCall("fetchAvaiTutorWithTime", avaiTutorIds)
+        .success(function (response, error) {
 
-    temp.each(function() {
+            console.log(response);
 
-    })
+            var data = JSON.parse(response);
+
+            for (var i=0; i < data.length; ++i) {
+                // <span class="event gray">
+                //     <label class="time">2pm</label>
+                //     <label class="name">Celine Irvene</label>
+                //     <label class="email">[celine@gatech.edu]</label>
+                // </span>
+
+                var slot = data[i];
+
+                var span = spanTag.clone();
+                span.attr("class", "event gray");
+
+                var time = labelTag.clone();
+                var name = labelTag.clone();
+                var email = labelTag.clone();
+
+                time.attr("class", "time");
+                name.attr("class", "name");
+                email.attr("class", "email");
+
+                time.html(slot.Fname + " " + slot.Lname);
+
+
+            }
+
+        }).error(function (message) {
+            error(message)
+        });
 }
 
 function scheduleSelectedTutor() {

@@ -14,16 +14,16 @@ include "templates/header.php"
 
 <!-- Triggers the modals -->
 <div class="row">
-    <a href="#" id="btn_show_avai_tutor" data-reveal-id="firstModal" class="button small radius">Show Available Tutors</a>
-    
+    <a href="#" id="btn_show_avai_tutor" class="button small radius">Show Available Tutors</a>
+
     <a href="main-menu.php" id="btn_cancel" class="button small radius">Cancel</a>
 </div>
 
 
 <!-- Reveal Modals begin -->
-<div id="firstModal" class="reveal-modal" data-reveal>
+<div id="avai_tutor_modal" class="reveal-modal" data-reveal>
 
-    <div id="avai_tutor" style="display: none;">
+    <div id="avai_tutor">
         <div class="row">
             <table>
                 <thead>
@@ -38,21 +38,13 @@ include "templates/header.php"
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Son</td>
-                    <td>Nguyen</td>
-                    <td>son@gatech.edu</td>
-                    <td>4</td>
-                    <td>2</td>
-                    <td>4</td>
-                    <td>3</td>
-                </tr>
+
                 </tbody>
             </table>
         </div>
 
         <div class="row">
-            <a href="schedule-tutor.php" id="btn_schedule_tutor" class="button small radius">Schedule Tutor</a>
+            <a href="student-schedule-tutor.php" id="btn_schedule_tutor" class="button small radius">Schedule Tutor</a>
         </div>
 
     </div>

@@ -31,6 +31,9 @@ function call($action, $json)
         case "fetchAvaiTutorWithRatingSummary":
             fetchAvaiTutorWithRatingSummary($data);
             break;
+        case "fetchAvaiTutorWithTime":
+            fetchAvaiTutorWithTime($data);
+            break;
         case "submitProfEval":
             submitProfEval($data);
             break;
@@ -96,6 +99,7 @@ function fetchAvaiTutorWithRatingSummary($data)
 {
 
     class Tutor {
+        public $gtid = '';
         public $fname = '';
         public $lname = '';
         public $email = '';
@@ -129,35 +133,36 @@ function fetchAvaiTutorWithRatingSummary($data)
         $timesString = str_replace("]","", $timesString);
         $timesString = str_replace('"',"'", $timesString);
 
-        $dbQuery = sprintf("SELECT SlotTutGTID, Fname, Lname, Email
-                    FROM tb_Slot JOIN tb_User ON SlotTutGTID = GTID
-                    JOIN tb_Teaches ON SlotTutGTID = TeachTutGTID
-                    WHERE Time IN ($timesString)
-                    AND Weekday = '$day'
-                    AND Semester = '%s'
-                    AND TeachSchool = '%s'
-                    AND TeachNumber = '%s'
-                    AND SlotTutGTID NOT IN (
-                        SELECT HireTutGTID
-                        FROM tb_Hires
-                        WHERE HireTime IN ($timesString)
-                        AND HireWeekday = '$day'
-                        AND HireSemester = '%s'
-                        )
-                    ",
-                    mysql_real_escape_string(getCurrentSemester()),
+        $dbQuery = sprintf("SELECT GTID, Fname, Lname, Email, Weekday, Time
+                            FROM (tb_User JOIN tb_Teaches ON GTID = TeachTutGTID)
+                                JOIN tb_Slot ON GTID = SlotTutGTID
+                            WHERE TeachSchool = '%s'
+                                AND TeachNumber = '%s'
+                                AND Semester = '%s'
+                                AND Weekday = '%s'
+                                AND Time IN ($timesString)
+                                AND (TeachTutGTID, Time, Semester, Weekday)
+                                NOT IN (SELECT SlotTutGTID, Time, Semester, Weekday
+                                        FROM tb_Hires
+                                            JOIN tb_Slot ON (SlotTutGTID = HireTutGTID
+                                        AND Time = HireTime AND Semester = HireSemester
+                                        AND Weekday = HireWeekday))
+                            ORDER BY Lname, Weekday, Time;",
+
                     mysql_real_escape_string($data->courseSchool),
                     mysql_real_escape_string($data->courseNumber),
                     mysql_real_escape_string(getCurrentSemester()),
-                    mysql_real_escape_string(getCurrentSemester()));
+                    mysql_real_escape_string($day));
+
 
         $result = getDBResultsArray($dbQuery);
 
         if ($result != null) {
             foreach ($result as $row) {
-                array_push($tutorIds, $row["SlotTutGTID"]);
+                array_push($tutorIds, $row["GTID"]);
 
                 $t = new Tutor();
+                $t->gtid = $row["GTID"];
                 $t->fname = $row["Fname"];
                 $t->lname = $row["Lname"];
                 $t->email = $row["Email"];
@@ -216,6 +221,37 @@ function fetchAvaiTutorWithRatingSummary($data)
     // var_dump($tutors);
     echo json_encode($tutors);
 }
+
+// function fetchAvaiTutorWithTime($data) {
+//
+//     // array of tutors with all information, to be return as json
+//     $tutors = array();
+//
+//     $tutorIdsString = str_replace ("[", "", json_encode($data));
+//     $tutorIdsString = str_replace("]","", $tutorIdsString);
+//     $tutorIdsString = str_replace('"',"'", $tutorIdsString);
+//
+//     $dbQuery = sprintf("SELECT Fname, Lname, Email, Weekday, Time
+//                         FROM (tb_User JOIN tb_Teaches ON GTID = TeachTutGTID)
+//                             JOIN tb_Slot ON GTID = SlotTutGTID
+//                         WHERE GTID IN ($tutorIdsString)
+//                             AND (TeachTutGTID, Time, Semester, Weekday) NOT IN
+//                                 (SELECT SlotTutGTID, HireTime, HireSemester, HireWeekday
+//                                 FROM tb_Hires JOIN tb_Slot ON (SlotTutGTID = HireTutGTID
+//                                     AND Time = HireTime AND Semester = HireSemester
+//                                     AND Weekday = HireWeekday))
+//                         ORDER BY Lname, Weekday, Time;",
+//                 mysql_real_escape_string(getCurrentSemester()),
+//                 mysql_real_escape_string($data->courseSchool),
+//                 mysql_real_escape_string($data->courseNumber),
+//                 mysql_real_escape_string(getCurrentSemester()),
+//                 mysql_real_escape_string(getCurrentSemester()));
+//
+//
+//     $result = getDBResultsArray($dbQuery);
+//     echo json_encode($result);
+//
+// }
 
 function scheduleSelectedTutor($data) {
 
