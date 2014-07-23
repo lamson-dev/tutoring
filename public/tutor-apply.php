@@ -65,9 +65,12 @@ include "templates/header.php"
             <?php
             include "templates/course-selector.html";
             ?>
+
+            <input id="cb_gta" type="checkbox"><label class="lb_gta" for="cb_gta">GTA</label>
+
         </div>
     </div>
-    
+
     <!--        dynamically add more course to course_list via js-->
     <button id="btn_add_course" class="button tiny radius">Add More Course</button>
 

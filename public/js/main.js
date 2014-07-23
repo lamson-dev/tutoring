@@ -364,26 +364,54 @@ function submitTutorApp() {
 
     var courses = [];
 
-    // if (tutorId == '' || firstName == '' || lastName == ''
-    //     || email == '' || phone == '' || gpa == ''
-    //     || studentType == null) {
-    //     alert("Please fill in all the requirements.");
-    //     return;
-    // }
+    if (tutorId == '' || firstName == '' || lastName == ''
+        || email == '' || phone == '' || gpa == ''
+        || studentType == null) {
+        alert("Please fill in all the requirements.");
+        return;
+    }
 
     var schools = $("#course_list .school_list");
     var numbers = $("#course_list .number_list");
+    var gtas = $("#course_list input[type='checkbox']");
 
+    var schoolCount = 0;
+    var numCount = 0;
     var i = 0;
     schools.each(function () {
-        courses.push($(this).val());
+
+        var val = $(this).val();
+        if (val != null && val != '') {
+            courses.push(val);
+            ++schoolCount;
+        }
+
+    });
+    numbers.each(function () {
+
+        var val = $(this).val();
+        if (val != null && val != '') {
+            courses[i] = courses[i] + " " + val;
+            ++numCount;
+        }
+        ++i;
     });
 
-    numbers.each(function () {
-        courses[i] = courses[i] + " " + $(this).val();
+    i = 0;
+    gtas.each(function () {
+
+        var val = $(this).is(':checked');
+        courses[i] = courses[i] + " " + val;
         ++i;
-        //        console.log(courses[i]);
     });
+
+    if (courses.length <= 0 || schoolCount != numCount) {
+        alert("You need to select a course to teach.");
+        return;
+    }
+
+    // console.log(JSON.stringify(courses));
+    // return;
 
     var data = {};
     data.tutorId = tutorId;
@@ -396,11 +424,14 @@ function submitTutorApp() {
     data.courses = courses;
     data.avai = getSelectedSlotsFromCal("#tutor_calendar");
 
-//     if (avai.length <= 5) {
-//         error("You need to have at least 5 available time slots selected");
-//     }
-//
-//    console.log(JSON.stringify(data));
+
+    var avaiCount = 0;
+    for (var i=0; i < data.avai.length; ++i) {
+        avaiCount += data.avai[i].times.length;
+    }
+    if (avaiCount < 5) {
+        alert("You need to have at least 5 available time slots selected");
+    }
 
     makeCall("submitTutorApp", data)
         .success(function (response, error) {

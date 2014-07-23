@@ -327,25 +327,24 @@ function submitTutorApp($data)
     // if (!$data->tutorId == getCurrentUserId()) {
     //     error("Isn't your GTID is " . getCurrentUserId());
     // }
-    
+
     $tutorId = getCurrentUserId();
     $semester = getCurrentSemester();
 
     $courses = $data->courses;
     $values = '';
     foreach ($courses as $course) {
-        list($school, $number) = explode(' ', $course);
+        list($school, $number, $gta) = explode(' ', $course);
 
-        $values .= "('$tutorId','$school', '$number'),";
+        $values .= "('$tutorId','$school', '$number', $gta),";
     }
 
+    // insert tutor teaches courses
     $values = rtrim($values, ",");
-    $dbQuery = "INSERT INTO tb_Teaches (TeachTutGTID, TeachSchool, TeachNumber)
+    $dbQueryTeaches = "INSERT INTO tb_Teaches (TeachTutGTID, TeachSchool, TeachNumber, GTA)
                        VALUES " . $values . ";";
 
-    $result = getDBResultAffected($dbQuery);
-    // echo json_encode($result);
-
+    $resultTeaches = getDBResultAffected($dbQueryTeaches);
 
 
     $values = '';
@@ -363,13 +362,15 @@ function submitTutorApp($data)
                 $values .= "('$time','$semester','$weekday','$tutorId'),";
         }
     }
-    $values = rtrim($values, ",");
 
-    $dbQuery = "INSERT INTO tb_Slot (Time, Semester, Weekday, SlotTutGTID)
+    // insert tutor available slots
+    $values = rtrim($values, ",");
+    $dbQuerySlot = "INSERT INTO tb_Slot (Time, Semester, Weekday, SlotTutGTID)
 	               VALUES " . $values . ";";
 
-    $result = getDBResultAffected($dbQuery);
-    echo json_encode($result);
+    $resultSlot = getDBResultAffected($dbQuerySlot);
+
+    echo json_encode($resultTeaches) . "   $$$   " . json_encode($resultSlot);
 }
 
 function fetchTutorSchedule($tutorId)
