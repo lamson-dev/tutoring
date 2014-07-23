@@ -207,3 +207,11 @@ function makeCall(method, data) {
         }
     });
 }
+
+function updateTutorName() {
+    makeCall("getUserNameById", "")
+        .success(function (response, error) {
+            $("#hello_tutor").text("Hello Tutor " + response);
+        });
+
+}
