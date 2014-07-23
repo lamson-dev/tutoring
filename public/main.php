@@ -61,8 +61,14 @@ function call($action, $json)
         case "getCurrentUserId":
             getCurrentUserId();
             break;
+        case "getCurrentUserIdString":
+            getCurrentUserIdString();
+            break;
         case "getCurrentUserType":
             getCurrentUserType();
+            break;
+        case "getUserNameById":
+            getUserNameById($id);
             break;
         case "scheduleSelectedTutor":
             scheduleSelectedTutor($data);
@@ -356,12 +362,15 @@ function fetchTutorSchedule($tutorId)
         error("Isn't your GTID is " . getCurrentUserId());
     }
 
-    // TODO: fix this query
-    $dbQuery = sprintf("SELECT Number
-                        FROM tb_Course
-                        WHERE School = '%s'
-                        ORDER BY Number;",
-        mysql_real_escape_string($tutorId));
+
+    $dbQuery = sprintf("SELECT HireWeekday, HireTime, Fname, Lname, Email, HireSchool, HireNumber
+                        FROM tb_User
+	                       JOIN tb_Hires ON HireStudGTID = GTID
+                               AND HireTutGTID = '%s'
+                               AND HireSemester = '%s'
+	                    ORDER BY HireWeekday, HireTime;",
+                mysql_real_escape_string($tutorId),
+                mysql_real_escape_string(getCurrentSemester()));
 
     $result = getDBResultsArray($dbQuery);
     echo json_encode($result);
@@ -550,18 +559,43 @@ function fetchCourseNumberList($school)
 function getCurrentUserId()
 {
     if (isset($_SESSION['gtid'])) {
-        echo $_SESSION['gtid'];
+        // echo $_SESSION['gtid'];
         return $_SESSION['gtid'];
     } else {
         error("NO ID");
     }
 }
 
+function getCurrentUserIdString()
+{
+    if (isset($_SESSION['gtid'])) {
+        echo $_SESSION['gtid'];
+    } else {
+        error("NO ID");
+    }
+}
+
+function getUserNameById($id) {
+
+    if ($id==null) {
+        $id = getCurrentUserId();
+    }
+
+    $dbQuery = sprintf("SELECT Fname, Lname
+                        FROM tb_User
+                        WHERE GTID = '%s';",
+                mysql_real_escape_string($id));
+
+    $result = getDBResultsArray($dbQuery);
+
+    echo $result[0]["Fname"] . " " . $result[0]["Lname"];
+    // echo json_encode($result);
+}
+
 function getCurrentUserType()
 {
     if (isset($_SESSION['user_type'])) {
         echo $_SESSION['user_type'];
-        return $_SESSION['user_type'];
     } else {
         error("NO USER TYPE");
     }

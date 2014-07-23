@@ -47,7 +47,7 @@ $(document).ready(function () {
 
     // STUDENT
     $("#btn_show_avai_tutor").click(fetchAvaiTutorWithRatingSummary);
-    // $("#btn_schedule_tutor").click(showTutorScheduleToSelect);
+    // $("#btn_schedule_tutor").click(ScheduleToSelect);
     $("#btn_schedule_selected_tutor").click(scheduleSelectedTutor);
     $("#btn_cancel").click(function () {
         $("#avai_tutor").hide();
@@ -58,7 +58,7 @@ $(document).ready(function () {
     // TUTOR
     $("#btn_add_course").click(addMoreCourse);
     $("#btn_submit_app").click(submitTutorApp);
-    $("#btn_show_tutor_schedule").click(showTutorSchedule);
+    // $("#btn_show_tutor_schedule").click(showTutorSchedule);
 
     // PROFESSOR
     $("#btn_submit_prof_eval").click(submitProfEval);
@@ -247,11 +247,6 @@ var avaiTutorIds = [];
 function fetchAvaiTutorWithRatingSummary() {
     var courseSchool = $("#student_search_course .school_list").val();
     var courseNumber = $("#student_search_course .number_list").val();
-
-// TODO: remove this when done;
-courseSchool = "CS";
-courseNumber = "2200";
-
 
     var data = {};
     data.courseSchool = courseSchool;

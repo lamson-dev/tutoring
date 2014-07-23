@@ -5,6 +5,7 @@ include "templates/header.php"
 
     <div class="row">
         <div class="large-4 columns">
+
             <label>Tutor GT-ID
                 <input id="tutor_gtid" type="text" placeholder="902910000" maxlength="9"/>
             </label>
@@ -16,11 +17,14 @@ include "templates/header.php"
     </div>
 
     <div class="row">
+
     </div>
 
 
     <div class="row calendar">
         <div class=" large-10 columns">
+
+            <h5 id="hello_tutor">Hello</h4>
 
             <table class="calendar">
 
@@ -84,3 +88,10 @@ include "templates/header.php"
 <?php
 include "templates/footer.php"
 ?>
+
+<script>
+    $(document).ready(function() {
+        
+            $("#hello_tutor").text(getUserNameById());
+    });
+</script>

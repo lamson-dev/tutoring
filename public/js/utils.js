@@ -175,10 +175,16 @@ function toggleTimeSlot() {
     }
 }
 
-function getCurrentUserId() {
-    makeCall("getCurrentUserId", "")
+function getUserNameById(id) {
+    makeCall("getUserNameById", id)
         .success(function (response, error) {
-            alert(response);
+            return response;
+        });
+}
+
+function getCurrentUserId() {
+    makeCall("getCurrentUserIdString", "")
+        .success(function (response, error) {
             return response;
         });
 }
