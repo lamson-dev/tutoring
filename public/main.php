@@ -428,28 +428,31 @@ function submitProfEval($data)
         error("You already recommended this student");
     }
 
-
     if ($data->tutorId == getCurrentUserId()) {
         error("You don't want to recommend yourself, do you?");
     }
 	
-	echo 'asfnsjdgl';
-	echo getCurrentUserId();
-	echo 'djgnjdgjkd';
-	
-	// check if professor recommendation already exists
-    $dbQuery = sprintf("SELECT EXISTS (SELECT RecTutGTID FROM tb_Recommends WHERE RecTutGTID = '%s'
+		// check if professor recommendation already exists
+	$dbQuery1 = sprintf("SELECT RecTutGTID FROM tb_Recommends WHERE RecTutGTID = '%s'
 						AND RecProfGTID = '%s';",
-        mysql_real_escape_string($data->tutorId),
-        mysql_real_escape_string(getCurrentUserId()));
+						mysql_real_escape_string($data->tutorId),
+						mysql_real_escape_string(getCurrentUserId()));
 
+	$result1 = getDBResultsArray($dbQuery1);
+	echo json_encode($result1);
 	
-	echo $dbQuery;
-	return false;
-    $result = getDBResultAffected($dbQuery);
-	echo $result;
+	if(json_encode($result1) != null)
+	{
+		$dbQuery2 = sprintf("DELETE FROM tb_Recommends
+							WHERE RecProfGTID = '%s'
+							AND RecTutGTID = '%s';",
+							mysql_real_escape_string(getCurrentUserId()),
+							mysql_real_escape_string($data->tutorId));
+	}
 	
-
+	$result2 = getDBResultAffected($dbQuery2);
+    echo json_encode($result2);
+	
     // record a professor recommendation
     $dbQuery = sprintf("INSERT INTO tb_Recommends (RecTutGTID, RecProfGTID, RecDesc, RecNum)
 	                    VALUES ('%s', '%s', '%s', '%d');",
@@ -567,7 +570,7 @@ function fetchCourseNumberList($school)
 function getCurrentUserId()
 {
     if (isset($_SESSION['gtid'])) {
-        echo $_SESSION['gtid'];
+       // echo $_SESSION['gtid'];
         return $_SESSION['gtid'];
     } else {
         error("NO ID");
