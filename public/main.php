@@ -405,6 +405,23 @@ function submitProfEval($data)
     if ($data->tutorId == getCurrentUserId()) {
         error("You don't want to recommend yourself, do you?");
     }
+	
+	echo 'asfnsjdgl';
+	echo getCurrentUserId();
+	echo 'djgnjdgjkd';
+	
+	// check if professor recommendation already exists
+    $dbQuery = sprintf("SELECT EXISTS (SELECT RecTutGTID FROM tb_Recommends WHERE RecTutGTID = '%s'
+						AND RecProfGTID = '%s';",
+        mysql_real_escape_string($data->tutorId),
+        mysql_real_escape_string(getCurrentUserId()));
+
+	
+	echo $dbQuery;
+	return false;
+    $result = getDBResultAffected($dbQuery);
+	echo $result;
+	
 
     // record a professor recommendation
     $dbQuery = sprintf("INSERT INTO tb_Recommends (RecTutGTID, RecProfGTID, RecDesc, RecNum)
