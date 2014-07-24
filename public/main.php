@@ -301,6 +301,7 @@ function submitTutorApp($data)
     $tutorId = getCurrentUserId();
     $semester = getCurrentSemester();
 
+    $isGraduate = ($data->isGraduate) ? 'true' : 'false';
 
     // update tutor basic information in tb_User
     $dbQuery = sprintf("UPDATE tb_User
@@ -318,11 +319,12 @@ function submitTutorApp($data)
     // update tutor information in tb_Tutor
     $dbQuery = sprintf("UPDATE tb_Tutor
                         SET IsGraduate = %s,
-                            GPA = %s
-                        WHERE TutGTID = %s",
-        mysql_real_escape_string($data->isGraduate),
+                            GPA = '%s'
+                        WHERE TutGTID = '%s'",
+        mysql_real_escape_string($isGraduate),
         mysql_real_escape_string($data->gpa),
         mysql_real_escape_string($tutorId));
+
 
     $result = getDBResultAffected($dbQuery);
 

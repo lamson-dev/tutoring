@@ -263,7 +263,8 @@ function fetchAvaiTutorWithRatingSummary() {
     makeCall("fetchAvaiTutorWithRatingSummary", data)
         .success(function (response, error) {
 
-            if (response == '' || response == null) {
+            var data = JSON.parse(response);
+            if (data == null || data == '' || data.length <= 0) {
                 alert("No tutor is available in your selected times.");
                 return;
             }

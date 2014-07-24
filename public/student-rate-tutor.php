@@ -42,6 +42,7 @@ include "templates/header.php"
 
 <div class="row">
     <a href="#" id="btn_submit_student_eval" class="button small radius">Submit Evaluation</a>
+    <a href="main-menu.php" class="button small radius">Cancel</a>
 </div>
 
 
