@@ -421,8 +421,8 @@ function isTutoredThisSemBy($data)
 					   mysql_real_escape_string(getCurrentSemester()),
 					   mysql_real_escape_string($data->courseSchool),
 					   mysql_real_escape_string($data->courseNumber));
-	
-	$result = getDBResultsArray($dbQuery);	
+
+	$result = getDBResultsArray($dbQuery);
 
 	if(!is_null(($result)))
 	{
@@ -697,14 +697,14 @@ function fetchAdminSummary2($data)
 
     $semsString = implode(", ", $sems);
 
-    // TODO: fix this query!
-    $dbQuery = sprintf("SELECT CONCAT(HireSchool,' ',HireNumber) as CourseName, HireSemester
-                            COUNT(DISTINCT HireTutGTID) as NumTutors,
-                            COUNT(DISTINCT HireStudGTID) as NumStudents
-                            FROM tb_Hires
-                        WHERE HireSemester IN ($semsString)
-                        GROUP BY HireSemester, CourseName
-                        ORDER BY CourseName, HireSemester;");
+    $dbQuery = sprintf("SELECT RateSchool, RateNumber, RateSemester, COUNT(RateTutGTID), AVG(RateNum)
+                    FROM tb_Rates JOIN tb_Teaches ON
+                    RateTutGTID = TeachTutGTID
+                        AND RateSchool = TeachSchool
+                        AND RateNumber = TeachNumber
+                    WHERE GTA = 1 AND RateTutGTID IN(SELECT TutGTID FROM tb_Tutor WHERE IsGraduate=1)
+                    GROUP BY RateSchool, RateNumber, RateSemester
+                    ORDER BY RateSchool, RateNumber, RateSemester;");
 
     $result = getDBResultsArray($dbQuery);
     echo json_encode($result);
