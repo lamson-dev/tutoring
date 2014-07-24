@@ -1,5 +1,5 @@
-var courseSchoolSelected = "CS";
-var courseNumberSelected = "2200";
+var courseSchoolSelected = '';
+var courseNumberSelected = '';
 
 $(document).ready(function () {
 
@@ -13,6 +13,10 @@ $(document).ready(function () {
 
         fetchCourseNumberList(courseSchoolSelected, "#student_search_course");
 
+    });
+
+    $("#student_search_course .number_list").change(function () {
+        courseNumberSelected = $(this).val();
     });
 
     $("#student_rate_course .school_list").change(function () {
@@ -33,7 +37,7 @@ $(document).ready(function () {
     });
 
     $("#tutor_course .school_list").change(function () {
-        courseSchoolSelected = $(this).val();
+        // courseSchoolSelected = $(this).val();
 
         $('#tutor_course .number_list').find('option').remove().end();
 
@@ -306,13 +310,21 @@ function fetchAvaiTutorWithRatingSummary() {
         return;
     }
 
-    // TODO: check if student selected avai times
+    var avaiCount = 0;
+    for (var i=0; i < data.studentAvai.length; ++i) {
+        avaiCount += data.studentAvai[i].times.length;
+    }
+    if (avaiCount < 1) {
+        alert("You need to have at least 1 available time slot selected");
+        return;
+    }
+
 
     makeCall("fetchAvaiTutorWithRatingSummary", data)
         .success(function (response, error) {
 
-            var data = JSON.parse(response);
-            if (data == null || data == '' || data.length <= 0) {
+
+            if (response == '' || response == null) {
                 alert("No tutor is available in your selected times.");
                 return;
             }
@@ -381,7 +393,8 @@ function fetchAvaiTutorWithRatingSummary() {
             disableMultipleSlotsSelection("#tutor_avai_calendar");
 
         }).error(function (message) {
-            error(message)
+            alert("No available tutor in this time slot.");
+            return;
         });
 }
 
@@ -391,6 +404,8 @@ function scheduleSelectedTutor() {
     var slot = getSelectedTutorSlot();
     slot.school = courseSchoolSelected;
     slot.number = courseNumberSelected;
+
+    return;
 
     makeCall("scheduleSelectedTutor", slot)
         .success(function (response, error) {
