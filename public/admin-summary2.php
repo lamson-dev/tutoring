@@ -13,6 +13,7 @@ include "templates/header.php"
             </div>
 
             <a href="#" id="btn_show_summary2" class="button small radius">Show Summary</a>
+            <a href="main-menu.php" class="button small radius">Cancel</a>
         </div>
     </fieldset>
 

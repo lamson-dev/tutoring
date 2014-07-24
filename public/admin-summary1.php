@@ -13,10 +13,11 @@ include "templates/header.php"
             </div>
 
             <a href="#" id="btn_show_summary1" class="button small radius">Show Summary</a>
+            <a href="main-menu.php" class="button small radius">Cancel</a>
         </div>
     </fieldset>
 
-    <div id= "admin1container" class="row">
+    <div id="tb_admin_sum1" class="row" style="display: none;">
         <table>
             <thead>
             <tr>
@@ -28,16 +29,16 @@ include "templates/header.php"
             </thead>
             <tbody>
             <tr>
-                <td>CS 4400</td>
+                <!-- <td>CS 4400</td>
                 <td>Fall</td>
                 <td>3</td>
-                <td>5</td>
+                <td>5</td> -->
             </tr>
             <tr>
-                <td></td>
+                <!-- <td></td>
                 <td>Spring</td>
                 <td>2</td>
-                <td>6</td>
+                <td>6</td> -->
             </tr>
             </tbody>
         </table>

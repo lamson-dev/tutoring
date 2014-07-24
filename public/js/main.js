@@ -181,34 +181,82 @@ function fetchAdminSummary1() {
     makeCall("fetchAdminSummary1", data)
         .success(function (response, error) {
 
-            //TODO: populate summary1 table
+            $("#tb_admin_sum1").show();
 
-         var summary1data = JSON.parse(response);
+            // console.log(response);
+            var data = JSON.parse(response);
 
-    // if(summary1data.length > 0)
-    // {
-    //     var num_rows = result.noofteams;
-    //     var rows = "";
-    //
-    //     for(var i=0;i<num_rows;i++)
-    //     {
-    //         rows +='<tr><td>'+result.noofteams+'</td></tr>';
-    //     }
-    // $("#admin1container").append(rows);
-    // }
+            var tbody = $('#tb_admin_sum1 tbody:last');
+            tbody.empty();
 
-//   NEED TO CALCULATE TOTAL FOR TABLE FROM DATA RETURNED
-    /*
-             console.log(summary1data);
-             console.log(summary1data[1].CourseName);
-             console.log(summary1data[1]);
 
-    for (var i=0; i<summary1data.length; i++)
-    {
-        console.log(response[i][name]);
-        console.log(response[i][name]);
-    }
-*/
+            var grandStudents = 0;
+            var grandTutors = 0;
+
+            var totalStudents = 0;
+            var totalTutors = 0;
+
+            var course = '';
+            for (var i = 0; i < data.length; ++i) {
+                var entry = data[i];
+
+                var tr = trTag.clone();
+
+                if (course != entry.CourseName) {
+                    tr.append(tdTag.clone().text(entry.CourseName));
+                    course = entry.CourseName;
+                } else {
+                    tr.append(tdTag.clone().text(""));
+                }
+
+                tr.append(tdTag.clone().text(entry.HireSemester));
+                tr.append(tdTag.clone().text(entry.NumStudents));
+                tr.append(tdTag.clone().text(entry.NumTutors));
+
+                tbody.append(tr);
+
+
+                totalStudents += parseInt(entry.NumStudents);
+                totalTutors += parseInt(entry.NumTutors);
+
+                grandStudents += parseInt(entry.NumStudents);
+                grandTutors += parseInt(entry.NumTutors);
+
+                if (i < data.length-1 && data[i+1].CourseName != entry.CourseName) {
+
+                    var tr = trTag.clone();
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text("Total"));
+                    tr.append(tdTag.clone().text(totalStudents));
+                    tr.append(tdTag.clone().text(totalTutors));
+
+                    tbody.append(tr);
+
+                    totalStudents = 0;
+                    totalTutors = 0;
+                }
+
+                if (i == data.length-1) {
+
+                    var tr = trTag.clone();
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text("Total"));
+                    tr.append(tdTag.clone().text(totalStudents));
+                    tr.append(tdTag.clone().text(totalTutors));
+
+                    tbody.append(tr);
+
+                    var tr = trTag.clone();
+
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text("Grand Total"));
+                    tr.append(tdTag.clone().text(grandStudents));
+                    tr.append(tdTag.clone().text(grandTutors));
+
+                    tbody.append(tr);
+                }
+            }
+
 
         }).error(function (message) {
             error(message);
@@ -263,7 +311,8 @@ function fetchAvaiTutorWithRatingSummary() {
     makeCall("fetchAvaiTutorWithRatingSummary", data)
         .success(function (response, error) {
 
-            if (response == '' || response == null) {
+            var data = JSON.parse(response);
+            if (data == null || data == '' || data.length <= 0) {
                 alert("No tutor is available in your selected times.");
                 return;
             }
