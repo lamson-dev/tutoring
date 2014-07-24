@@ -287,73 +287,69 @@ function fetchAdminSummary2() {
 
             $("#tb_admin_sum2").show();
 
-            console.log(response);
-            // var data = JSON.parse(response);
 
-            // var tbody = $('#tb_admin_sum2 tbody:last');
-            // tbody.empty();
+            var res = response.split("$$$");
+            console.log(res[0]);
+            console.log(res[1]);
 
+            var data = JSON.parse(res[0]);
+            var data2 = JSON.parse(res[1]);
 
-            // var course = '';
-            // for (var i = 0; i < data.length; ++i) {
-            //     var entry = data[i];
-            //
-            //     var tr = trTag.clone();
-            //
-            //     if (course != entry.CourseName) {
-            //         tr.append(tdTag.clone().text(entry.CourseName));
-            //         course = entry.CourseName;
-            //     } else {
-            //         tr.append(tdTag.clone().text(""));
-            //     }
-            //
-            //     tr.append(tdTag.clone().text(entry.HireSemester));
-            //     tr.append(tdTag.clone().text(entry.NumStudents));
-            //     tr.append(tdTag.clone().text(entry.NumTutors));
-            //
-            //     tbody.append(tr);
-            //
-            //
-            //     totalStudents += parseInt(entry.NumStudents);
-            //     totalTutors += parseInt(entry.NumTutors);
-            //
-            //     grandStudents += parseInt(entry.NumStudents);
-            //     grandTutors += parseInt(entry.NumTutors);
-            //
-            //     if (i < data.length-1 && data[i+1].CourseName != entry.CourseName) {
-            //
-            //         var tr = trTag.clone();
-            //         tr.append(tdTag.clone().text(""));
-            //         tr.append(tdTag.clone().text("Total"));
-            //         tr.append(tdTag.clone().text(totalStudents));
-            //         tr.append(tdTag.clone().text(totalTutors));
-            //
-            //         tbody.append(tr);
-            //
-            //         totalStudents = 0;
-            //         totalTutors = 0;
-            //     }
-            //
-            //     if (i == data.length-1) {
-            //
-            //         var tr = trTag.clone();
-            //         tr.append(tdTag.clone().text(""));
-            //         tr.append(tdTag.clone().text("Total"));
-            //         tr.append(tdTag.clone().text(totalStudents));
-            //         tr.append(tdTag.clone().text(totalTutors));
-            //
-            //         tbody.append(tr);
-            //
-            //         var tr = trTag.clone();
-            //
-            //         tr.append(tdTag.clone().text(""));
-            //         tr.append(tdTag.clone().text("Grand Total"));
-            //         tr.append(tdTag.clone().text(grandStudents));
-            //         tr.append(tdTag.clone().text(grandTutors));
-            //
-            //         tbody.append(tr);
-            //     }
-            // }
+            var tbody = $('#tb_admin_sum2 tbody:last');
+            tbody.empty();
+
+            var totalGTA = 0;
+            var totalRate = 0;
+            var totalGTA2 = 0;
+            var totalRate2 = 0;
+
+            var course = '';
+            for (var i = 0; i < data.length; ++i) {
+                var entry = data[i];
+
+                var tr = trTag.clone();
+
+                if (course != entry.CourseName) {
+                    tr.append(tdTag.clone().text(entry.CourseName));
+                    course = entry.CourseName;
+                } else {
+                    tr.append(tdTag.clone().text(""));
+                }
+
+                tr.append(tdTag.clone().text(entry.RateSemester));
+                tr.append(tdTag.clone().text(entry.NumGTA));
+                tr.append(tdTag.clone().text(parseFloat(entry.AvgRating).toFixed(2)));
+
+                tbody.append(tr);
+
+                totalGTA += parseFloat(entry.NumGTA);
+                totalRate += parseFloat(entry.AvgRating) * parseFloat(entry.NumGTA);
+
+                if (i < data.length-1 && data[i+1].CourseName != entry.CourseName) {
+
+                    var tr = trTag.clone();
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text("Average"));
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text((totalRate/totalGTA).toFixed(2)));
+
+                    tbody.append(tr);
+
+                    totalGTA = 0;
+                    totalRate = 0;
+                }
+
+                if (i == data.length-1) {
+
+                    var tr = trTag.clone();
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text("Average"));
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text((totalRate/totalGTA).toFixed(2)));
+
+                    tbody.append(tr);
+                }
+            }
 
 
         }).error(function (message) {
@@ -410,15 +406,24 @@ function fetchAvaiTutorWithRatingSummary() {
                 tr.append(tdTag.clone().text(tutor.fname));
                 tr.append(tdTag.clone().text(tutor.lname));
                 tr.append(tdTag.clone().text(tutor.email));
-                tr.append(tdTag.clone().text(tutor.recAvg));
+                tr.append(tdTag.clone().text(parseFloat(tutor.recAvg)));
                 tr.append(tdTag.clone().text(tutor.recCount));
-                tr.append(tdTag.clone().text(tutor.rateAvg));
+                tr.append(tdTag.clone().text(parseFloat(tutor.rateAvg).toFixed(2)));
                 tr.append(tdTag.clone().text(tutor.rateCount));
 
                 tbody.append(tr);
 
                 avaiTutorIds.push(tutor.gtid);
             }
+
+            var seen = {};
+            $('#avai_tutor tr').each(function() {
+                var txt = $(this).text();
+                if (seen[txt])
+                    $(this).remove();
+                else
+                    seen[txt] = true;
+            });
 
             $('#avai_tutor_modal').foundation('reveal', 'open');
 

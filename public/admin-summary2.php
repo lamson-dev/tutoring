@@ -7,9 +7,9 @@ include "templates/header.php"
 
         <div class="row">
             <div id="summary2_checkboxes" class="large-4 columns">
-                <input id="sem_fall2" type="checkbox"><label for="sem_fall2">Fall</label>
-                <input id="sem_spring2" type="checkbox"><label for="sem_spring2">Spring</label>
-                <input id="sem_summer2" type="checkbox"><label for="sem_summer2">Summer</label>
+                <input id="sem_fall2" type="checkbox" value="Fall"><label for="sem_fall2">Fall</label>
+                <input id="sem_spring2" type="checkbox" value="Spring"><label for="sem_spring2">Spring</label>
+                <input id="sem_summer2" type="checkbox" value="Summer"><label for="sem_summer2">Summer</label>
             </div>
 
             <a href="#" id="btn_show_summary2" class="button small radius">Show Summary</a>
@@ -24,9 +24,9 @@ include "templates/header.php"
             <tr>
                 <th width="100">Course</th>
                 <th width="100">Semester</th>
-                <th width="100">TA</th>
+                <th width="100"># GTA</th>
                 <th width="100">Average Rating</th>
-                <th width="100">NonTA</th>
+                <th width="100"># Non-GTA</th>
                 <th width="100">Average Rating</th>
             </tr>
             </thead>
