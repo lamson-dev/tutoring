@@ -434,12 +434,6 @@ function submitTutorApp() {
         alert("Please fill in all the requirements.");
         return;
     }
-
-	if (studentType == 'undergrad')
-	{
-        alert("You must be a graduate student in order to be a GTA");
-        return;
-    }
 	
 	if (gpa < 3.0)
 	{
@@ -450,6 +444,14 @@ function submitTutorApp() {
     var schools = $("#course_list .school_list");
     var numbers = $("#course_list .number_list");
     var gtas = $("#course_list input[type='checkbox']");
+	
+	console.log(gtas);
+	return;
+	if (studentType == 'undergrad' && gtas == true )
+	{
+        alert("You must be a graduate student in order to be a GTA");
+        return;
+    }
 
     var schoolCount = 0;
     var numCount = 0;
