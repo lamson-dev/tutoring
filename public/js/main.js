@@ -312,14 +312,14 @@ function fetchAdminSummary2() {
                 var tr = trTag.clone();
 
                 // hack
-                // if (course != entry.CourseName) {
-                //     tr.append(tdTag.clone().text(entry.CourseName));
-                //     course = entry.CourseName;
-                // } else {
-                //     tr.append(tdTag.clone().text(""));
-                // }
+                if (course != entry.CourseName) {
+                    tr.append(tdTag.clone().text(entry.CourseName));
+                    course = entry.CourseName;
+                } else {
+                    tr.append(tdTag.clone().text(""));
+                }
 
-                tr.append(tdTag.clone().text(entry.CourseName));
+                // tr.append(tdTag.clone().text(entry.CourseName));
 
                 tr.append(tdTag.clone().text(entry.RateSemester));
                 tr.append(tdTag.clone().text(entry.CountGTA));

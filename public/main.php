@@ -272,9 +272,9 @@ function scheduleSelectedTutor($data) {
 						mysql_real_escape_string($courseSchool),
 						mysql_real_escape_string($courseNumber),
 						mysql_real_escape_string(getCurrentSemester()));
-						
+
 	echo $dbQuery1;
-								
+
 	$result1 = getDBResultsArray($dbQuery1);
 
     if ($result1 != null) {
@@ -740,7 +740,8 @@ function fetchAdminSummary2($data)
                         GROUP BY RateSchool, RateNumber, RateSemester
                         ORDER BY RateSchool, RateNumber, RateSemester) AS TempNonGTA
 
-                        ON TempGTA.CourseName = TempNonGTA.CourseName;");
+                        ON TempGTA.CourseName = TempNonGTA.CourseName
+                        AND TempGTA.RateSemester = TempNonGTA.RateSemester;");
 
 
     // echo $dbQuery;
