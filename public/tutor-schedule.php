@@ -11,8 +11,12 @@ include "templates/header.php"
             </label>
         </div>
 
-        <div class="large-3 columns end">
+        <div class="large-3 columns">
             <a href="#" id="btn_show_tutor_schedule" class="button small radius">Show Schedule</a>
+        </div>
+
+        <div class="large-4 columns end">
+            <a href="main-menu.php" class="button small radius">Cancel</a>
         </div>
     </div>
 

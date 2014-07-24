@@ -87,7 +87,7 @@ include "templates/header.php"
 </fieldset>
 
 <div class="row">
-    <a href="" id="btn_submit_app" class="button small radius">Submit Application</a>
+    <a href="#" id="btn_submit_app" class="button small radius">Submit Application</a>
 </div>
 
 
