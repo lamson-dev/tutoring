@@ -512,9 +512,7 @@ function submitTutorApp() {
     var numbers = $("#course_list .number_list");
     var gtas = $("#course_list input[type='checkbox']");
 	
-	console.log(gtas);
-	return;
-	if (studentType == 'undergrad' && gtas == true )
+	if (studentType == 'undergrad' && $('input[name="cb_gta"]:checked').length > 0 == true )
 	{
         alert("You must be a graduate student in order to be a GTA");
         return;
