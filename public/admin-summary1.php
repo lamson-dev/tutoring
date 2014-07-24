@@ -16,7 +16,7 @@ include "templates/header.php"
         </div>
     </fieldset>
 
-    <div id= "admin1container" class="row">
+    <div id="tb_admin_sum1" class="row">
         <table>
             <thead>
             <tr>

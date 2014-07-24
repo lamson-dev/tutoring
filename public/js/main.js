@@ -182,33 +182,80 @@ function fetchAdminSummary1() {
         .success(function (response, error) {
 
             //TODO: populate summary1 table
+            console.log(response);
+            var data = JSON.parse(response);
 
-         var summary1data = JSON.parse(response);
+            var tbody = $('#tb_admin_sum1 tbody:last');
+            tbody.empty();
 
-    // if(summary1data.length > 0)
-    // {
-    //     var num_rows = result.noofteams;
-    //     var rows = "";
-    //
-    //     for(var i=0;i<num_rows;i++)
-    //     {
-    //         rows +='<tr><td>'+result.noofteams+'</td></tr>';
-    //     }
-    // $("#admin1container").append(rows);
-    // }
 
-//   NEED TO CALCULATE TOTAL FOR TABLE FROM DATA RETURNED
-    /*
-             console.log(summary1data);
-             console.log(summary1data[1].CourseName);
-             console.log(summary1data[1]);
+            var grandStudents = 0;
+            var grandTutors = 0;
 
-    for (var i=0; i<summary1data.length; i++)
-    {
-        console.log(response[i][name]);
-        console.log(response[i][name]);
-    }
-*/
+            var totalStudents = 0;
+            var totalTutors = 0;
+
+            var course = '';
+            for (var i = 0; i < data.length; ++i) {
+                var entry = data[i];
+
+                var tr = trTag.clone();
+
+                if (course != entry.CourseName) {
+                    tr.append(tdTag.clone().text(entry.CourseName));
+                    course = entry.CourseName;
+                } else {
+                    tr.append(tdTag.clone().text(""));
+                }
+
+                tr.append(tdTag.clone().text(entry.HireSemester));
+                tr.append(tdTag.clone().text(entry.NumStudents));
+                tr.append(tdTag.clone().text(entry.NumTutors));
+
+                tbody.append(tr);
+
+
+                totalStudents += parseInt(entry.NumStudents);
+                totalTutors += parseInt(entry.NumTutors);
+
+                grandStudents += parseInt(entry.NumStudents);
+                grandTutors += parseInt(entry.NumTutors);
+
+                if (i < data.length-1 && data[i+1].CourseName != entry.CourseName) {
+
+                    var tr = trTag.clone();
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text("Total"));
+                    tr.append(tdTag.clone().text(totalStudents));
+                    tr.append(tdTag.clone().text(totalTutors));
+
+                    tbody.append(tr);
+
+                    totalStudents = 0;
+                    totalTutors = 0;
+                }
+
+                if (i == data.length-1) {
+
+                    var tr = trTag.clone();
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text("Total"));
+                    tr.append(tdTag.clone().text(totalStudents));
+                    tr.append(tdTag.clone().text(totalTutors));
+
+                    tbody.append(tr);
+
+                    var tr = trTag.clone();
+
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text("Grand Total"));
+                    tr.append(tdTag.clone().text(grandStudents));
+                    tr.append(tdTag.clone().text(grandTutors));
+
+                    tbody.append(tr);
+                }
+            }
+
 
         }).error(function (message) {
             error(message);
