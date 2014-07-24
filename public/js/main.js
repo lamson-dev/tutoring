@@ -434,6 +434,12 @@ function submitTutorApp() {
         alert("Please fill in all the requirements.");
         return;
     }
+	
+	if (gpa < 3.0)
+	{
+        alert("You must have a 3.0 or higher to apply for a tutoring position.");
+        return;
+    }
 
     var schools = $("#course_list .school_list");
     var numbers = $("#course_list .number_list");
@@ -553,7 +559,6 @@ function showTutorSchedule() {
 
 function submitStudentEval() {
 
-
     var courseShool = $("#student_rate_course .school_list").val();
     var courseNumber = $("#student_rate_course .number_list").val();
     var tutorId = $("#rate_tutor_name_list").val();
@@ -570,8 +575,8 @@ function submitStudentEval() {
         alert("Please select a tutor name!");
         return;
     }
-    if (descEval == null) {
-        alert("You don't have anything to say about the tutor?");
+    if (descEval == '') {
+        alert("You must include a descriptive evaluation.");
         return;
     }
     if (numEval == null) {
@@ -596,7 +601,7 @@ function submitStudentEval() {
             console.log(response);
             window.location = "/main-menu.php";
         }).error(function (message) {
-            error(message);
+            error("You didn't hire this tutor this semester!");
         });
 
 }
