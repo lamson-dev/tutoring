@@ -164,8 +164,8 @@ function fetchAvaiTutorWithRatingSummary($data)
                     mysql_real_escape_string(getCurrentSemester()),
                     mysql_real_escape_string($day));
 
-        // echo $dbQuery;
-        // return;
+        //echo $dbQuery;
+        //return;
 
         $result = getDBResultsArray($dbQuery);
 
@@ -196,8 +196,8 @@ function fetchAvaiTutorWithRatingSummary($data)
         return;
     }
 
-    // echo json_encode($tutorIds);
-    // return;
+    echo json_encode($tutorIds);
+     return;
 
     $tutorIdsString = str_replace ("[", "", json_encode($tutorIds));
     $tutorIdsString = str_replace("]","", $tutorIdsString);
