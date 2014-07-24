@@ -311,12 +311,15 @@ function fetchAdminSummary2() {
 
                 var tr = trTag.clone();
 
-                if (course != entry.CourseName) {
-                    tr.append(tdTag.clone().text(entry.CourseName));
-                    course = entry.CourseName;
-                } else {
-                    tr.append(tdTag.clone().text(""));
-                }
+                // hack
+                // if (course != entry.CourseName) {
+                //     tr.append(tdTag.clone().text(entry.CourseName));
+                //     course = entry.CourseName;
+                // } else {
+                //     tr.append(tdTag.clone().text(""));
+                // }
+
+                tr.append(tdTag.clone().text(entry.CourseName));
 
                 tr.append(tdTag.clone().text(entry.RateSemester));
                 tr.append(tdTag.clone().text(entry.CountGTA));
@@ -344,8 +347,11 @@ function fetchAdminSummary2() {
 
                     tbody.append(tr);
 
-                    totalGTA = 0;
-                    totalRate = 0;
+                    totalCountGTA = 0;
+                    totalRateGTA = 0;
+                    totalCountNonGTA = 0;
+                    totalRateNonGTA = 0;
+
                 }
 
                 if (i == data.length-1) {
@@ -354,7 +360,9 @@ function fetchAdminSummary2() {
                     tr.append(tdTag.clone().text(""));
                     tr.append(tdTag.clone().text("Average"));
                     tr.append(tdTag.clone().text(""));
-                    tr.append(tdTag.clone().text((totalRate/totalGTA).toFixed(2)));
+                    tr.append(tdTag.clone().text((totalRateGTA/totalCountGTA).toFixed(2)));
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text((totalRateNonGTA/totalCountNonGTA).toFixed(2)));
 
                     tbody.append(tr);
                 }
@@ -365,6 +373,16 @@ function fetchAdminSummary2() {
             });
             $("#tb_admin_sum2 td:contains('NaN')").each(function() {
                 $(this).text("");
+            });
+
+            // removing duplicates in table
+            var seen = {};
+            $('#tb_admin_sum2 tr').each(function() {
+                var txt = $(this).text();
+                if (seen[txt])
+                    $(this).remove();
+                else
+                    seen[txt] = true;
             });
 
 
