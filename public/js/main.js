@@ -261,6 +261,13 @@ function fetchAdminSummary1() {
                 }
             }
 
+            $("#tb_admin_sum1 td:contains('NaN')").each(function() {
+                $(this).text("");
+            });
+            $("#tb_admin_sum1 td:contains('null')").each(function() {
+                $(this).text("");
+            });
+
 
         }).error(function (message) {
             error(message);
@@ -288,20 +295,15 @@ function fetchAdminSummary2() {
             $("#tb_admin_sum2").show();
 
 
-            var res = response.split("$$$");
-            console.log(res[0]);
-            console.log(res[1]);
-
-            var data = JSON.parse(res[0]);
-            var data2 = JSON.parse(res[1]);
+            var data = JSON.parse(response);
 
             var tbody = $('#tb_admin_sum2 tbody:last');
             tbody.empty();
 
-            var totalGTA = 0;
-            var totalRate = 0;
-            var totalGTA2 = 0;
-            var totalRate2 = 0;
+            var totalCountGTA = 0;
+            var totalRateGTA = 0;
+            var totalCountNonGTA = 0;
+            var totalRateNonGTA = 0;
 
             var course = '';
             for (var i = 0; i < data.length; ++i) {
@@ -317,13 +319,18 @@ function fetchAdminSummary2() {
                 }
 
                 tr.append(tdTag.clone().text(entry.RateSemester));
-                tr.append(tdTag.clone().text(entry.NumGTA));
-                tr.append(tdTag.clone().text(parseFloat(entry.AvgRating).toFixed(2)));
+                tr.append(tdTag.clone().text(entry.CountGTA));
+                tr.append(tdTag.clone().text(parseFloat(entry.AvgGTA).toFixed(2)));
+                tr.append(tdTag.clone().text(entry.CountNonGTA));
+                tr.append(tdTag.clone().text(parseFloat(entry.AvgNonGTA).toFixed(2)));
 
                 tbody.append(tr);
 
-                totalGTA += parseFloat(entry.NumGTA);
-                totalRate += parseFloat(entry.AvgRating) * parseFloat(entry.NumGTA);
+                totalCountGTA += parseFloat(entry.CountGTA);
+                totalRateGTA += parseFloat(entry.AvgGTA) * parseFloat(entry.CountGTA);
+
+                totalCountNonGTA += parseFloat(entry.CountNonGTA);
+                totalRateNonGTA += parseFloat(entry.AvgNonGTA) * parseFloat(entry.CountNonGTA);
 
                 if (i < data.length-1 && data[i+1].CourseName != entry.CourseName) {
 
@@ -331,7 +338,9 @@ function fetchAdminSummary2() {
                     tr.append(tdTag.clone().text(""));
                     tr.append(tdTag.clone().text("Average"));
                     tr.append(tdTag.clone().text(""));
-                    tr.append(tdTag.clone().text((totalRate/totalGTA).toFixed(2)));
+                    tr.append(tdTag.clone().text((totalRateGTA/totalCountGTA).toFixed(2)));
+                    tr.append(tdTag.clone().text(""));
+                    tr.append(tdTag.clone().text((totalRateNonGTA/totalCountNonGTA).toFixed(2)));
 
                     tbody.append(tr);
 
@@ -350,6 +359,13 @@ function fetchAdminSummary2() {
                     tbody.append(tr);
                 }
             }
+
+            $("#tb_admin_sum2 td:contains('null')").each(function() {
+                $(this).text("");
+            });
+            $("#tb_admin_sum2 td:contains('NaN')").each(function() {
+                $(this).text("");
+            });
 
 
         }).error(function (message) {
@@ -416,6 +432,8 @@ function fetchAvaiTutorWithRatingSummary() {
                 avaiTutorIds.push(tutor.gtid);
             }
 
+
+            // removing duplicates in table
             var seen = {};
             $('#avai_tutor tr').each(function() {
                 var txt = $(this).text();
@@ -463,6 +481,13 @@ function fetchAvaiTutorWithRatingSummary() {
 
             $("#selected_course").text(courseSchoolSelected + " " + courseNumberSelected);
             disableMultipleSlotsSelection("#tutor_avai_calendar");
+
+            $("#avai_tutor td:contains('NaN')").each(function() {
+                $(this).text("");
+            });
+            $("#avai_tutor td:contains('null')").each(function() {
+                $(this).text("");
+            });
 
         }).error(function (message) {
             alert("No available tutor in this time slot.");
@@ -516,7 +541,7 @@ function submitTutorApp() {
     var schools = $("#course_list .school_list");
     var numbers = $("#course_list .number_list");
     var gtas = $("#course_list input[type='checkbox']");
-	
+
 	if (studentType == 'undergrad' && $('input[name="cb_gta"]:checked').length > 0 == true )
 	{
         alert("You must be a graduate student in order to be a GTA");
