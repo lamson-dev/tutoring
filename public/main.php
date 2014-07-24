@@ -261,26 +261,24 @@ function scheduleSelectedTutor($data) {
     $time = $data->time;
     $semester = getCurrentSemester();
 
+	// check to see if student already has filled semester course quota
+	$dbQuery1 = sprintf("SELECT HireStudGTID
+						FROM tb_Hires
+						WHERE HireStudGTID = '%s'
+						AND HireSchool = '%s'
+						AND HireNumber = '%s'
+						AND HireSemester = '%s';",
+						mysql_real_escape_string($studentId),
+						mysql_real_escape_string($courseSchool),
+						mysql_real_escape_string($courseNumber),
+						mysql_real_escape_string(getCurrentSemester()));
+						
+	echo $dbQuery1;
+								
+	$result1 = getDBResultsArray($dbQuery1);
 
-    // check to see if the student already have scheduled a tutor this time
-    $dbQuery = sprintf("SELECT EXISTS (SELECT *
-                    FROM tb_Hires
-                    WHERE HireStudGTID = '%s'
-                        AND HireWeekday = '%s'
-                        AND HireTime = '%s'
-                        AND HireSemester = '%s');",
-
-        mysql_real_escape_string($studentId),
-        mysql_real_escape_string($weekday),
-        mysql_real_escape_string($time),
-        mysql_real_escape_string($semester));
-
-    echo $dbQuery;
-
-    $result = mysql_query($dbQuery);
-
-    if ($result) {
-        error("You already have scheduled a tutor in this time slot.");
+    if ($result1 != null) {
+		error("You have already scheduled a tutor for this course this semester.");
     }
 
     // ============================================================

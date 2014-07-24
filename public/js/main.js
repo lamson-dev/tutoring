@@ -477,14 +477,14 @@ function scheduleSelectedTutor() {
     slot.school = courseSchoolSelected;
     slot.number = courseNumberSelected;
 
-    return;
+    //return;
 
     makeCall("scheduleSelectedTutor", slot)
         .success(function (response, error) {
             alert("Tutor Scheduled!!!");
-            // window.location = "/main-menu.php";
+             window.location = "/main-menu.php";
         }).error(function (message) {
-            error("You already have a tutor scheduled for this time!");
+            error("You have already scheduled a tutor for this course this semester.");
         });
 }
 
