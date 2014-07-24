@@ -404,15 +404,6 @@ function fetchTutorSchedule($tutorId)
 
 function isTutoredThisSemBy($data)
 {
-    // TODO: fix this query
-//    $dbQuery = sprintf("SELECT GTID, Password
-//                        FROM tb_User
-//                        WHERE GTID='%s' AND Password='%s'",
-//        mysql_real_escape_string($data->courseNumber),
-//        mysql_real_escape_string($data->tutorName),
-//        mysql_real_escape_string(getCurrentSemester()));
-//
-//    $result = getDBResultsArray($dbQuery);
 	$dbQuery = sprintf("SELECT *
 						FROM tb_Hires
 						WHERE HireTutGTID = '%s'
@@ -427,18 +418,15 @@ function isTutoredThisSemBy($data)
 					   mysql_real_escape_string($data->courseNumber));
 	
 	$result = getDBResultsArray($dbQuery);	
-	echo is_null(json_encode($result));
-	return true;
 
-    TODO: fix this, return true or false
-	// if(!is_null(json_encode($results)))
-	// {
-		// return true;
-	// }
-	// else
-	// {
-		// return false;
-	// }
+	if(!is_null(($result)))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 function isDuplicateEntry($tutorId, $school = null, $number = null)

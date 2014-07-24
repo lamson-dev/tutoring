@@ -586,7 +586,7 @@ function submitStudentEval() {
             console.log(response);
             window.location = "/main-menu.php";
         }).error(function (message) {
-            error(message);
+            error("You didn't hire this tutor this semester!");
         });
 
 }
