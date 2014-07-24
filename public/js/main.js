@@ -405,8 +405,8 @@ function submitTutorApp() {
         ++i;
     });
 
-    if (courses.length <= 0 || schoolCount != numCount || (schoolCount == 0 && numCount == 0)) {
-        alert("You need to select a course to teach.");
+    if (numCount < 1 || $("#course_list .number_list").val() == null) {
+        alert("You must select a course to teach.");
         return;
     }
 
