@@ -18,7 +18,7 @@ include "templates/header.php"
     </fieldset>
 
 
-    <div id="tb_admin_sum2" class="row">
+    <div id="tb_admin_sum2" class="row" style="display: none;">
         <table>
             <thead>
             <tr>

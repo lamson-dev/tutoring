@@ -37,7 +37,7 @@ $(document).ready(function () {
     });
 
     $("#tutor_course .school_list").change(function () {
-        // courseSchoolSelected = $(this).val();
+        courseSchoolSelected = $(this).val();
 
         $('#tutor_course .number_list').find('option').remove().end();
 
@@ -268,6 +268,7 @@ function fetchAdminSummary1() {
 }
 
 function fetchAdminSummary2() {
+
     var selected = [];
     $('#summary2_checkboxes input:checked').each(function () {
         selected.push($(this).val());
@@ -284,9 +285,75 @@ function fetchAdminSummary2() {
     makeCall("fetchAdminSummary2", data)
         .success(function (response, error) {
 
-            //TODO: populate summary2 table
+            $("#tb_admin_sum2").show();
 
             console.log(response);
+            // var data = JSON.parse(response);
+
+            // var tbody = $('#tb_admin_sum2 tbody:last');
+            // tbody.empty();
+
+
+            // var course = '';
+            // for (var i = 0; i < data.length; ++i) {
+            //     var entry = data[i];
+            //
+            //     var tr = trTag.clone();
+            //
+            //     if (course != entry.CourseName) {
+            //         tr.append(tdTag.clone().text(entry.CourseName));
+            //         course = entry.CourseName;
+            //     } else {
+            //         tr.append(tdTag.clone().text(""));
+            //     }
+            //
+            //     tr.append(tdTag.clone().text(entry.HireSemester));
+            //     tr.append(tdTag.clone().text(entry.NumStudents));
+            //     tr.append(tdTag.clone().text(entry.NumTutors));
+            //
+            //     tbody.append(tr);
+            //
+            //
+            //     totalStudents += parseInt(entry.NumStudents);
+            //     totalTutors += parseInt(entry.NumTutors);
+            //
+            //     grandStudents += parseInt(entry.NumStudents);
+            //     grandTutors += parseInt(entry.NumTutors);
+            //
+            //     if (i < data.length-1 && data[i+1].CourseName != entry.CourseName) {
+            //
+            //         var tr = trTag.clone();
+            //         tr.append(tdTag.clone().text(""));
+            //         tr.append(tdTag.clone().text("Total"));
+            //         tr.append(tdTag.clone().text(totalStudents));
+            //         tr.append(tdTag.clone().text(totalTutors));
+            //
+            //         tbody.append(tr);
+            //
+            //         totalStudents = 0;
+            //         totalTutors = 0;
+            //     }
+            //
+            //     if (i == data.length-1) {
+            //
+            //         var tr = trTag.clone();
+            //         tr.append(tdTag.clone().text(""));
+            //         tr.append(tdTag.clone().text("Total"));
+            //         tr.append(tdTag.clone().text(totalStudents));
+            //         tr.append(tdTag.clone().text(totalTutors));
+            //
+            //         tbody.append(tr);
+            //
+            //         var tr = trTag.clone();
+            //
+            //         tr.append(tdTag.clone().text(""));
+            //         tr.append(tdTag.clone().text("Grand Total"));
+            //         tr.append(tdTag.clone().text(grandStudents));
+            //         tr.append(tdTag.clone().text(grandTutors));
+            //
+            //         tbody.append(tr);
+            //     }
+            // }
 
 
         }).error(function (message) {
@@ -434,7 +501,7 @@ function submitTutorApp() {
         alert("Please fill in all the requirements.");
         return;
     }
-	
+
 	if (gpa < 3.0)
 	{
         alert("You must have a 3.0 or higher to apply for a tutoring position.");
