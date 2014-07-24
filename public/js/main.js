@@ -419,6 +419,12 @@ function submitTutorApp() {
         alert("Please fill in all the requirements.");
         return;
     }
+
+	if (studentType == 'undergrad')
+	{
+        alert("You must be a graduate student in order to be a GTA");
+        return;
+    }
 	
 	if (gpa < 3.0)
 	{
