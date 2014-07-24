@@ -55,6 +55,9 @@ function call($action, $json)
         case "fetchAdminSummary1":
             fetchAdminSummary1($data);
             break;
+        case "fetchAdminSummary2":
+            fetchAdminSummary2($data);
+            break;
         case "getCurrentUserId":
             getCurrentUserId();
             break;
@@ -189,15 +192,12 @@ function fetchAvaiTutorWithRatingSummary($data)
     // echo json_encode($tutors);
     // return;
 
-    $tutorIds = array_unique($tutorIds);
+    // $tutorIds = array_unique($tutorIds);
 
     if (count($tutorIds) < 1) {
         echo ''; // no tutors available
         return;
     }
-
-    echo json_encode($tutorIds);
-     return;
 
     $tutorIdsString = str_replace ("[", "", json_encode($tutorIds));
     $tutorIdsString = str_replace("]","", $tutorIdsString);
@@ -697,17 +697,35 @@ function fetchAdminSummary2($data)
 
     $semsString = implode(", ", $sems);
 
-    $dbQuery = sprintf("SELECT RateSchool, RateNumber, RateSemester, COUNT(RateTutGTID), AVG(RateNum)
+    $dbQueryGTA = sprintf("SELECT CONCAT(RateSchool,' ',RateNumber) as CourseName,
+                                RateSemester,
+                                COUNT(RateTutGTID) as NumGTA, AVG(RateNum) as AvgRating
                     FROM tb_Rates JOIN tb_Teaches ON
                     RateTutGTID = TeachTutGTID
                         AND RateSchool = TeachSchool
                         AND RateNumber = TeachNumber
-                    WHERE GTA = 1 AND RateTutGTID IN(SELECT TutGTID FROM tb_Tutor WHERE IsGraduate=1)
+                        AND RateSemester IN ($semsString)
+                    WHERE GTA = 1 AND RateTutGTID IN (SELECT TutGTID FROM tb_Tutor WHERE IsGraduate = 1)
+                    GROUP BY RateSchool, RateNumber, RateSemester
+                    ORDER BY RateSchool, RateNumber, RateSemester;");
+
+    $resultGTA = getDBResultsArray($dbQueryGTA);
+
+    $dbQuery = sprintf("SELECT CONCAT(RateSchool,' ',RateNumber) as CourseName,
+                                RateSemester,
+                                COUNT(RateTutGTID) as NumGTA, AVG(RateNum) as AvgRating
+                    FROM tb_Rates JOIN tb_Teaches ON
+                    RateTutGTID = TeachTutGTID
+                        AND RateSchool = TeachSchool
+                        AND RateNumber = TeachNumber
+                        AND RateSemester IN ($semsString)
+                    WHERE GTA = 0 AND RateTutGTID IN (SELECT TutGTID FROM tb_Tutor WHERE IsGraduate = 1)
                     GROUP BY RateSchool, RateNumber, RateSemester
                     ORDER BY RateSchool, RateNumber, RateSemester;");
 
     $result = getDBResultsArray($dbQuery);
-    echo json_encode($result);
+
+    echo json_encode($resultGTA) . "$$$" . json_encode($result);
 }
 
 function error($message)
