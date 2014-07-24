@@ -16,7 +16,7 @@ include "templates/header.php"
         </div>
     </fieldset>
 
-    <div id="tb_admin_sum1" class="row">
+    <div id="tb_admin_sum1" class="row" style="display: none;">
         <table>
             <thead>
             <tr>
@@ -28,16 +28,16 @@ include "templates/header.php"
             </thead>
             <tbody>
             <tr>
-                <td>CS 4400</td>
+                <!-- <td>CS 4400</td>
                 <td>Fall</td>
                 <td>3</td>
-                <td>5</td>
+                <td>5</td> -->
             </tr>
             <tr>
-                <td></td>
+                <!-- <td></td>
                 <td>Spring</td>
                 <td>2</td>
-                <td>6</td>
+                <td>6</td> -->
             </tr>
             </tbody>
         </table>

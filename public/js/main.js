@@ -181,8 +181,9 @@ function fetchAdminSummary1() {
     makeCall("fetchAdminSummary1", data)
         .success(function (response, error) {
 
-            //TODO: populate summary1 table
-            console.log(response);
+            $("#tb_admin_sum1").show();
+
+            // console.log(response);
             var data = JSON.parse(response);
 
             var tbody = $('#tb_admin_sum1 tbody:last');
