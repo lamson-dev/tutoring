@@ -516,6 +516,12 @@ function submitTutorApp() {
     var schools = $("#course_list .school_list");
     var numbers = $("#course_list .number_list");
     var gtas = $("#course_list input[type='checkbox']");
+	
+	if (studentType == 'undergrad' && $('input[name="cb_gta"]:checked').length > 0 == true )
+	{
+        alert("You must be a graduate student in order to be a GTA");
+        return;
+    }
 
     var schoolCount = 0;
     var numCount = 0;

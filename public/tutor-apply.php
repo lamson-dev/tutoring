@@ -66,7 +66,7 @@ include "templates/header.php"
             include "templates/course-selector.html";
             ?>
 
-            <input id="cb_gta" type="checkbox"><label class="lb_gta" for="cb_gta">GTA</label>
+            <input id="cb_gta" name="cb_gta" type="checkbox"><label class="lb_gta" for="cb_gta">GTA</label>
 
         </div>
     </div>
