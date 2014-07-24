@@ -65,7 +65,7 @@ include "templates/header.php"
     </div>
 
     <div id="tutor_avai_calendar" class="row calendar">
-        <div class=" large-10 columns">
+        <div class="large-10 columns">
 
             <table class="calendar">
 

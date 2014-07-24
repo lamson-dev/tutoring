@@ -28,7 +28,7 @@ function login() {
 
     makeCall("login", data)
         .success(function (response, error) {
-            alert("Logged In Successfully");
+            // alert("Logged In Successfully");
 
             window.location = "/main-menu.php";
         }).error(function (message) {

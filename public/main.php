@@ -31,9 +31,6 @@ function call($action, $json)
         case "fetchAvaiTutorWithRatingSummary":
             fetchAvaiTutorWithRatingSummary($data);
             break;
-        case "fetchAvaiTutorWithTime":
-            fetchAvaiTutorWithTime($data);
-            break;
         case "submitProfEval":
             submitProfEval($data);
             break;
@@ -89,6 +86,7 @@ function login($data)
 
     if (is_null($result)) {
         error('FAILED to login');
+        // died('FAILED to login');
     } else {
         $_SESSION['gtid'] = $data->gtid;
         $_SESSION['user_type'] = $result[0]["Type"];
@@ -191,8 +189,13 @@ function fetchAvaiTutorWithRatingSummary($data)
     // echo json_encode($tutors);
     // return;
 
-
     $tutorIds = array_unique($tutorIds);
+
+    if (count($tutorIds) < 1) {
+        echo ''; // no tutors available
+        return;
+    }
+
     // echo json_encode($tutorIds);
     // return;
 
@@ -272,6 +275,8 @@ function scheduleSelectedTutor($data) {
         mysql_real_escape_string($time),
         mysql_real_escape_string($semester));
 
+    echo $dbQuery;
+
     $result = mysql_query($dbQuery);
 
     if ($result) {
@@ -298,10 +303,10 @@ function scheduleSelectedTutor($data) {
 
 function submitTutorApp($data)
 {
-    // TODO: submitTutorApp
-    // if (!$data->tutorId == getCurrentUserId()) {
-    //     error("Isn't your GTID is " . getCurrentUserId());
-    // }
+
+    if (strcmp($data->tutorId, getCurrentUserId()) != 0) {
+        error("Isn't your GTID is " . getCurrentUserId());
+    }
 
     $tutorId = getCurrentUserId();
     $semester = getCurrentSemester();
@@ -473,9 +478,6 @@ function submitProfEval($data)
         error("You already recommended this student");
     }
 
-    if ($data->tutorId == getCurrentUserId()) {
-        error("You don't want to recommend yourself, do you?");
-    }
 
 	// check if professor recommendation already exists then overwrites
 	$dbQuery1 = sprintf("SELECT RecTutGTID FROM tb_Recommends WHERE RecTutGTID = '%s'
@@ -516,7 +518,8 @@ function submitStudentEval($data)
 
     // check if student is tutored by this tutor this semester
     if (!isTutoredThisSemBy($data)) {
-        error("You didn't hire this tutor this semester!");
+        alert("You didn't hire this tutor this semester!");
+        return;
     }
 
     if (isDuplicateEntry($data->tutorId, $data->courseSchool, $data->courseNumber)) {
