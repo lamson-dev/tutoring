@@ -188,15 +188,12 @@ function fetchAvaiTutorWithRatingSummary($data)
 
     }
 
-    echo json_encode($tutors);
+    // echo json_encode($tutors);
+    // return;
 
-    return;
-    // var_dump($tutorIds);
 
-    // $tutorIds = array_unique($tutorIds, SORT_REGULAR);
-
-    // var_dump($tutorIds);
-
+    $tutorIds = array_unique($tutorIds);
+    // echo json_encode($tutorIds);
     // return;
 
     $tutorIdsString = str_replace ("[", "", json_encode($tutorIds));
@@ -213,11 +210,16 @@ function fetchAvaiTutorWithRatingSummary($data)
     $avgRecResult = getDBResultsArray($dbQuery);
 
     if ($avgRecResult != null) {
-        $i = 0;
+
         foreach ($avgRecResult as $row) {
-            $tutors[$i]->recAvg = $row["AVG(RecNum)"];
-            $tutors[$i]->recCount = $row["COUNT(RecNum)"];
-            ++$i;
+
+            $id = $row["RecTutGTID"];
+            foreach ($tutors as $tutor) {
+                if (strcmp($id, $tutor->gtid) == 0) {
+                    $tutor->recAvg = $row["AVG(RecNum)"];
+                    $tutor->recCount = $row["COUNT(RecNum)"];
+                }
+            }
         }
     }
 
@@ -233,13 +235,16 @@ function fetchAvaiTutorWithRatingSummary($data)
     if ($avgRateResult != null) {
         $i = 0;
         foreach ($avgRateResult as $row) {
-            $tutors[$i]->rateAvg = $row["AVG(RateNum)"];
-            $tutors[$i]->rateCount = $row["COUNT(RateNum)"];
-            ++$i;
+            $id = $row["RateTutGTID"];
+            foreach ($tutors as $tutor) {
+                if (strcmp($id, $tutor->gtid) == 0) {
+                    $tutor->rateAvg = $row["AVG(RateNum)"];
+                    $tutor->rateCount = $row["COUNT(RateNum)"];
+                }
+            }
         }
     }
 
-    // var_dump($tutors);
     echo json_encode($tutors);
 }
 
